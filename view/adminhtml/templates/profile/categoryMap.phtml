@@ -18,7 +18,14 @@
  */
 /* @var $block \Magento\Catalog\Block\Adminhtml\Profile\Create */
 ?>
-
+<div class='row'>
+    <div class='col-1'>
+        <h3>Magento Category</h3>
+    </div>
+    <div class='col-2'>
+        <h3>Goodmarket Category</h3>
+    </div>
+</div>
 <?php $gdcat = $block->getGoodMarketCategories(); ?>
 <?php $category = $block->getCategories();  ?>
 <?php $baseUrl = $block->getUrl('goodmarket/profile/savebymageid'); ?>
@@ -40,6 +47,7 @@
             </div>
             <div class='col-2'>
                 <select class='gdcat' onchange='save(this, <?= $catId ?>)'>
+                <option value='0' selected>--Please Select--</option>
                     <?php foreach ($gdcat as $goodCat => $val) {?>
                         <?php $select = ''; ?>
                         <?php if ($value == $goodCat) {$select = 'selected';} ?>
