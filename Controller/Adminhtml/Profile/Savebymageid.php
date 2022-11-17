@@ -69,12 +69,26 @@ class Savebymageid extends Action
     {
         $params = $this->getRequest()->getParams();
         // echo '<pre>'; print_r($params);exit;
+        $category = $this->getRequest()->getParam('profileCategory');
         $magentoCat = $this->getRequest()->getParam('magentoCat');
+        if ($category == '0') {
+            $profile = $this->profileFactory->create()->load($magentoCat, 'magento_category');
+            // echo '<pre>'; print_r($profile->getData()); exit;
+            // $profile->delete(); echo 'deleted';
+            try {
+                if ($profile->delete()){
+                    echo 'Profile Deleted'; exit;
+                } else {
+                    echo  'Some error occured';
+                }
+            } catch (Exception $e) {
+                echo $e->getMessage(); exit;
+            }
+        }
         $profileCode = 'gdmarket-' . $magentoCat;
         $profileProduct = $this->getProductCollectionByCategories($magentoCat);
         $profileName = 'Good Market ' . $profileCode;
         $profileStatus = 1;        
-        $category = $this->getRequest()->getParam('profileCategory');
         $category = explode(',', $category);
         $categoryIds = array_filter($category);
         $categoryId = end($categoryIds);
@@ -92,7 +106,7 @@ class Savebymageid extends Action
             $profile->setData('profile_code', $profileCode);
         }
         // }
-        $attributeSet=$this->_session->getAttributeSet();
+        $attributeSet = '4';
         $profile->setData('attribute_set',$attributeSet);
         $profile->setData('profile_name', $profileName);
         $profile->setData('profile_status', $profileStatus);

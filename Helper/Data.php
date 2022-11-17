@@ -204,6 +204,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $postfield['variables']['product_data']=json_encode($productData);
         $postfield['variables']['vendor_id']=$this->vendorId;
         $postfield['variables']['hash_token']=$this->hashToken;
+//        echo "<pre>";
+//        print_r(json_decode($postfield['variables']['product_data'],true));
+//        die(__FILE__);
         $productUpload = $this->postRequest(self::API_ROOT_URL, json_encode($postfield),$type);
         return $productUpload;
     }
@@ -280,7 +283,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $postfield['query']='mutation saveProduct($vendor_id: Int!,$product_data: String!, $hash_token: String) {saveProduct(vendor_id: $vendor_id, product_data:$product_data , hash_token:$hash_token){success message product_id}}';
         $productData['id']=$product['goodmarket_product_id'];
-        $quantity['source']=json_encode($allSources);
+        $quantity['sources']=json_encode($allSources);
         $quantity['product_has_weight']='1';
         $quantity['price']=$price;
         $quantity['sku']=$product['sku'];
@@ -374,7 +377,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getOrderIDs($startDate, $endDate)
     {
         $endDate = date("Y-m-d", strtotime("+1 day"));
-        $postfield='{"query":"query vendorOrders($vendor_id: Int!, $page_setting: ordersListPageSettingInput!, $filter: ordersListFilterInput! , $hash_token : String ) {\n    vendorOrdersList(vendor_id: $vendor_id, page_setting: $page_setting, filter: $filter , hash_token:$hash_token){\n        success\n        count\n        vendor_orders {\n            increment_id\n            order_id\n            created_at\n            billing_name\n            order_total\n            shop_commission_fee\n            net_vendor_earn\n            payment_state\n            order_payment_state\n        }\n    }\n}\n","variables":{"filter":{"from_purchased_date":"'.$startDate.'","to_purchased_date":"'.$endDate.'","vendor_payment_state":"1"},"page_setting":{"count":"10","activePage":1},"vendor_id":'.$this->vendorId.',"hash_token":"'.$this->hashToken.'"}}';
+        $postfield='{"query":"query vendorOrders($vendor_id: Int!, $page_setting: ordersListPageSettingInput!, $filter: ordersListFilterInput! , $hash_token : String ) {\n    vendorOrdersList(vendor_id: $vendor_id, page_setting: $page_setting, filter: $filter , hash_token:$hash_token){\n        success\n        count\n        vendor_orders {\n            increment_id\n            order_id\n            created_at\n            billing_name\n            order_total\n            shop_commission_fee\n            net_vendor_earn\n            payment_state\n            order_payment_state\n        }\n    }\n}\n","variables":{"filter":{"from_purchased_date":"'.$startDate.'","to_purchased_date":"'.$endDate.'","vendor_payment_state":"0"},"page_setting":{"count":"10","activePage":1},"vendor_id":'.$this->vendorId.',"hash_token":"'.$this->hashToken.'"}}';
         /*GetOrder*/
         $orderData = $this->postRequest(self::API_ROOT_URL,$postfield,'');
         return $orderData;
@@ -453,11 +456,50 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $itemArray=$shipmentData['items_ordered']['rows'];
         $vendorOrderID=$shipmentData['vorder_id'];
         foreach ($itemArray as $itemDetails) {
-            $itemID=$itemDetails['item_id'];
-            $itemQty=$itemDetails['qty_ordered'];
+            $order_ship['item_id'] =  $itemDetails['item_id'];
+            $order_ship['qty']     = $itemDetails['qty_ordered'];
+            $order_ship_invocie[]  = $order_ship;
         }
-        $postfield='{"query":"mutation createShipment($vorder_id: Int!,\n\t\t\t\t$items: String!,\n\t\t\t\t$tracking: String!,\n\t\t\t\t$comment_text:String,\n\t\t\t\t$comment_customer_notify:Int,\n\t\t\t\t$is_visible_on_front:Int,\n\t\t\t\t$send_email:Int,\n\t\t\t\t$vendor_id: Int!,\n\t\t\t\t$hash_token : String) {\n\t\t\t\t\tcreateShipment(vorder_id: $vorder_id,\n\t\t\t\t\titems: $items,\n\t\t\t\t\ttracking: $tracking,\n\t\t\t\t\tcomment_text:$comment_text,\n\t\t\t\t\tcomment_customer_notify:$comment_customer_notify,\n\t\t\t\t\tis_visible_on_front:$is_visible_on_front,\n\t\t\t\t\tsend_email:$send_email,\n\t\t\t\t\tvendor_id:$vendor_id,\n\t\t\t\t\thash_token:$hash_token) {\n\t\t\t\t\t\tmessage\n\t\t\t\t\t\tsuccess\n\t\t\t\t\t}\n\t\t\t\t}","variables":{"comment_customer_notify":true,"comment_text":"test","items":"[{\"item_id\":\"'.$itemID.'\",\"qty\":'.$itemQty.'}]","tracking":"[{\"number\":\"'.$trackArray['track_number'].'\",\"title\":\"'.$trackArray['title'].'\",\"carrier_code\":\"'.$trackArray['carrier_code'].'\"}]","send_email":true,"vorder_id":'.$vendorOrderID.',"vendor_id":'.$this->vendorId.',"hash_token":"'.$this->hashToken.'"}}';
-        $shipmentResponse = $this->postRequest(self::API_ROOT_URL, $postfield,'CreateOrderTrackShipment');
+        $postfield['query']='mutation createShipment($vorder_id: Int!,
+				$source_code: String!,
+				$items: String!,
+				$tracking: String!,
+				$comment_text:String,
+				$comment_customer_notify:Int,
+				$is_visible_on_front:Int,
+				$send_email:Int,
+				$vendor_id: Int!,
+				$hash_token : String) {
+					createShipment(vorder_id: $vorder_id,
+					source_code: $source_code,
+					items: $items,
+					tracking: $tracking,
+					comment_text:$comment_text,
+					comment_customer_notify:$comment_customer_notify,
+					is_visible_on_front:$is_visible_on_front,
+					send_email:$send_email,
+					vendor_id:$vendor_id,
+					hash_token:$hash_token) {
+						message
+						success
+					}
+				}';
+        $postfield['variables']['comment_customer_notify'] = true;
+        $postfield['variables']['comment_text'] = 'check shipment';
+        $postfield['variables']['items'] = json_encode($order_ship_invocie);
+        $track_array['number'] = $trackArray['track_number'];
+        $track_array['title'] = $trackArray['title'];
+        $track_array['carrier_code'] = $trackArray['carrier_code'];
+        $track_to_send[] = $track_array;
+        $postfield['variables']['tracking']=json_encode($track_to_send);
+        $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
+        $postfield['variables']['source_code'] = $location_saved_data[0]['source_code'];
+        $postfield['variables']['send_email'] = true;
+        $postfield['variables']['vorder_id'] = $vendorOrderID;
+        $postfield['variables']['vendor_id']=$this->vendorId;
+        $postfield['variables']['hash_token']=$this->hashToken;
+       // $postfield='{"query":"mutation createShipment($vorder_id: Int!,\n\t\t\t\t$items: String!,\n\t\t\t\t$tracking: String!,\n\t\t\t\t$comment_text:String,\n\t\t\t\t$comment_customer_notify:Int,\n\t\t\t\t$is_visible_on_front:Int,\n\t\t\t\t$send_email:Int,\n\t\t\t\t$vendor_id: Int!,\n\t\t\t\t$hash_token : String) {\n\t\t\t\t\tcreateShipment(vorder_id: $vorder_id,\n\t\t\t\t\titems: $items,\n\t\t\t\t\ttracking: $tracking,\n\t\t\t\t\tcomment_text:$comment_text,\n\t\t\t\t\tcomment_customer_notify:$comment_customer_notify,\n\t\t\t\t\tis_visible_on_front:$is_visible_on_front,\n\t\t\t\t\tsend_email:$send_email,\n\t\t\t\t\tvendor_id:$vendor_id,\n\t\t\t\t\thash_token:$hash_token) {\n\t\t\t\t\t\tmessage\n\t\t\t\t\t\tsuccess\n\t\t\t\t\t}\n\t\t\t\t}","variables":{"comment_customer_notify":true,"comment_text":"test","items":"[{\"item_id\":\"'.$itemID.'\",\"qty\":'.$itemQty.'}]","tracking":"[{\"number\":\"'.$trackArray['track_number'].'\",\"title\":\"'.$trackArray['title'].'\",\"carrier_code\":\"'.$trackArray['carrier_code'].'\"}]","send_email":true,"vorder_id":'.$vendorOrderID.',"vendor_id":'.$this->vendorId.',"hash_token":"'.$this->hashToken.'"}}';
+        $shipmentResponse = $this->postRequest(self::API_ROOT_URL, json_encode($postfield),'CreateOrderTrackShipment');
         if(isset($shipmentResponse['data']['createShipment'])) {
             if($shipmentResponse['data']['createShipment']['success']=='1') {
                 return true;

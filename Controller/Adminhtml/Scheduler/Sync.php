@@ -45,6 +45,9 @@ class Sync extends \Magento\Backend\App\Action
             $chunkIds = $cronModel->getSchedulerId();
             if (!empty($chunkIds)) {
                 $response = $this->data->bulkProductResponse($chunkIds);
+//                echo "<pre>";
+//                print_r($response);
+//                die(__FILE__);
                 if(isset($response['data']['pendingBulkresponse']) && !empty(isset($response['data']['pendingBulkresponse']))) {
                     $currentScheduler=$this->schedulerFactory->create()->load($cronModel->getId());
                     $currentScheduler->setData('scheduler_response',json_encode($response));

@@ -153,10 +153,6 @@ class FetchCategory extends Action
         // fetch category
         try {
             $taxonomy =$this->data->fetchCategories();
-            $path = $folderPath . '/categoryLevel.json';
-            $file = fopen($path, "w");
-            fwrite($file, json_encode($taxonomy['data']['category']['children']));
-            fclose($file);
             //json_decode(file_get_contents($folderPath.'/Categories.json'),true);
             $arr1 = $arr2 = $arr3 = $arr4 = $arr5 = $arr6 = $arr7 = [];
             $arr1[]=['id' => '162', 'name' =>'Default', 'path' => ['1','162'],'parent_id' => '1', 'children' => '7'];
@@ -232,14 +228,14 @@ class FetchCategory extends Action
             fclose($file);
             $this->messageManager->addSuccessMessage(__('Categories Updated Successfully !!'));
 
-            //    $response['data'] = "<span style='color:green'>Categories Updated Successfully !!</span>";
-            //    $response['msg'] = "success";
+//            $response['data'] = "<span style='color:green'>Categories Updated Successfully !!</span>";
+//            $response['msg'] = "success";
         } catch (\Exception $e) {
 
             $this->messageManager->addErrorMessage(__('An Exception Has Taken Place'));
 
-            //    $response['data'] = "<span style='color:red'>Exception : " . $e->getMessage() . "</span>";
-            //    $response['msg'] = "error";
+//            $response['data'] = "<span style='color:red'>Exception : " . $e->getMessage() . "</span>";
+//            $response['msg'] = "error";
         }
 
         /**

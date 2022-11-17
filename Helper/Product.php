@@ -11,7 +11,8 @@
  *
  * @category    Ced
  * @package     Ced_GoodMarket
- * @author      CedCommerce Core Team <connect@cedcommerce.com>
+ * @author      CedCommerce Core Team
+<connect@cedcommerce.com>
  * @copyright   Copyright � 2018 CedCommerce. All rights reserved.
  * @license     EULA http://cedcommerce.com/license-agreement.txt
  */
@@ -81,8 +82,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         \Ced\GoodMarket\Helper\Data                                    $data,
         \Magento\Store\Model\StoreManagerInterface                     $storeManager,
         \Magento\Framework\ObjectManagerInterface $objectmanager,
-        FlagManager $flagManager,
-        \Magento\Framework\Filesystem\Io\File  $file
+        FlagManager $flagManager
     )
     {
         parent::__construct($context);
@@ -99,7 +99,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $this->storeManager = $storeManager;
         $this->objectManager=$objectmanager;
         $this->flagManager = $flagManager;
-        $this->file = $file;
     }
 
     /**
@@ -141,6 +140,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             continue;
                         }
                         if ($product->getTypeId() == 'configurable') {
+                            $varientMapping=$this->scopeConfig->getvalue(
+                                'goodmarket/goodmarket_product/mapping/varient'
+                            );
+                            if(!$varientMapping) {
+                                $prodData[]='Please Map the Product Attributes Inside "GoodMarket Product Settings->Product Attribute Mapping" in the Configuration Section';
+                                continue;
+                            }
                             $catalogSession = $objectManager->create('\Magento\Catalog\Model\Session');
                             $catalogSession->unsQtyCount();
                             $productAttributes=[];
@@ -156,7 +162,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 $products = $product->getData();
                                 $productAttributes['id'] = $products['goodmarket_product_id'];
                                 $productAttributes['category_id'] = $categoryId;
-                                $productAttributes['sku'] = $products['sku'];
+//                                $productAttributes['sku'] = $products['sku'];
                             }
                             $variant = true;
                             $parentId = $product->getId();
@@ -181,14 +187,17 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     ->addAttributeToFilter('entity_id', ['in' => $childIds[0]])
                                     ->addMediaGalleryData();
                                 /** @var \Magento\Catalog\Model\Product $child */
+                                $variationcount=0;
                                 foreach ($childs as $child) {
                                     $variations[] = $this->getVariationProducts($child, $profile,$getConfigAttribute);
+                                    $variationcount++;
                                 }
                                 $superAttributeList=$this->getConfigurableVariable($profile);
                                 $productAttributes['configurable_matrix'] = $variations;
-                                foreach ($getConfigAttribute as $value) {
-                                    $config_attributes[] = $value;
-                                    $config_attributes[] = $value;
+                                for($i=0;$i<=$variationcount;$i++) {
+                                    foreach ($getConfigAttribute as $value) {
+                                        $config_attributes[] = $value;
+                                    }
                                 }
                                 $productAttributes['config_attributes'] = $config_attributes;
                             }
@@ -216,7 +225,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
                         }
                     }
-                    $report = $this->data->bulkProductUpload($prepareData, $type);
+                    if(!empty($prepareData)){
+                        $report = $this->data->bulkProductUpload($prepareData, $type);
+                    }
                     $report['data']['errorMessage']=$prodData;
                     return $report;
                 }
@@ -560,18 +571,19 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public function getVariationProducts($child,$profile,$getConfigAttribute)
     {
         try {
-            $color=$this->scopeConfig->getvalue(
+            $color=explode(',',$this->scopeConfig->getvalue(
                 'goodmarket/goodmarket_product/mapping/product_color'
-            );
-            $size=$this->scopeConfig->getvalue(
+            ));
+            $size=explode(',',$this->scopeConfig->getvalue(
                 'goodmarket/goodmarket_product/mapping/product_size'
-            );
-            $type=$this->scopeConfig->getvalue(
+            ));
+            $type=explode(',',$this->scopeConfig->getvalue(
                 'goodmarket/goodmarket_product/mapping/product_type'
-            );
-            $material=$this->scopeConfig->getvalue(
-                'goodmarket/goodmarket_product/mapping/product_material'
-            );
+            ));
+
+//            $material=$this->scopeConfig->getvalue(
+//                'goodmarket/goodmarket_product/mapping/product_material'
+//            );
 //            $reqAtt = ['name', 'sku', 'price'];
 //            $profileVariationAttribute = json_decode($profile['variation_attribute'], true);
 //            $requiredAttribute = json_decode($profile['profile_req_opt_attribute'], true);
@@ -586,18 +598,24 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //                    $configurable_attribute[$attribute['goodmarket_attribute_name']] = $child->getData($attribute['magento_attribute_code']);
 //                }
 //            }
-            foreach ($getConfigAttribute as $attribute) {
-                if($attribute=='size') {
-                    $configurableAttri['size']=$child->getData($size);
+            foreach ($getConfigAttribute as $key=>$prodAttribute) {
+                $this->_objectManager= \Magento\Framework\App\ObjectManager::getInstance();
+                $_product = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($child->getData('entity_id'));
+                $_product->getResource()->getAttribute($prodAttribute)->getFrontend()->getValue($_product);
+                $optionId = $child->getData($prodAttribute);
+                $attribute = $_product->getResource()->getAttribute($prodAttribute);
+                if ($attribute->usesSource()) {
+                    $optionText = $attribute->getSource()->getOptionText($optionId);
                 }
-                if($attribute=='type') {
-                    $configurableAttri['type']=$child->getData($type);
-                }
-                if($attribute=='material') {
-                    $configurableAttri['material']=$child->getData($material);
-                }
-                if($attribute=='color') {
-                    $configurableAttri['color']=$child->getData($color);
+                if(in_array($prodAttribute,$size)) {
+                    $configurableAttri[$prodAttribute]=$optionText;
+                    $config_attributes[]=$prodAttribute;//$child->getData($attribute);
+                }else if(in_array($prodAttribute,$color)) {
+                    $configurableAttri[$prodAttribute]=$optionText;
+                    $config_attributes[]=$prodAttribute;//$child->getData($attribute);
+                }else if(in_array($prodAttribute,$type)) {
+                    $configurableAttri[$prodAttribute]=$optionText;
+                    $config_attributes[]=$prodAttribute;//$child->getData($attribute);
                 }
             }
             $productArray['name'] = $child->getName();
@@ -625,6 +643,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //            }
 //        }
             $productArray['configurable_attribute'] = $configurableAttri;
+            $productArray['config_attributes'] = $config_attributes;
             return $productArray;
         }catch (\Exception $e)
         {
@@ -877,6 +896,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             default:
                 $price;
         }
+        $price=$this->convertPrice($price,'USD');
         return $price;
     }
 
@@ -1070,101 +1090,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return $quantity;
     }
 
-    // public function profileCategoryOld()
-    // {
-    //     $folderPath = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath('ced/goodmarket');
-    //     if (!file_exists($folderPath)) {
-    //         $this->file->mkdir($folderPath, 0777, true);
-    //     }
-    //     if( file_exists($folderPath.'/categoryLevel-1.json')) {
-    //         return true;
-    //     }
-    //     // fetch category
-    //     try {
-    //         $taxonomy =$this->data->fetchCategories();
-    //         //json_decode(file_get_contents($folderPath.'/Categories.json'),true);
-    //         $arr1 = $arr2 = $arr3 = $arr4 = $arr5 = $arr6 = $arr7 = [];
-    //         $arr1[]=['id' => '162', 'name' =>'Default', 'path' => ['1','162'],'parent_id' => '1', 'children' => '7'];
-    //         foreach ($taxonomy['data']['category']['children'] as $key => $value) {
-    //             if (count($value['children']) > 0) {
-    //                 $arr2[] = ['id' => $value['id'], 'name' => $value['name'], 'path' => explode('/',$value['path']),'parent_id' => '162', 'children' => count($value['children'])];
-    //             } else {
-    //                 $arr2[] = ['id' => $value['id'], 'name' => $value['name'],'path' => explode('/',$value['path']), 'parent_id' =>'162', 'children' => 0];
-    //             }
-    //             foreach ($value['children'] as $key1 => $value1) {
-    //                 if (count($value1['children']) > 0) {
-    //                     $arr3[] = ['parent_id' => $value['id'], 'id' => $value1['id'], 'name' => $value1['name'], 'path' => explode('/',$value1['path']), 'children' => count($value1['children'])];
-    //                 } else {
-    //                     $arr3[] = ['parent_id' => $value['id'], 'id' => $value1['id'], 'name' => $value1['name'], 'path' => explode('/',$value1['path']), 'children' => 0];
-    //                 }
-    //                 foreach ($value1['children'] as $key2 => $value2) {
-    //                     if (count($value2['children']) > 0) {
-    //                         $arr4[] = ['parent_id' => $value1['id'], 'id' => $value2['id'], 'name' => $value2['name'], 'path' => explode('/',$value2['path']), 'children' => count($value2['children'])];
-    //                     } else {
-    //                         $arr4[] = ['parent_id' => $value1['id'], 'id' => $value2['id'], 'name' => $value2['name'], 'path' => explode('/',$value2['path']), 'children' => 0];
-    //                     }
-    //                     foreach ($value2['children'] as $key3 => $value3) {
-    //                         if (count($value3['children']) > 0) {
-    //                             $arr5[] = ['parent_id' => $value2['id'], 'id' => $value3['id'], 'name' => $value3['name'], 'path' => explode('/',$value3['path']), 'children' => count($value3['children'])];
-    //                         } else {
-    //                             $arr5[] = ['parent_id' => $value2['id'], 'id' => $value3['id'], 'name' => $value3['name'], 'path' =>explode('/',$value3['path']), 'children' => 0];
-    //                         }
-    //                         foreach ($value3['children'] as $key4 => $value4) {
-    //                             if (count($value4['children']) > 0) {
-    //                                 $arr6[] = ['parent_id' => $value3['id'], 'id' => $value4['id'], 'name' => $value4['name'], 'path' => explode('/',$value4['path']), 'children' => count($value4['children'])];
-    //                             } else {
-    //                                 $arr6[] = ['parent_id' => $value3['id'], 'id' => $value4['id'], 'name' => $value4['name'], 'path' => explode('/',$value4['path']), 'children' => 0];
-    //                             }
-    //                             foreach ($value4['children'] as $key5 => $value5) {
-    //                                 if (count($value5['children']) > 0) {
-    //                                     $arr7[] = ['parent_id' => $value4['id'], 'id' => $value5['id'], 'name' => $value5['name'], 'path' => explode('/',$value5['path']), 'children' => count($value5['children'])];
-    //                                 } else {
-    //                                     $arr7[] = ['parent_id' => $value4['id'], 'id' => $value5['id'], 'name' => $value5['name'], 'path' => explode('/',$value5['path']), 'children' => 0];
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         $path = $folderPath . '/categoryLevel-1.json';
-    //         $file = fopen($path, "w");
-    //         fwrite($file, json_encode($arr1));
-    //         fclose($file);
-    //         $path = $folderPath . '/categoryLevel-2.json';
-    //         $file = fopen($path, "w");
-    //         fwrite($file, json_encode($arr2));
-    //         fclose($file);
-    //         $path = $folderPath . '/categoryLevel-3.json';
-    //         $file = fopen($path, "w");
-    //         fwrite($file, json_encode($arr3));
-    //         fclose($file);
-    //         $path = $folderPath . '/categoryLevel-4.json';
-    //         $file = fopen($path, "w");
-    //         fwrite($file, json_encode($arr4));
-    //         fclose($file);
-    //         $path = $folderPath . '/categoryLevel-5.json';
-    //         $file = fopen($path, "w");
-    //         fwrite($file, json_encode($arr5));
-    //         fclose($file);
-    //         $path = $folderPath . '/categoryLevel-6.json';
-    //         $file = fopen($path, "w");
-    //         fwrite($file, json_encode($arr6));
-    //         fclose($file);
-    //         $path = $folderPath . '/categoryLevel-7.json';
-    //         $file = fopen($path, "w");
-    //         fwrite($file, json_encode($arr7));
-    //         fclose($file);
-    //         $response['data'] = "<span style='color:green'>Categories Fetched Successfully !!</span>";
-    //         $response['msg'] = "success";
-    //     } catch (\Exception $e) {
-    //         $response['data'] = "<span style='color:red'>Exception : " . $e->getMessage() . "</span>";
-    //         $response['msg'] = "error";
-    //     }
-
-    //     return true;
-    // }
-
     public function profileCategory()
     {
         $folderPath = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath('ced/goodmarket');
@@ -1177,10 +1102,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         // fetch category
         try {
             $taxonomy =$this->data->fetchCategories();
-            $path = $folderPath . '/categoryLevel.json';
-            $file = fopen($path, "w");
-            fwrite($file, json_encode($taxonomy['data']['category']['children']));
-            fclose($file);
             //json_decode(file_get_contents($folderPath.'/Categories.json'),true);
             $arr1 = $arr2 = $arr3 = $arr4 = $arr5 = $arr6 = $arr7 = [];
             $arr1[]=['id' => '162', 'name' =>'Default', 'path' => ['1','162'],'parent_id' => '1', 'children' => '7'];
@@ -1262,5 +1183,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return true;
+    }
+
+    public function convertPrice($itemAmount,$currencyCodeFrom)
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $priceCurrencyFactory = $objectManager->get('Magento\Directory\Model\CurrencyFactory');
+        $storeManager = $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+        $currencyCodeTo = $storeManager->getStore()->getCurrentCurrency()->getCode();
+        $rate = $priceCurrencyFactory->create()->load($currencyCodeTo)->getAnyRate($currencyCodeFrom);
+        $itemAmount = $itemAmount * $rate;
+        return $itemAmount;
     }
 }

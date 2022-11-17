@@ -6,7 +6,6 @@
     <column xsi:type="smallint" name="profile_status" padding="5" unsigned="true" nullable="true" identity="false" default="1" comment="Profile Status"/>
     <column xsi:type="varchar" name="profile_name" nullable="false" length="50" default="" comment="Profile Name"/>
     <column xsi:type="text" name="profile_category" nullable="true" comment="Profile Category"/>
-    <column xsi:type="text" name="magento_category" nullable="true" comment="Magento Category"/>
      <column xsi:type="text" name="attribute_set" nullable="true" comment="Attribute Set"/>
     <column xsi:type="text" name="profile_req_opt_attribute" nullable="true" comment="Profile Required And Optional Attribute"/>
      <column xsi:type="text" name="variation_attribute" nullable="true" comment="Product Variation Attributes"/>

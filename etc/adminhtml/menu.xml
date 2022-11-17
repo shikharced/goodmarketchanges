@@ -38,7 +38,7 @@
              resource="Ced_GoodMarket::product"
         />
         <add id="Ced_GoodMarket::profile"
-             title="Manage Profiles"
+             title="Manage Categories"
              translate="title"
              module="Ced_GoodMarket"
              sortOrder="1"
@@ -84,29 +84,7 @@
              action="goodmarket/order/index"
              resource="Ced_GoodMarket::order_listing"
         />
-        
         <!--order end-->
-
-        <!-- Category and Auto profile Creation -->
-        <!-- <add id="Ced_GoodMarket::GoodMarket_autoprofile"
-             title="Auto Profile"
-             translate="title"
-             module="Ced_GoodMarket"
-             sortOrder="20"
-             parent="Ced_GoodMarket::GoodMarket"
-             resource="Ced_GoodMarket::GoodMarket_autoprofile"
-        />
-
-        <add id="Ced_GoodMarket::GoodMarket_category"
-             title="Manage Categories"
-             translate="title"
-             module="Ced_GoodMarket"
-             sortOrder="10"
-             parent="Ced_GoodMarket::order"
-             action="goodmarket/category/index"
-             resource="Ced_GoodMarket::GoodMarket_category"
-        /> -->
-        <!-- Auto Profile End -->
 
 
         <!--developer start-->

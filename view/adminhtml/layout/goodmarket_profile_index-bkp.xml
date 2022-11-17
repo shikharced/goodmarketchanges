@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?xml version="1.0"?>
+<!-- 
 /**
  * CedCommerce
  *
@@ -14,12 +14,13 @@
  * @package     Ced_GoodMarket
  * @author 		CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
- * @license     http://cedcommerce.com/license-agreement.txt
+ * @license      http://cedcommerce.com/license-agreement.txt
  */
  -->
-<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
-    <update handle="formkey"/>
-    <container name="root" label="Root">
-        <block class="Ced\GoodMarket\Block\Adminhtml\Profile\Ui\View\Grid\Product" name="goodmarket.profile.products.grid"/>
-    </container>
-</layout>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <uiComponent name="goodmarket_profile_index"/>
+        </referenceContainer>
+    </body>
+</page>
