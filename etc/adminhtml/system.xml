@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement(EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category  Ced
+ * @package   Ced_GoodMarket
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
+ * @license   http://cedcommerce.com/license-agreement.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="cedcommerce" translate="label" sortOrder="1">
+            <label>Cedcommerce</label>
+        </tab>
+        <!-- section start for GoodMarket Configuration Tab in Cedcommerce section -->
+        <section id="goodmarket" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>GoodMarket Configuration</label>
+            <tab>cedcommerce</tab>
+            <resource>Ced_GoodMarket::system_config</resource>
+            <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>GoodMarket Settings</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="username" translate="label" type="text" sortOrder="35" showInDefault="1">
+                    <label>Email</label>
+                    <validate>required-entry validate-email</validate>
+                    <comment>
+                        <model>Ced\GoodMarket\Model\Config\Comment</model>
+                    </comment>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="vendor_id" translate="label" type="text" sortOrder="35" showInDefault="1">
+                    <label>Vendor-ID</label>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+<!--                <field id="hash_token" translate="label" type="text" sortOrder="35" showInDefault="1">-->
+<!--                    <label>Vendor-Hash-Token</label>-->
+<!--                    <frontend_model>Ced\Integrator\Block\System\Config\Form\Field\Disable</frontend_model>-->
+<!--                    <depends>-->
+<!--                        <field id="enable">1</field>-->
+<!--                    </depends>-->
+<!--                </field>-->
+                <field id="token" translate="label" type="text" sortOrder="35" showInDefault="1">
+                    <label>Vendor-Token</label>
+                    <frontend_model>Ced\Integrator\Block\System\Config\Form\Field\Disable</frontend_model>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="goodmarket_store" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Select Store</label>
+                    <source_model>Magento\Config\Model\Config\Source\Store</source_model>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+                <field id="install" translate="label comment" type="button" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Ced\GoodMarket\Block\Adminhtml\System\Config\Install</frontend_model>
+                    <depends>
+                        <field id="enable">1</field>
+                    </depends>
+                </field>
+<!--                <field id="fetch_category" translate="button_label" sortOrder="60" showInDefault="1" showInWebsite="1"-->
+<!--                       showInStore="0">-->
+<!--                    <button_label>Update Categories</button_label>-->
+<!--                    <depends>-->
+<!--                        <field id="enable">1</field>-->
+<!--                    </depends>-->
+<!--                    <frontend_model>Ced\GoodMarket\Block\Adminhtml\Config\FetchCategory</frontend_model>-->
+<!--                    <comment><![CDATA[Click On It To Update the <b>GoodMarket Categories</b>.]]></comment>-->
+<!--                </field>-->
+            </group>
+            <group id="order" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>GoodMarket Order Settings</label>
+<!--                <field id="fetchFrom" translate="label" type="text" sortOrder="20" showInDefault="1">-->
+<!--                    <label>Fetch Orders No. Of. Days from Today</label>-->
+<!--                    <comment>Order Fetch Cron Time</comment>-->
+<!--                </field>-->
+                <field id="order_id_prefix" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>GoodMarket order id prefix</label>
+                    <comment>Prefix for GoodMarket Increment ID</comment>
+                </field>
+                <field id="auto_despatch" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Auto Dispatch Orders</label>
+                    <comment>Auto Despatch Order Imported from GoodMarket</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="enable_default_customer" translate="label comment" type="select" sortOrder="70" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Enable Default Customer</label>
+                    <validate>required-entry</validate>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="default_customer" translate="label comment" type="select" sortOrder="80" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Default Customer</label>
+                    <validate>required-entry</validate>
+                    <source_model>Ced\GoodMarket\Model\Source\Customer</source_model>
+                    <depends>
+                        <field id="enable_default_customer">1</field>
+                    </depends>
+                </field>
+                <field id="customer_group" translate="label" type="select" sortOrder="37" showInDefault="1">
+                    <label>Customer Group</label>
+                    <validate>required-entry</validate>
+                    <source_model>Magento\Customer\Model\ResourceModel\Group\Collection</source_model>
+                </field>
+            </group>
+            <group id="goodmarket_cron" translate="label" type="text" sortOrder="40" showInDefault="1">
+                <label>Syncing Settings</label>
+                <field id="order_cron" translate="label" type="select" sortOrder="10" showInDefault="1">
+                    <label>Sync Orders</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_cron_schedule" translate="label" type="select" sortOrder="40" showInDefault="1">
+                    <label>Sync Order Frequency</label>
+                    <source_model>Ced\GoodMarket\Model\Source\Cron</source_model>
+                    <depends>
+                        <field id="goodmarket/goodmarket_cron/order_cron">1</field>
+                    </depends>
+                </field>
+                <field id="inventory_cron" translate="label" type="select" sortOrder="30" showInDefault="1">
+                    <label>Sync Inventory</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="inventory_cron_schedule" translate="label" type="select" sortOrder="40" showInDefault="1">
+                    <label>Sync Inventory Frequency</label>
+                    <source_model>Ced\GoodMarket\Model\Source\Cron</source_model>
+                    <comment>Inventory Update Cron Time</comment>
+                    <depends>
+                        <field id="goodmarket/goodmarket_cron/inventory_cron">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="inventory_settings" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Inventory Settings</label>
+                <field id="use_msi" translate="label comment" type="select" sortOrder="50" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Use Multi Source Inventory (MSI)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="msi_source_code" translate="label" type="text" sortOrder="55" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>MSI Source Code</label>
+                    <validate>required-entry</validate>
+                    <comment><![CDATA[Put name of your Source ( Stores -> Inventory -> Sources ) which you would like to use for catch e.g, default for Default Source]]></comment>
+                    <depends>
+                        <field id="use_msi">1</field>
+                    </depends>
+                </field>
+                <field id="use_salable_qty" translate="label comment" type="select" sortOrder="60" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Use Salable Quantity</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="use_msi">1</field>
+                    </depends>
+                </field>
+                <field id="salable_stock_name" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>MSI Stock Name</label>
+                    <validate>required-entry</validate>
+                    <comment><![CDATA[Put name of your Stock ( Stores -> Inventory -> Stocks ) which you would like to use for catch e.g, Default Stock]]></comment>
+                    <depends>
+                        <field id="use_salable_qty">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="goodmarket_product" translate="label" type="text" sortOrder="40" showInDefault="1">
+                <label>GoodMarket Product Settings</label>
+                <group id="mapping" translate="label" type="text" sortOrder="40" showInDefault="1">
+                    <label>Varient-Attributes Mapping</label>
+                    <field id="product_color" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Color</label>
+                        <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
+                        <comment><![CDATA[Select product color attribute]]></comment>
+                    </field>
+                    <field id="product_size" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Size</label>
+                        <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
+                        <comment><![CDATA[Select product size attribute]]></comment>
+                    </field>
+                    <field id="product_type" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Type</label>
+                        <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
+                        <comment><![CDATA[Select product type attribute]]></comment>
+                    </field>
+                    <field id="product_material" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Material</label>
+                        <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
+                        <comment><![CDATA[Select product material attribute]]></comment>
+                    </field>
+                </group>
+<!--                <field id="mapping" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">-->
+<!--                    <label>Varients Mapping</label>-->
+<!--                    <frontend_model>Ced\GoodMarket\Block\Adminhtml\Form\Field\Mapping</frontend_model>-->
+<!--                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>-->
+<!--                </field>-->
+                <field id="product_price" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Product Price</label>
+                    <source_model>Ced\GoodMarket\Model\Source\Sellprice</source_model>
+                    <comment><![CDATA[Select to send different product price]]></comment>
+                </field>
+                <field id="fix_price" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Modify by Fix Price</label>
+                    <validate>required-entry validate-number</validate>
+                    <depends>
+                        <field id="product_price" separator=",">plus_fixed,min_fixed</field>
+                    </depends>
+                </field>
+                <field id="percentage_price" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Modify by Percenctage Price</label>
+                    <validate>required-entry validate-number</validate>
+                    <comment><![CDATA[Numeric value Required for <b>Add/subtract % on Magento price</b> 5 for Example: Magento price +/- 5% of Magento price.<b>]]></comment>
+                    <depends>
+                        <field id="product_price" separator=",">plus_per,min_per</field>
+                    </depends>
+                </field>
+                <field id="different_price" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Map Price Attribute</label>
+                    <validate>required-entry</validate>
+                    <comment><![CDATA[<b>Attribute Code Required in case of <b>Custom Fixed Price</b>]]></comment>
+                    <depends>
+                        <field id="product_price">differ</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <!-- section end for GoodMarket Cofiguration Tab in Cedcommerce Tab -->
+        <!-- section start for Shipping Methods Tab in Sales Tab -->
+        <section id="carriers">
+            <group id="shipbygoodmarket" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>GoodMarket Shipping Method(Default)</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+            </group>
+        </section>
+        <section id="payment">
+            <group id="paybygoodmarket" translate="label" type="text" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>GoodMarket</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_GoodMarket
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license     http://cedcommerce.com/license-agreement.txt
+ */
+-->
+<!--suppress ALL -->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">goodmarket_profile_form.goodmarket_profile_form_data_source</item>
+            <item name="deps" xsi:type="string">goodmarket_profile_form.goodmarket_profile_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Profile Information</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+            <item name="navContainerName" xsi:type="string">left</item>
+        </item>
+
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Back</item>
+            <item name="delete" xsi:type="string">Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Delete</item>
+            <item name="save" xsi:type="array">
+                <item name="name" xsi:type="string">save</item>
+                <item name="label" xsi:type="string">Save</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/save</item>
+            </item>
+            <!--<item name="save" xsi:type="string">Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Save</item>-->
+            <!--            <item name="save_and_continue" xsi:type="string">Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Upload</item>-->
+        </item>
+    </argument>
+
+    <dataSource name="goodmarket_profile_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Ced\GoodMarket\Ui\DataProvider\Profile\From\DataProvider</argument>
+            <argument name="name" xsi:type="string">goodmarket_profile_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="goodmarket/profile/save"/>
+                    <item name="validate_url" xsi:type="url" path="goodmarket/profile/validate"/>
+                </item>
+            </argument>
+        </argument>
+
+        <!--Need to give the js that loads provided data Else spinner will not stop loading continues-->
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <fieldset name="general_information">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">General Information</item>
+            </item>
+        </argument>
+        <field name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </field>
+        <field name="profile_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Profile Code</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">goodmarket_profile_form_data_source</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-code" xsi:type="boolean">true</item>
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="profile_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Profile Name</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">goodmarket_profile_form_data_source</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="alphanumeric" xsi:type="boolean">true</item>
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="profile_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ced\GoodMarket\Model\Source\Profile\Status</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Profile Status</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">goodmarket_profile_form_data_source</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+
+    <fieldset name="profile_mappings">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Attribute Mappings</item>
+                <item name="collapsible" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+        <container name="profile_category_attribute_mapping_js" >
+            <htmlContent name="html_content">
+                <argument name="block" xsi:type="object">Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Category\Category</argument>
+            </htmlContent>
+        </container>
+        <container name="profile_category_attributes">
+            <htmlContent name="html_content">
+                <argument name="block" xsi:type="object">Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute\Attributes</argument>
+            </htmlContent>
+        </container>
+    </fieldset>
+
+    <fieldset name="profile_products" sortOrder="40">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">Profile Products</label>
+        </settings>
+        <container name="profile_products_container" sortOrder="10">
+            <htmlContent name="html_content">
+                <block name="profile_products_grid" class="Ced\GoodMarket\Block\Adminhtml\Profile\Ui\View\ProfileProducts"/>
+            </htmlContent>
+        </container>
+    </fieldset>
+
+    <fieldset name="products">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Product Offer</item>
+            </item>
+        </argument>
+        <field name="product_price">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ced\GoodMarket\Model\Source\Sellprice</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Ced_GoodMarket/js/form/element/slider-type</item>
+                    <item name="label" xsi:type="string" translate="true">Change Option</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">product_price</item>
+                    <item name="dataScope" xsi:type="string">product_price</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </field>
+        <field name="price_percentage">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Modify By Price Percentage</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">price_percentage</item>
+                    <item name="dataScope" xsi:type="string">price_percentage</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+        </field>
+        <field name="price_fix">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Modify By Fix Price</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">price_fix</item>
+                    <item name="dataScope" xsi:type="string">price_fix</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+        </field>
+        <field name="price_attribute">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Map Price Attribute</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">price_attribute</item>
+                    <item name="dataScope" xsi:type="string">price_attribute</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+        </field>
+        <field name="method">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ced\GoodMarket\Model\Source\Product\Method</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Method</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">method</item>
+                    <item name="dataScope" xsi:type="string">method</item>
+                    <item name="notice" xsi:type="string" translate="true">customer will be redirected to the above given url after canceling the authorization process</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="condition">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ced\GoodMarket\Model\Source\Product\Condition</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Product Condition</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">condition</item>
+                    <item name="dataScope" xsi:type="string">condition</item>
+                    <item name="notice" xsi:type="string" translate="true">The condition of the offered product</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="delivery_code">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ced\GoodMarket\Model\Source\Product\Delivery</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Delivery Code</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">delivery_code</item>
+                    <item name="dataScope" xsi:type="string">delivery_code</item>
+                    <item name="notice" xsi:type="string" translate="true">The delivery promise that applies to this offer. This value will only be used in combination with fulfilmentMethod FBR.</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="manage_by_retail">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Eav\Model\Entity\Attribute\Source\Boolean</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Managed By Retail</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">manage_by_retail</item>
+                    <item name="dataScope" xsi:type="string">manage_by_retail</item>
+                    <item name="notice" xsi:type="string" translate="true">This specifies whether this shipment has been fulfilled by the retailer</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+
+</form>

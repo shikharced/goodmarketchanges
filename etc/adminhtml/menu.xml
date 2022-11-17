@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement(EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category  Ced
+ * @package   Ced_GoodMarket
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
+ * @license   http://cedcommerce.com/license-agreement.txt
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Ced_GoodMarket::GoodMarket"
+             title="GoodMarket Integration"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="31"
+             resource="Ced_GoodMarket::GoodMarket"
+        />
+
+         <add id="Ced_GoodMarket::product"
+             title="Product"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="10"
+             parent="Ced_GoodMarket::GoodMarket"
+             resource="Ced_GoodMarket::product"
+        />
+        <add id="Ced_GoodMarket::profile"
+             title="Manage Profiles"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="1"
+             parent="Ced_GoodMarket::product"
+             action="goodmarket/profile/index"
+             resource="Ced_GoodMarket::profile"
+        />
+        <add id="Ced_GoodMarket::listing"
+             title="Manage Products"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="2"
+             parent="Ced_GoodMarket::product"
+             action="goodmarket/product/index"
+             resource="Ced_GoodMarket::product"
+        />
+        <add id="Ced_GoodMarket::scheduler"
+             title="Bulk Scheduler"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="1"
+             parent="Ced_GoodMarket::product"
+             action="goodmarket/scheduler/index"
+             resource="Ced_GoodMarket::scheduler"
+        />
+
+        <!--orders start-->
+        <add id="Ced_GoodMarket::order"
+             title="Order"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="20"
+             parent="Ced_GoodMarket::GoodMarket"
+             resource="Ced_GoodMarket::order"
+        />
+
+        <add id="Ced_GoodMarket::order_listing"
+             title="Manage Orders"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="10"
+             parent="Ced_GoodMarket::order"
+             action="goodmarket/order/index"
+             resource="Ced_GoodMarket::order_listing"
+        />
+        
+        <!--order end-->
+
+        <!-- Category and Auto profile Creation -->
+        <!-- <add id="Ced_GoodMarket::GoodMarket_autoprofile"
+             title="Auto Profile"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="20"
+             parent="Ced_GoodMarket::GoodMarket"
+             resource="Ced_GoodMarket::GoodMarket_autoprofile"
+        />
+
+        <add id="Ced_GoodMarket::GoodMarket_category"
+             title="Manage Categories"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="10"
+             parent="Ced_GoodMarket::order"
+             action="goodmarket/category/index"
+             resource="Ced_GoodMarket::GoodMarket_category"
+        /> -->
+        <!-- Auto Profile End -->
+
+
+        <!--developer start-->
+         <add id="Ced_GoodMarket::developer"
+             title="Developer"
+             module="Ced_GoodMarket"
+             sortOrder="35"
+             parent="Ced_GoodMarket::GoodMarket"
+             resource="Ced_GoodMarket::developer"
+        />
+
+        <!--developer start-->
+         <add id="Ced_GoodMarket::cron"
+             title="Cron"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="40"
+             parent="Ced_GoodMarket::developer"
+             action="integrator/cron/index"
+             resource="Ced_Integrator::cron_log"
+        />
+
+        <add id="Ced_GoodMarket::Feed"
+             title="Feed"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="50"
+             parent="Ced_GoodMarket::developer"
+             action="goodmarket/feed/index"
+             resource="Ced_Feed::Feed"
+        />
+        <add id="Ced_GoodMarket::logs"
+             title="Logs"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="50"
+             parent="Ced_GoodMarket::developer"
+             action="integrator/log/index"
+             resource="Ced_Integrator::activity_log"
+        />
+        <!--developer end-->
+
+        <add id="Ced_GoodMarket::settings"
+             title="Settings"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="30"
+             parent="Ced_GoodMarket::GoodMarket"
+             resource="Ced_GoodMarket::settings"
+        />
+<!--        <add id="Ced_GoodMarket::account"-->
+<!--             title="Manage Accounts"-->
+<!--             module="Ced_GoodMarket"-->
+<!--             sortOrder="1"-->
+<!--             parent="Ced_GoodMarket::settings"-->
+<!--             action="goodmarket/account/index"-->
+<!--             resource="Ced_GoodMarket::GoodMarket"-->
+<!--         /> -->
+        <add id="Ced_GoodMarket::configuration"
+             title="Configuration"
+             module="Ced_GoodMarket"
+             sortOrder="2"
+             parent="Ced_GoodMarket::settings"
+             action="adminhtml/system_config/edit/section/goodmarket"
+             resource="Ced_GoodMarket::configuration"
+        />
+
+        <add id="Ced_GoodMarket::extra"
+             title="Extras"
+             module="Ced_GoodMarket"
+             sortOrder="25"
+             parent="Ced_GoodMarket::GoodMarket"
+             resource="Ced_GoodMarket::extra"
+        />
+        <add id="Ced_GoodMarket::knowledge_base"
+             title="Help And Support"
+             module="Ced_GoodMarket"
+             sortOrder="2"
+             parent="Ced_GoodMarket::extra"
+             action="goodmarket/request/help"
+             resource="Ced_GoodMarket::knowledge_base"
+        />
+    </menu>
+</config>

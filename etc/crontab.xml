@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_Wish
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license     http://cedcommerce.com/license-agreement.txt
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="goodmarket_integration">
+        <job name="ced_goodmarket_order_fetch" instance="Ced\GoodMarket\Cron\OrderImport" method="execute">
+            <config_path>goodmarket/goodmarket_cron/order_cron_schedule</config_path>
+        </job>
+        <job name="ced_goodmarket_product_inventory_sync" instance="Ced\GoodMarket\Cron\Inventory" method="execute">
+            <config_path>goodmarket/goodmarket_cron/inventory_cron_schedule</config_path>
+        </job>
+        <job name="ced_goodmarket_product_feed_sync" instance="Ced\GoodMarket\Helper\Product" method="syncProductData">
+            <schedule>*/3 * * * *</schedule>
+        </job>
+    </group>
+</config>

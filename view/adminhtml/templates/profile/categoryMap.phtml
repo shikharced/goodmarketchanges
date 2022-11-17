@@ -1,0 +1,111 @@
+<?php
+
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category  Ced
+ * @package   Ced_GoodMarket
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CEDCOMMERCE (http://cedcommerce.com/)
+ * @license   http://cedcommerce.com/license-agreement.txt
+ */
+/* @var $block \Magento\Catalog\Block\Adminhtml\Profile\Create */
+?>
+
+<?php $gdcat = $block->getGoodMarketCategories(); ?>
+<?php $category = $block->getCategories();  ?>
+<?php $baseUrl = $block->getUrl('goodmarket/profile/savebymageid'); ?>
+<?php /*echo '<pre>';print_r($category); exit; */?>
+
+<?php foreach ($category as $catId => $catName) { ?>
+    <?php 
+    $value = $block->checkCatId($catId);
+    $value = substr($value, 2, -2);
+    $ex = explode('","', $value);
+    $value = implode(',', $ex);
+    ?>
+    <div class='row'>
+        <form id='form-<?= $catId ?>'>
+            <div class="col-1">
+                <select class='mgcat'>
+                    <option value='<?= $catId ?>'><?= $catName ?></option>
+                </select>
+            </div>
+            <div class='col-2'>
+                <select class='gdcat' onchange='save(this, <?= $catId ?>)'>
+                    <?php foreach ($gdcat as $goodCat => $val) {?>
+                        <?php $select = ''; ?>
+                        <?php if ($value == $goodCat) {$select = 'selected';} ?>
+                        <option value='<?= $goodCat ?>' <?= $select ?> > <?= $val ?></option>
+                    <?php  } ?>
+                </select>
+            </div>
+        </form>
+    </div>
+<?php } ?>
+<script>
+    function save(selectObject, categoryId) {
+        var value = selectObject.value;
+        var catId = categoryId;
+        // console.log(value);
+        // console.log(catId);
+        // debugger;
+        require([
+            'jquery',
+            'jquery/ui',
+            'accordion',
+            'lineProgressbar'
+        ],
+            function ($) {
+                $.ajax({
+                url: '<?= $baseUrl; ?>',
+                type: 'POST',
+                showLoader: true,
+                data: {profileCategory: value, magentoCat: catId},
+                success: function() {
+                    console.log("Data sent!");
+                }
+            });
+        }
+        );
+    }
+</script>
+<style>
+     .row {
+        width: 100%;
+        display: inline;
+    }
+
+    .col-1 {
+        width: 28%;
+        display: inline-block;
+        margin: 5px;
+        text-align: center;
+    }
+
+    .col-2 {
+        display: inline-block;
+        width: 50%;
+        margin: 5px;
+        text-align: center;
+    }
+
+    select.mgcat {
+        width: 88%;
+        text-align: center;
+        margin: 5px;
+        padding: 5px;
+    }
+    select.gdcat {
+        padding: 5px;
+        margin: 5px;
+        text-align: center;
+    }
+</style>

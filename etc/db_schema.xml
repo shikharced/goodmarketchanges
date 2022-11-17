@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+   <table name="goodmarket_profile" resource="default" engine="innodb" comment="Profile Table">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+    <column xsi:type="varchar" name="profile_code" nullable="false" length="50" default="" comment="Profile Code"/>
+    <column xsi:type="smallint" name="profile_status" padding="5" unsigned="true" nullable="true" identity="false" default="1" comment="Profile Status"/>
+    <column xsi:type="varchar" name="profile_name" nullable="false" length="50" default="" comment="Profile Name"/>
+    <column xsi:type="text" name="profile_category" nullable="true" comment="Profile Category"/>
+    <column xsi:type="text" name="magento_category" nullable="true" comment="Magento Category"/>
+     <column xsi:type="text" name="attribute_set" nullable="true" comment="Attribute Set"/>
+    <column xsi:type="text" name="profile_req_opt_attribute" nullable="true" comment="Profile Required And Optional Attribute"/>
+     <column xsi:type="text" name="variation_attribute" nullable="true" comment="Product Variation Attributes"/>
+       <column xsi:type="text" name="category_data" nullable="true" comment="Product Category Data"/>
+     <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="GOODMARKET_PROFILE_PROFILE_CODE">
+      <column name="profile_code"/>
+    </constraint>
+  </table>
+  <table name="ced_goodmarket_order" resource="default" engine="innodb" comment="GoodMarket Order">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+    <column xsi:type="varchar" name="goodmarket_order_id" nullable="true" length="255" comment="GoodMarket Order Id"/>
+    <column xsi:type="varchar" name="magento_increment_id" nullable="true" length="100" default="" comment="Magento Order Increment Id"/>
+    <column xsi:type="varchar" name="magento_order_id" nullable="true" length="100" default="" comment="Magento OrderId"/>
+    <column xsi:type="date" name="date_created" comment="Order Date"/>
+    <column xsi:type="varchar" name="status" nullable="true" length="50" comment="GoodMarket Order Status"/>
+    <column xsi:type="text" name="reason" nullable="true" comment="Reasons"/>
+    <column xsi:type="mediumtext" name="order_data" nullable="true" comment="Order Data"/>
+    <column xsi:type="mediumtext" name="shipment_data" nullable="true" comment="Order Shipments"/>
+    <column xsi:type="mediumtext" name="cancellation_data" nullable="true" comment="Order Cancellations"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="CED_BOL_ORDER_BOL_ORDER_ID">
+      <column name="goodmarket_order_id"/>
+    </constraint>
+  </table>
+  <table name="ced_goodmarket_cron" resource="default" engine="innodb" comment="GoodMarket Cron">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+    <column xsi:type="varchar" name="cron_type" nullable="false" length="50" default="" comment="Cron Type"/>
+    <column xsi:type="varchar" name="status" nullable="false" length="50" default="" comment="Increment Id"/>
+    <column xsi:type="varchar" name="job_id" nullable="false" length="50" default="" comment="Job Id"/>
+    <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+    <column xsi:type="text" name="chunk_ids" nullable="true" comment="Chunk Ids"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+  <table name="ced_goodmarket_feed_data" resource="default" engine="innodb" comment="Feed Data">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Id"/>
+    <column xsi:type="varchar" name="call" nullable="false" length="50" default="" comment="API Call"/>
+    <column xsi:type="text" name="endpoint" nullable="false" comment="Endpoint"/>
+    <column xsi:type="mediumtext" name="parameter" nullable="false" comment="Parameter"/>
+    <column xsi:type="varchar" name="status_code" nullable="false" length="50" default="" comment="Status Code"/>
+    <column xsi:type="timestamp" name="execution_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Execution Time"/>
+    <column xsi:type="varchar" name="product_ids" nullable="false" length="50" default="" comment="Product Id"/>
+    <column xsi:type="mediumtext" name="response" nullable="false" comment="Response"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+    <table name="ced_goodmarket_product_sync" resource="default" engine="innodb" comment="GoodMarket Cron">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="varchar" name="cron_type" nullable="false" length="50" default="" comment="Cron Type"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="50" default="" comment="Increment Id"/>
+        <column xsi:type="varchar" name="job_id" nullable="false" length="50" default="" comment="Job Id"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="text" name="chunk_ids" nullable="true" comment="Chunk Ids"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <table name="ced_goodmarket_bulk_scheduler" resource="default" engine="innodb" comment="Bulk Scheduler Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="text" name="scheduler_id" nullable="true" comment="Scheduler"/>
+        <column xsi:type="text" name="scheduler_response" nullable="true" comment="Scheduler Response"/>
+        <column xsi:type="text" name="scheduler_status" nullable="true" comment="Scheduler Status"/>
+        <column xsi:type="text" name="scheduler_product_sync" nullable="true" comment="Scheduler Product Sync"/>
+        <column xsi:type="timestamp" name="execution_time" nullable="true" comment="Feed Date Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+</schema>

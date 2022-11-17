@@ -1,0 +1,316 @@
+<?php
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_GoodMarket
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
+ * @license     http://cedcommerce.com/license-agreement.txt
+ */
+
+namespace Ced\GoodMarket\Setup;
+
+use Magento\Framework\DB\Ddl\Table;
+use Magento\Framework\Setup\InstallSchemaInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\SchemaSetupInterface;
+
+/**
+ * Class InstallSchema
+ * @package Ced\GoodMarket\Setup
+ */
+class InstallSchema implements InstallSchemaInterface
+{
+    /**
+     * @param SchemaSetupInterface $setup
+     * @param ModuleContextInterface $context
+     * @throws \Zend_Db_Exception
+     */
+    public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
+        if (version_compare($context->getVersion(), '0.0.1', '<')) {
+            $installer = $setup;
+            $installer->startSetup();
+            // Creating `ced_goodmarket_order` table
+            if (!$installer->getConnection()->isTableExists($installer->getTable(\Ced\GoodMarket\Model\Order::NAME))) {
+                /**
+                 * Create table 'ced_goodmarket_order'
+                 */
+                $table = $installer->getConnection()->newTable($installer->getTable(\Ced\GoodMarket\Model\Order::NAME))
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_ID,
+                        Table::TYPE_INTEGER,
+                        null,
+                        [
+                            'identity' => true,
+                            'unsigned' => true,
+                            'nullable' => false,
+                            'primary' => true
+                        ],
+                        'ID'
+                    )
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_MARKETPLACE_ORDER_ID,
+                        Table::TYPE_TEXT,
+                        255,
+                        [
+                            'nullable' => true,
+                        ],
+                        'GoodMarket Order Id'
+                    )
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_MAGENTO_INCREMENT_ID,
+                        Table::TYPE_TEXT,
+                        100,
+                        [
+                            'nullable' => true,
+                            'default' => ''
+                        ],
+                        'Magento Order Increment Id'
+                    )
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_MAGENTO_ORDER_ID,
+                        Table::TYPE_TEXT,
+                        100,
+                        [
+                            'nullable' => true,
+                            'default' => ''
+                        ],
+                        'Magento OrderId'
+                    )
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_MARKETPLACE_DATE_CREATED,
+                        Table::TYPE_DATE,
+                        null,
+                        [
+                            'nullable' => true
+                        ],
+                        'Order Date'
+                    )
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_STATUS,
+                        Table::TYPE_TEXT,
+                        50,
+                        [
+                            'nullable' => true,
+                        ],
+                        'GoodMarket Order Status'
+                    )
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_FAILURE_REASON,
+                        Table::TYPE_TEXT,
+                        null,
+                        ['nullable' => true],
+                        'Reasons'
+                    )
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_ORDER_DATA,
+                        Table::TYPE_TEXT,
+                        '2M',
+                        ['nullable' => true],
+                        'Order Data'
+                    )
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_SHIPMENT_DATA,
+                        Table::TYPE_TEXT,
+                        '2M',
+                        ['nullable' => true],
+                        'Order Shipments'
+                    )
+                    ->addColumn(
+                        \Ced\GoodMarket\Model\Order::COLUMN_CANCELLATION_DATA,
+                        Table::TYPE_TEXT,
+                        '2M',
+                        ['nullable' => true],
+                        'Order Cancellations'
+                    )
+                    ->addIndex(
+                        $setup->getIdxName(
+                            $setup->getTable(\Ced\GoodMarket\Model\Order::NAME),
+                            [\Ced\GoodMarket\Model\Order::COLUMN_MARKETPLACE_ORDER_ID],
+                            \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+                        ),
+                        [\Ced\GoodMarket\Model\Order::COLUMN_MARKETPLACE_ORDER_ID],
+                        ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]
+                    )
+                    ->setComment('GoodMarket Order');
+
+                $installer->getConnection()->createTable($table);
+            }
+            $table = $installer->getConnection()->newTable($installer->getTable('ced_goodmarket_cron'))
+                ->addColumn(
+                    'id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+                    'ID'
+                )->addColumn(
+                    'cron_type',
+                    Table::TYPE_TEXT,
+                    50,
+                    ['nullable' => false, 'default' => ''],
+                    'Cron Type'
+                )->addColumn(
+                    'status',
+                    Table::TYPE_TEXT,
+                    50,
+                    ['nullable' => false, 'default' => ''],
+                    'Increment Id'
+                )
+                ->addColumn(
+                    'job_id',
+                    Table::TYPE_TEXT,
+                    50,
+                    ['nullable' => false, 'default' => ''],
+                    'Job Id'
+                )->addColumn(
+                    'created_at',
+                    Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+                    'Created At'
+                )->addColumn(
+                    'chunk_ids',
+                    Table::TYPE_TEXT,
+                    '16k',
+                    ['nullable' => true, 'default' => ''],
+                    'Chunk Ids'
+                )->setComment('GoodMarket Cron')->setOption('type', 'InnoDB')->setOption('charset', 'utf8');
+            $installer->getConnection()->createTable($table);
+                $table = $installer->getConnection()->newTable($installer->getTable('ced_goodmarket_stock'))
+                    ->addColumn(
+                        'id',
+                        Table::TYPE_INTEGER,
+                        null,
+                        ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+                        'ID'
+                    )->addColumn(
+                        'sync_type',
+                        Table::TYPE_TEXT,
+                        50,
+                        ['nullable' => false, 'default' => ''],
+                        'Sync Type'
+                    )->addColumn(
+                        'status',
+                        Table::TYPE_TEXT,
+                        50,
+                        ['nullable' => false, 'default' => ''],
+                        'Increment Id'
+                    )->addColumn(
+                        'created_at',
+                        Table::TYPE_TIMESTAMP,
+                        null,
+                        ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+                        'Created At'
+                    )->addColumn(
+                        'product_data',
+                        Table::TYPE_TEXT,
+                        '16k',
+                        ['nullable' => true, 'default' => ''],
+                        'product_data'
+                    )->setComment('Sync Data')->setOption('type', 'InnoDB')->setOption('charset', 'utf8');
+                $installer->getConnection()->createTable($table);
+
+            $table = $installer->getConnection()->newTable($installer->getTable('ced_goodmarket_sync_data'))
+                ->addColumn(
+                    'id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+                    'ID'
+                )->addColumn(
+                    'productId',
+                    Table::TYPE_TEXT,
+                    50,
+                    ['nullable' => false, 'default' => ''],
+                    'Sync Type'
+                )->addColumn(
+                    'eventType',
+                    Table::TYPE_TEXT,
+                    50,
+                    ['nullable' => false, 'default' => ''],
+                    'Event Type'
+                )->addColumn(
+                    'href',
+                    Table::TYPE_TEXT,
+                    500,
+                    ['nullable' => false, 'default' => ''],
+                    'Process Href'
+                )->addColumn(
+                    'status',
+                    Table::TYPE_TEXT,
+                    50,
+                    ['nullable' => false, 'default' => ''],
+                    'Status'
+                )->setComment('Sync Data')->setOption('type', 'InnoDB')->setOption('charset', 'utf8');
+            $installer->getConnection()->createTable($table);
+
+            $table = $installer->getConnection()->newTable($installer->getTable('ced_goodmarket_feed_data'))
+                ->addColumn(
+                    'id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    array(
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary' => true,
+                        'auto_increment' => true,
+                    ),
+                    'Id'
+                )->addColumn(
+                    'call',
+                    Table::TYPE_TEXT,
+                    50,
+                ['nullable' => false, 'default' => ''],
+                'API Call'
+                )->addColumn(
+                    'endpoint',
+                    Table::TYPE_TEXT,
+                    500,
+                    ['nullable' => false, 'default' => ''],
+                    'Endpoint'
+                )->addColumn(
+                    'parameter',
+                    Table::TYPE_TEXT,
+                    '2M',
+                    ['nullable' => false, 'default' => ''],
+                    'Parameter'
+                )->addColumn(
+                    'status_code',
+                    Table::TYPE_TEXT,
+                    50,
+                    ['nullable' => false, 'default' => ''],
+                    'Status Code'
+                )->addColumn(
+                    'execution_time',
+                    Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+                    'Execution Time'
+                )->addColumn(
+                    'product_ids',
+                    Table::TYPE_TEXT,
+                    50,
+                    ['nullable' => false, 'default' => ''],
+                    'Product Id'
+                )->addColumn(
+                    'response',
+                    Table::TYPE_TEXT,
+                    '2M',
+                    ['nullable' => false, 'default' => ''],
+                    'Response'
+                )->setComment('Feed Data')->setOption('type', 'InnoDB')->setOption('charset', 'utf8');
+            $installer->getConnection()->createTable($table);
+            $setup->endSetup();
+            }
+    }
+}

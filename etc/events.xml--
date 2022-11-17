@@ -1,0 +1,14 @@
+<?xml version="1.0"?> <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_invoice_pay">
+        <observer name="invoice_pay" instance="Ced\GoodMarket\Observer\Invoice" />
+    </event>
+    <event name="sales_order_shipment_save_after">
+        <observer name="ced_goodmarket_shipment" instance="Ced\GoodMarket\Observer\Shipment"/>
+    </event>
+    <event name="sales_order_shipment_resource_save_after">
+        <observer name="ced_goodmarket_shipment_resource" instance="Ced\GoodMarket\Observer\Shipment"/>
+    </event>
+    <event name="sales_order_shipment_track_save_after">
+        <observer name="ced_goodmarket_shipment_track_save" instance="Ced\GoodMarket\Observer\Shipment" />
+    </event>
+</config>

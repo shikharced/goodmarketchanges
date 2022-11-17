@@ -1,0 +1,78 @@
+<?php
+
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement(EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category  Ced
+ * @package   Ced_GoodMarket
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
+ * @license   http://cedcommerce.com/license-agreement.txt
+ */
+
+namespace Ced\GoodMarket\Observer;
+
+class StockSaveAfter implements \Magento\Framework\Event\ObserverInterface
+{
+    /**
+     * @var \Ced\GoodMarket\Helper\Logger
+     */
+    public $logger;
+
+    /**
+     * @var \Ced\GoodMarket\Helper\Config
+     */
+    public $config;
+
+    /**
+     * @var \Ced\GoodMarket\Helper\Product
+     */
+    public $helperProduct;
+
+    /**
+     * AddTracking constructor.
+     * @param \Ced\GoodMarket\Helper\Logger $logger
+     * @param \Ced\GoodMarket\Helper\Config $config
+     * @param \Ced\GoodMarket\Helper\Product $helperProduct
+     */
+    public function __construct(
+        \Ced\GoodMarket\Helper\Logger $logger,
+        \Ced\GoodMarket\Helper\Config $config,
+        \Ced\GoodMarket\Helper\Product $helperProduct
+    ) {
+        $this->config = $config;
+        $this->helperProduct = $helperProduct;
+        $this->logger = $logger;
+    }
+
+    /*
+     * @param Observer $observer
+     * @return void
+     */
+    public function execute(\Magento\Framework\Event\Observer $observer)
+    {
+        try {
+
+            if ($this->config->getProductAutoUpdate()) {
+                $productId = $observer->getEvent()->getItem()->getProductId();
+                $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                $product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
+               if(!empty($product->getData('product_offer_id')))
+               {
+                   $this->helperProduct->updateBulkInventory($product->getId());
+               }
+            }
+        } catch (\Exception $exception) {
+            echo "<pre>";
+            print_r($exception->getMessage());
+            die(__FILE__);
+        }
+    }
+}

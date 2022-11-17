@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement(EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category  Ced
+ * @package   Ced_GoodMarket
+ * @author    CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
+ * @license   http://cedcommerce.com/license-agreement.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<goodmarket>
+			<settings>
+				<enable>1</enable>
+				<currency>EURO</currency>
+				<storeid>0</storeid>
+			</settings>
+			<goodmarket_cron>
+				<order_cron>0</order_cron>
+				<order_cron_schedule>*/15 * * * *</order_cron_schedule>
+				<inventory_cron>0</inventory_cron>
+				<inventory_cron_schedule>*/15 * * * *</inventory_cron_schedule>
+			</goodmarket_cron>
+			<order>
+				<auto_invoice>0</auto_invoice>
+				<auto_acknowledge>0</auto_acknowledge>
+				<auto_despatch>0</auto_despatch>
+				<enable_default_customer>0</enable_default_customer>
+			</order>
+			<goodmarket_product>
+				<product_inventory>0</product_inventory>
+				<mapping>
+					<item1>
+						<GoodMarket>1</GoodMarket>
+						<Magento>0</Magento>
+					</item1>
+					<item2>
+						<GoodMarket>1</GoodMarket>
+						<Magento>0</Magento>
+					</item2>
+				</mapping>
+			</goodmarket_product>
+		</goodmarket>
+		<carriers>
+			<shipbygoodmarket>
+				<active>1</active>
+				<sallowspecific>0</sallowspecific>
+				<name>GoodMarket Shipping Method(Default)</name>
+				<title>GoodMarket Shipping Method</title>
+				<model>Ced\GoodMarket\Model\Carrier\GoodMarket</model>
+			</shipbygoodmarket>
+		</carriers>
+		<payment>
+			<paybygoodmarket>
+				<active>1</active>
+				<model>Ced\GoodMarket\Model\Payment\GoodMarket</model>
+				<order_status>Processing</order_status>
+				<title>GoodMarket Payment Method(Default)</title>
+				<payment_action>sale</payment_action>
+				<allowspecific>0</allowspecific>
+			</paybygoodmarket>
+		</payment>
+	</default>
+</config>
