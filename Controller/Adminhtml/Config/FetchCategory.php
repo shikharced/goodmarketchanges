@@ -153,6 +153,10 @@ class FetchCategory extends Action
         // fetch category
         try {
             $taxonomy =$this->data->fetchCategories();
+            $path = $folderPath . '/categoryLevel.json';
+            $file = fopen($path, "w");
+            fwrite($file, json_encode($taxonomy['data']['category']['children']));
+            fclose($file);
             //json_decode(file_get_contents($folderPath.'/Categories.json'),true);
             $arr1 = $arr2 = $arr3 = $arr4 = $arr5 = $arr6 = $arr7 = [];
             $arr1[]=['id' => '162', 'name' =>'Default', 'path' => ['1','162'],'parent_id' => '1', 'children' => '7'];

@@ -204,8 +204,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $postfield['variables']['product_data']=json_encode($productData);
         $postfield['variables']['vendor_id']=$this->vendorId;
         $postfield['variables']['hash_token']=$this->hashToken;
+      //  $postfield= json_decode($postfield['variables']['product_data']['0'],true);
 //        echo "<pre>";
-//        print_r(json_decode($postfield['variables']['product_data'],true));
+//        print_r($postfield);
 //        die(__FILE__);
         $productUpload = $this->postRequest(self::API_ROOT_URL, json_encode($postfield),$type);
         return $productUpload;
@@ -498,7 +499,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $postfield['variables']['vorder_id'] = $vendorOrderID;
         $postfield['variables']['vendor_id']=$this->vendorId;
         $postfield['variables']['hash_token']=$this->hashToken;
-       // $postfield='{"query":"mutation createShipment($vorder_id: Int!,\n\t\t\t\t$items: String!,\n\t\t\t\t$tracking: String!,\n\t\t\t\t$comment_text:String,\n\t\t\t\t$comment_customer_notify:Int,\n\t\t\t\t$is_visible_on_front:Int,\n\t\t\t\t$send_email:Int,\n\t\t\t\t$vendor_id: Int!,\n\t\t\t\t$hash_token : String) {\n\t\t\t\t\tcreateShipment(vorder_id: $vorder_id,\n\t\t\t\t\titems: $items,\n\t\t\t\t\ttracking: $tracking,\n\t\t\t\t\tcomment_text:$comment_text,\n\t\t\t\t\tcomment_customer_notify:$comment_customer_notify,\n\t\t\t\t\tis_visible_on_front:$is_visible_on_front,\n\t\t\t\t\tsend_email:$send_email,\n\t\t\t\t\tvendor_id:$vendor_id,\n\t\t\t\t\thash_token:$hash_token) {\n\t\t\t\t\t\tmessage\n\t\t\t\t\t\tsuccess\n\t\t\t\t\t}\n\t\t\t\t}","variables":{"comment_customer_notify":true,"comment_text":"test","items":"[{\"item_id\":\"'.$itemID.'\",\"qty\":'.$itemQty.'}]","tracking":"[{\"number\":\"'.$trackArray['track_number'].'\",\"title\":\"'.$trackArray['title'].'\",\"carrier_code\":\"'.$trackArray['carrier_code'].'\"}]","send_email":true,"vorder_id":'.$vendorOrderID.',"vendor_id":'.$this->vendorId.',"hash_token":"'.$this->hashToken.'"}}';
+        // $postfield='{"query":"mutation createShipment($vorder_id: Int!,\n\t\t\t\t$items: String!,\n\t\t\t\t$tracking: String!,\n\t\t\t\t$comment_text:String,\n\t\t\t\t$comment_customer_notify:Int,\n\t\t\t\t$is_visible_on_front:Int,\n\t\t\t\t$send_email:Int,\n\t\t\t\t$vendor_id: Int!,\n\t\t\t\t$hash_token : String) {\n\t\t\t\t\tcreateShipment(vorder_id: $vorder_id,\n\t\t\t\t\titems: $items,\n\t\t\t\t\ttracking: $tracking,\n\t\t\t\t\tcomment_text:$comment_text,\n\t\t\t\t\tcomment_customer_notify:$comment_customer_notify,\n\t\t\t\t\tis_visible_on_front:$is_visible_on_front,\n\t\t\t\t\tsend_email:$send_email,\n\t\t\t\t\tvendor_id:$vendor_id,\n\t\t\t\t\thash_token:$hash_token) {\n\t\t\t\t\t\tmessage\n\t\t\t\t\t\tsuccess\n\t\t\t\t\t}\n\t\t\t\t}","variables":{"comment_customer_notify":true,"comment_text":"test","items":"[{\"item_id\":\"'.$itemID.'\",\"qty\":'.$itemQty.'}]","tracking":"[{\"number\":\"'.$trackArray['track_number'].'\",\"title\":\"'.$trackArray['title'].'\",\"carrier_code\":\"'.$trackArray['carrier_code'].'\"}]","send_email":true,"vorder_id":'.$vendorOrderID.',"vendor_id":'.$this->vendorId.',"hash_token":"'.$this->hashToken.'"}}';
         $shipmentResponse = $this->postRequest(self::API_ROOT_URL, json_encode($postfield),'CreateOrderTrackShipment');
         if(isset($shipmentResponse['data']['createShipment'])) {
             if($shipmentResponse['data']['createShipment']['success']=='1') {
@@ -651,12 +652,16 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $hash_token=$this->scopeConfig->getValue('goodmarket/settings/token');
         $vendor_id=$this->scopeConfig->getValue('goodmarket/settings/vendor_id');
         $email=$this->scopeConfig->getValue('goodmarket/settings/username');
-        $password=$this->scopeConfig->getValue('goodmarket/settings/password');
+//        $password=$this->scopeConfig->getValue('goodmarket/settings/password');
         $status=$this->scopeConfig->getValue('goodmarket/settings/enable');
 
         if($status=='1') {
-            if(!empty($email) && !empty($password) && !empty(trim($hash_token)) && !empty(trim($vendor_id))) {
-                return true;
+            if(!empty($email) && !empty(trim($hash_token)) && !empty(trim($vendor_id))) {
+                if(!empty($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'))) {
+                    return true;
+                }else{
+                    return "No Source Found for the Vendor";
+                }
             }else {
                 return "Please Check the Login Credentials in the Configuration Section!!";
             }

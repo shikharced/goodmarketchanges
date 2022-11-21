@@ -29,5 +29,11 @@
         <job name="ced_goodmarket_product_feed_sync" instance="Ced\GoodMarket\Helper\Product" method="syncProductData">
             <schedule>*/3 * * * *</schedule>
         </job>
+        <job name="ced_goodmarket_scheduler_feed_sync" instance="Ced\GoodMarket\Cron\SchedulerResponse" method="execute">
+            <schedule>*/3 * * * *</schedule>
+        </job>
+        <job name="ced_goodmarket_scheduler_product_sync" instance="Ced\GoodMarket\Cron\SchedulerSync" method="execute">
+        <schedule>*/3 * * * *</schedule>
+    </job>
     </group>
 </config>

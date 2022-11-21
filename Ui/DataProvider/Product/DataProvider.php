@@ -93,11 +93,11 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                 ->create()
         );
 
-        /* $this->addFilter(
+         $this->addFilter(
             $this->filterBuilder->setField('visibility')->setConditionType('nin')
                 ->setValue([1])
                 ->create()
-        );*/
+        );
         $this->addFieldStrategies = $addFieldStrategies;
         $this->addFilterStrategies = $addFilterStrategies;
     }

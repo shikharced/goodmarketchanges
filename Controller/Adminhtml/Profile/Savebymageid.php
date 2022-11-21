@@ -37,7 +37,8 @@ class Savebymageid extends Action
         DataObject $data,
         ProfileFactory $profileFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        \Ced\GoodMarket\Helper\Data $helper
+        \Ced\GoodMarket\Helper\Data $helper,
+        \Magento\Catalog\Model\Product\ActionFactory $productActionFactory
     )
     {
         parent::__construct($context);
@@ -46,6 +47,7 @@ class Savebymageid extends Action
         $this->data = $data;
         $this->_productCollectionFactory = $productCollectionFactory;
         $this->helper=$helper;
+        $this->productActionFactory = $productActionFactory;
     }
 
     public function getProductCollectionByCategories($ids)
@@ -73,6 +75,8 @@ class Savebymageid extends Action
         $magentoCat = $this->getRequest()->getParam('magentoCat');
         if ($category == '0') {
             $profile = $this->profileFactory->create()->load($magentoCat, 'magento_category');
+            $this->unLinkProduct($profile->getId());
+
             // echo '<pre>'; print_r($profile->getData()); exit;
             // $profile->delete(); echo 'deleted';
             try {
@@ -93,7 +97,11 @@ class Savebymageid extends Action
         $categoryIds = array_filter($category);
         $categoryId = end($categoryIds);
         $categoryFetchData=$this->helper->getCategoryAttributes($categoryId);
+        $allAttribute=json_decode($categoryFetchData['groupwise_attributes'],true);
         $configurableAttributes=$this->helper->getConfigurableAttributes($categoryId);
+        foreach ($configurableAttributes as $variationattribute) {
+            $variationAttributes[]=strtolower($variationattribute['label']);
+        }
       
         // if(empty($profileId)) {
         //     $profile = $this->profileFactory->create()->load($this->data->getProfileId());
@@ -106,8 +114,9 @@ class Savebymageid extends Action
             $profile->setData('profile_code', $profileCode);
         }
         // }
-        $attributeSet = '4';
-        $profile->setData('attribute_set',$attributeSet);
+//        $attributeSet = '4';
+        $profile->setData('attribute_set',$allAttribute['attribute_set_id']);
+        $profile->setData('variation_attribute',json_encode($variationAttributes));
         $profile->setData('profile_name', $profileName);
         $profile->setData('profile_status', $profileStatus);
         $profile->setData('magento_category', $magentoCat);
@@ -242,6 +251,16 @@ class Savebymageid extends Action
             $i++;
         }
         return $temp_array;
+    }
+    private function unLinkProduct($profileId)
+    {
+        $oldIds = $this->_productCollectionFactory->create()
+            ->addAttributeToFilter('goodmarket_profile_id', ['eq' => $profileId])
+            ->getAllIds();
+        if (!empty($oldIds)) {
+            $this->productActionFactory->create()
+                ->updateAttributes($oldIds, ['goodmarket_profile_id' => ''], 0);
+        }
     }
 }
 

@@ -21,13 +21,15 @@ class Save extends \Magento\Backend\App\Action
         \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
         \Magento\Config\Model\ResourceModel\Config $configWriter,
         \Ced\GoodMarket\Helper\Config $config,
-        \Ced\GoodMarket\Helper\Data $data
+        \Ced\GoodMarket\Helper\Data $data,
+        \Ced\GoodMarket\Helper\Product $helper
     ) {
         parent::__construct($context);
         $this->cacheTypeList = $cacheTypeList;
         $this->configWriter = $configWriter;
         $this->config = $config;
         $this->data=$data;
+        $this->helper=$helper;
     }
 
     public function execute()
@@ -57,6 +59,7 @@ class Save extends \Magento\Backend\App\Action
                $response['success'] = true;
                $response['message'] =
                    __('Token Has Been Fetched Successfully!!');
+               $this->helper->profileCategory();
            }
 
         }

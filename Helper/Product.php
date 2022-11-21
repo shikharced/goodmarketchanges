@@ -22,6 +22,7 @@ namespace Ced\GoodMarket\Helper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\FlagManager;
+use Magento\Framework\Filesystem;
 
 class Product extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -82,7 +83,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         \Ced\GoodMarket\Helper\Data                                    $data,
         \Magento\Store\Model\StoreManagerInterface                     $storeManager,
         \Magento\Framework\ObjectManagerInterface $objectmanager,
-        FlagManager $flagManager
+        FlagManager $flagManager,
+        Filesystem\Io\File $file
     )
     {
         parent::__construct($context);
@@ -99,6 +101,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $this->storeManager = $storeManager;
         $this->objectManager=$objectmanager;
         $this->flagManager = $flagManager;
+        $this->file = $file;
     }
 
     /**
@@ -156,6 +159,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $categoryId = end($filterCategoryId);
                             $productAttributes['set'] = $profile['attribute_set'];//$categoryAttribute['attribute_set_id'];
                             $productAttributes['type'] = 'configurable';
+                            $productAttributes['integ_type']='magento';
                             $image_role = array('image'=>'image1','small_image'=>'image1','thumbnail'=>'image1','swatch_image'=> '');
                             $productAttributes['image_role'] = json_encode($image_role);
                             if ($type == 'EditProduct') {
@@ -202,7 +206,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 $productAttributes['config_attributes'] = $config_attributes;
                             }
                             $productAttributes['product'] = $this->getparentProductData($product, $profile, $categoryId, $type);
-                            $prepareData[]=$productAttributes;
+                            $prepareData[]=json_encode($productAttributes);
                         } else if ($product->getTypeId() == 'simple') {
                             $productAttributes=[];
                             if ($type == 'EditProduct') {
@@ -215,11 +219,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $categoryId = end($filterCategoryId);
                             $productAttributes['set'] = $profile['attribute_set'];//$categoryAttribute['attribute_set_id'];
                             $productAttributes['type'] = 'simple';
+                            $productAttributes['integ_type']='magento';
                             $image_role = array('image'=>'image1','small_image'=>'image1','thumbnail'=>'image1','swatch_image'=> '');
                             $productAttributes['image_role'] = json_encode($image_role);
                             $category[] = $categoryId;
                             $productAttributes['product'] = $this->getSimpleProductData($product, $profile, $categoryId, $type);
-                            $prepareData[]=$productAttributes;
+                            $prepareData[]=json_encode($productAttributes);
 //                            $report = $this->data->createProduct($productAttributes, $product, $type);
 //                            return $report;
 
@@ -453,7 +458,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $productArray['meta_title']= $product->getData('name');
         $productArray['meta_keyword']= $product->getData('name');
         $productArray['meta_description']= $product->getData('name');
-        $productArray['url_key']= $product->getData('name').'123456789888';
+        $productArray['url_key']= $product->getData('name').'12345678988668';
+        $productArray['quantity_and_stock_status']= 'null';
         if (!$weight) {
             $productweight = !empty($product->getWeight()) ? $product->getWeight() : '2';
             $productArray['weight'] = $productweight;
@@ -1102,6 +1108,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         // fetch category
         try {
             $taxonomy =$this->data->fetchCategories();
+            $path = $folderPath . '/categoryLevel.json';
+            $file = fopen($path, "w");
+            fwrite($file, json_encode($taxonomy['data']['category']['children']));
+            fclose($file);
             //json_decode(file_get_contents($folderPath.'/Categories.json'),true);
             $arr1 = $arr2 = $arr3 = $arr4 = $arr5 = $arr6 = $arr7 = [];
             $arr1[]=['id' => '162', 'name' =>'Default', 'path' => ['1','162'],'parent_id' => '1', 'children' => '7'];
