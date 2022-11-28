@@ -192,6 +192,7 @@
                     </field>
                     <field id="product_color" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Color</label>
+                        <validate>required-entry validate-select</validate>
                         <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
                         <comment><![CDATA[Select product color attribute]]></comment>
                         <depends>
@@ -201,6 +202,7 @@
                     <field id="product_size" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Size</label>
                         <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
+                        <validate>required-entry validate-select</validate>
                         <comment><![CDATA[Select product size attribute]]></comment>
                         <depends>
                             <field id="varient">1</field>
@@ -208,6 +210,7 @@
                     </field>
                     <field id="product_type" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Type</label>
+                        <validate>required-entry validate-select</validate>
                         <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
                         <comment><![CDATA[Select product type attribute]]></comment>
                         <depends>

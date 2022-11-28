@@ -22,6 +22,7 @@ namespace Ced\GoodMarket\Helper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\FlagManager;
+use Magento\Framework\Filesystem;
 
 class Product extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -82,7 +83,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         \Ced\GoodMarket\Helper\Data                                    $data,
         \Magento\Store\Model\StoreManagerInterface                     $storeManager,
         \Magento\Framework\ObjectManagerInterface $objectmanager,
-        FlagManager $flagManager
+        FlagManager $flagManager,
+        Filesystem\Io\File $file
     )
     {
         parent::__construct($context);
@@ -99,6 +101,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $this->storeManager = $storeManager;
         $this->objectManager=$objectmanager;
         $this->flagManager = $flagManager;
+        $this->file = $file;
     }
 
     /**
@@ -156,6 +159,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $categoryId = end($filterCategoryId);
                             $productAttributes['set'] = $profile['attribute_set'];//$categoryAttribute['attribute_set_id'];
                             $productAttributes['type'] = 'configurable';
+                            $productAttributes['integ_type']='magento';
                             $image_role = array('image'=>'image1','small_image'=>'image1','thumbnail'=>'image1','swatch_image'=> '');
                             $productAttributes['image_role'] = json_encode($image_role);
                             if ($type == 'EditProduct') {
@@ -202,7 +206,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 $productAttributes['config_attributes'] = $config_attributes;
                             }
                             $productAttributes['product'] = $this->getparentProductData($product, $profile, $categoryId, $type);
-                            $prepareData[]=$productAttributes;
+                            $prepareData[]=json_encode($productAttributes);
                         } else if ($product->getTypeId() == 'simple') {
                             $productAttributes=[];
                             if ($type == 'EditProduct') {
@@ -215,11 +219,33 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $categoryId = end($filterCategoryId);
                             $productAttributes['set'] = $profile['attribute_set'];//$categoryAttribute['attribute_set_id'];
                             $productAttributes['type'] = 'simple';
+                            $productAttributes['integ_type']='magento';
                             $image_role = array('image'=>'image1','small_image'=>'image1','thumbnail'=>'image1','swatch_image'=> '');
                             $productAttributes['image_role'] = json_encode($image_role);
                             $category[] = $categoryId;
                             $productAttributes['product'] = $this->getSimpleProductData($product, $profile, $categoryId, $type);
-                            $prepareData[]=$productAttributes;
+                            $prepareData[]=json_encode($productAttributes);
+//                            $report = $this->data->createProduct($productAttributes, $product, $type);
+//                            return $report;
+
+                        } else if ($product->getTypeId() == 'virtual') {
+                            $productAttributes=[];
+                            if ($type == 'EditProduct') {
+                                $products = $product->getData();
+                                $productAttributes['id'] = $products['goodmarket_product_id'];
+                            }
+                            $category = [];
+                            $categoryIds = json_decode($profile['profile_category'], true);
+                            $filterCategoryId = array_filter($categoryIds);
+                            $categoryId = end($filterCategoryId);
+                            $productAttributes['set'] = $profile['attribute_set'];//$categoryAttribute['attribute_set_id'];
+                            $productAttributes['type'] = 'simple';
+                            $productAttributes['integ_type']='magento';
+                            $image_role = array('image'=>'image1','small_image'=>'image1','thumbnail'=>'image1','swatch_image'=> '');
+                            $productAttributes['image_role'] = json_encode($image_role);
+                            $category[] = $categoryId;
+                            $productAttributes['product'] = $this->getVirtualProductData($product, $profile, $categoryId, $type);
+                            $prepareData[]=json_encode($productAttributes);
 //                            $report = $this->data->createProduct($productAttributes, $product, $type);
 //                            return $report;
 
@@ -421,6 +447,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $productArray[$required_attribute['goodmarket_attribute_name']]=$price;
                 continue;
             }
+            // Changes by shikhar
+            if ($required_attribute['magento_attribute_code']=='description') {
+                $productArray[$required_attribute['goodmarket_attribute_name']] = strip_tags($product->getData('description'), "<p><b>");
+                continue;
+            }
+            // End chagnes
             $productArray[$required_attribute['goodmarket_attribute_name']] = $product->getData($required_attribute['magento_attribute_code']);
         }
         foreach ($profileMapping['optional_attributes'] as $optional_attribute) {
@@ -453,7 +485,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $productArray['meta_title']= $product->getData('name');
         $productArray['meta_keyword']= $product->getData('name');
         $productArray['meta_description']= $product->getData('name');
-        $productArray['url_key']= $product->getData('name').'123456789888';
+        $productArray['url_key']= $product->getData('name').'12345678988668';
+        $productArray['quantity_and_stock_status']= 'null';
         if (!$weight) {
             $productweight = !empty($product->getWeight()) ? $product->getWeight() : '2';
             $productArray['weight'] = $productweight;
@@ -470,16 +503,25 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $productArray['sources']=json_encode($allSources);
         }
         $media_gallery = $product->getData('media_gallery');
-        $imagecount = 1;
-        foreach ($media_gallery['images'] as $key => $image) {
-            $baseImageUrl = $imageurl . $image['file'];
-            $imageencode = $this->get_img_data($baseImageUrl);
-            if (!empty($imageencode)) {
-                $productImage['image' . $imagecount] = $imageencode;
-                $imagecount++;
+//        New Changes By Shikhar
+        $imagecount=2;
+        foreach ($media_gallery['images'] as $key=>$image) {
+            $baseImageUrl=$imageurl.$image['file'];
+            $base = $imageurl.$product->getData('image');
+            if ($baseImageUrl == $base) {
+                $imageencode=$this->get_img_data($baseImageUrl);
+                if(!empty($imageencode)) {
+                    $productImage['image1']=$imageencode;
+                }
+            } else {
+                $imageencode=$this->get_img_data($baseImageUrl);
+                if(!empty($imageencode)) {
+                    $productImage['image'.$imagecount]=$imageencode;
+                    $imagecount++;
+                }
             }
-
         }
+//      New Changes END By Shikhar
         if (isset($productImage)) {
             $productImages['images'] = json_encode($productImage);
             if($type!='EditProduct') {
@@ -712,6 +754,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $productArray[$required_attribute['goodmarket_attribute_name']]=$price;
                 continue;
             }
+            // Changes by shikhar
+            if ($required_attribute['magento_attribute_code']=='description') {
+                $productArray[$required_attribute['goodmarket_attribute_name']] = strip_tags($product->getData('description'), "<p><b>");
+                continue;
+            }
+            // End chagnes
             $productArray[$required_attribute['goodmarket_attribute_name']]=$product->getData($required_attribute['magento_attribute_code']);
         }
         $productArray['meta_title']= $product->getData('name');
@@ -751,16 +799,25 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $productArray['sources']=json_encode($allSources);
         }
         $media_gallery=$product->getData('media_gallery');
-        $imagecount=1;
+        //        New Changes By Shikhar
+        $imagecount=2;
         foreach ($media_gallery['images'] as $key=>$image) {
             $baseImageUrl=$imageurl.$image['file'];
-            $imageencode=$this->get_img_data($baseImageUrl);
-            if(!empty($imageencode)) {
-                $productImage['image'.$imagecount]=$imageencode;
-                $imagecount++;
+            $base = $imageurl.$product->getData('image');
+            if ($baseImageUrl == $base) {
+                $imageencode=$this->get_img_data($baseImageUrl);
+                if(!empty($imageencode)) {
+                    $productImage['image1']=$imageencode;
+                }
+            } else {
+                $imageencode=$this->get_img_data($baseImageUrl);
+                if(!empty($imageencode)) {
+                    $productImage['image'.$imagecount]=$imageencode;
+                    $imagecount++;
+                }
             }
-
         }
+//      New Changes END By Shikhar
         if(isset($productImage)) {
             $productImages['images']=json_encode($productImage);
             if($type!='EditProduct') {
@@ -768,9 +825,115 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
         }
-        $productArray['category_ids']=$catId;
+        $productArray['category_ids']=[$catId];
         return json_encode($productArray);
     }
+    
+    /**
+     * @param $product
+     * @param $profile
+     * @param $catId
+     * @return false|string
+     */
+    public function getVirtualProductData($product,$profile,$catId,$type)
+    {
+        $currentStore = $this->storeManager->getStore();
+        $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+        $imageurl=$mediaUrl.'catalog/product';
+        $productArray=[];
+        $weight=false;
+        $description=false;
+        $quantity=false;
+//        $simpleRequireAttribut=['price','sku','name'];
+        $profileMapping=json_decode($profile['profile_req_opt_attribute'],true);
+        foreach ($profileMapping['required_attributes'] as $required_attribute) {
+
+//            if(!in_array($required_attribute['goodmarket_attribute_name'],$simpleRequireAttribut)) {
+//                continue;
+//            }
+            if ($required_attribute['magento_attribute_code']=='default') {
+                $productArray[$required_attribute['goodmarket_attribute_name']] = $required_attribute['default'];
+                continue;
+            }
+
+            if ($required_attribute['magento_attribute_code']=='description') {
+                $productArray[$required_attribute['goodmarket_attribute_name']] = strip_tags($product->getData('description'), "<p><b>");
+                continue;
+            }
+
+            if($required_attribute['goodmarket_attribute_name']=='price') {
+                $price=$this->getGoodMarketProfilePrice($product,$required_attribute['magento_attribute_code']);
+                $productArray[$required_attribute['goodmarket_attribute_name']]=$price;
+                continue;
+            }
+            $productArray[$required_attribute['goodmarket_attribute_name']]=$product->getData($required_attribute['magento_attribute_code']);
+        }
+        $productArray['meta_title']= $product->getData('name');
+        $productArray['meta_keyword']= $product->getData('name');
+        $productArray['meta_description']= $product->getData('name');
+        $productArray['url_key']= $product->getData('name');
+        foreach ($profileMapping['optional_attributes'] as $optional_attribute) {
+            if($optional_attribute['goodmarket_attribute_name']=='weight') {
+                $weight=true;
+            }
+            if($optional_attribute['goodmarket_attribute_name']=='quantity_and_stock_status') {
+                $allSources = [];
+                $qty=$this->getQuantityForUpload($product,$profile);
+                $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
+                $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);
+                $productArray['sources']=json_encode($allSources);
+                $quantity=true;
+                continue;
+            }
+            if($optional_attribute['magento_attribute_code']=='default') {
+                $productArray[$optional_attribute['goodmarket_attribute_name']] = $optional_attribute['default'];
+                continue;
+            }
+            $productArray[$optional_attribute['goodmarket_attribute_name']]=$product->getData($optional_attribute['magento_attribute_code']);
+        }
+
+        $productArray['weight'] = '0';
+        $productArray['product_has_weight'] = '0';
+
+        if(!$quantity) {
+            $allSources = [];
+            $qty=$this->getQuantityForUpload($product,$profile);
+            $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
+            $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);
+            $productArray['sources']=json_encode($allSources);
+        }
+        $media_gallery=$product->getData('media_gallery');
+//        New Changes By Shikhar
+        $imagecount=2;
+        foreach ($media_gallery['images'] as $key=>$image) {
+            $baseImageUrl=$imageurl.$image['file'];
+            $base = $imageurl.$product->getData('image');
+            if ($baseImageUrl == $base) {
+                $imageencode=$this->get_img_data($baseImageUrl);
+                if(!empty($imageencode)) {
+                    $productImage['image1']=$imageencode;
+                }
+            } else {
+                $imageencode=$this->get_img_data($baseImageUrl);
+                if(!empty($imageencode)) {
+                    $productImage['image'.$imagecount]=$imageencode;
+                    $imagecount++;
+                }
+            }
+        }
+//      New Changes END By Shikhar
+
+        if(isset($productImage)) {
+            $productImages['images']=json_encode($productImage);
+            if($type!='EditProduct') {
+                $productArray['media_gallery']=json_encode($productImages);
+            }
+
+        }
+        $productArray['category_ids']=[$catId];
+        return json_encode($productArray);
+    }
+
 
 //    /**
 //     * @param $image_url_id
@@ -1102,6 +1265,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         // fetch category
         try {
             $taxonomy =$this->data->fetchCategories();
+            $path = $folderPath . '/categoryLevel.json';
+            $file = fopen($path, "w");
+            fwrite($file, json_encode($taxonomy['data']['category']['children']));
+            fclose($file);
             //json_decode(file_get_contents($folderPath.'/Categories.json'),true);
             $arr1 = $arr2 = $arr3 = $arr4 = $arr5 = $arr6 = $arr7 = [];
             $arr1[]=['id' => '162', 'name' =>'Default', 'path' => ['1','162'],'parent_id' => '1', 'children' => '7'];
