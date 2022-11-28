@@ -447,12 +447,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $productArray[$required_attribute['goodmarket_attribute_name']]=$price;
                 continue;
             }
-            // Changes by shikhar
             if ($required_attribute['magento_attribute_code']=='description') {
                 $productArray[$required_attribute['goodmarket_attribute_name']] = strip_tags($product->getData('description'), "<p><b>");
                 continue;
             }
-            // End chagnes
             $productArray[$required_attribute['goodmarket_attribute_name']] = $product->getData($required_attribute['magento_attribute_code']);
         }
         foreach ($profileMapping['optional_attributes'] as $optional_attribute) {
@@ -749,17 +747,17 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $productArray[$required_attribute['goodmarket_attribute_name']] = $required_attribute['default'];
                 continue;
             }
+
+            if ($required_attribute['magento_attribute_code']=='description') {
+                $productArray[$required_attribute['goodmarket_attribute_name']] = strip_tags($product->getData('description'), "<p><b>");
+                continue;
+            }
+
             if($required_attribute['goodmarket_attribute_name']=='price') {
                 $price=$this->getGoodMarketProfilePrice($product,$required_attribute['magento_attribute_code']);
                 $productArray[$required_attribute['goodmarket_attribute_name']]=$price;
                 continue;
             }
-            // Changes by shikhar
-            if ($required_attribute['magento_attribute_code']=='description') {
-                $productArray[$required_attribute['goodmarket_attribute_name']] = strip_tags($product->getData('description'), "<p><b>");
-                continue;
-            }
-            // End chagnes
             $productArray[$required_attribute['goodmarket_attribute_name']]=$product->getData($required_attribute['magento_attribute_code']);
         }
         $productArray['meta_title']= $product->getData('name');
@@ -799,25 +797,26 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $productArray['sources']=json_encode($allSources);
         }
         $media_gallery=$product->getData('media_gallery');
-        //        New Changes By Shikhar
+//        New Changes By Shikhar
         $imagecount=2;
         foreach ($media_gallery['images'] as $key=>$image) {
             $baseImageUrl=$imageurl.$image['file'];
             $base = $imageurl.$product->getData('image');
-            if ($baseImageUrl == $base) {
-                $imageencode=$this->get_img_data($baseImageUrl);
-                if(!empty($imageencode)) {
-                    $productImage['image1']=$imageencode;
-                }
-            } else {
-                $imageencode=$this->get_img_data($baseImageUrl);
-                if(!empty($imageencode)) {
-                    $productImage['image'.$imagecount]=$imageencode;
-                    $imagecount++;
-                }
-            }
+             if ($baseImageUrl == $base) {
+                 $imageencode=$this->get_img_data($baseImageUrl);
+                 if(!empty($imageencode)) {
+                     $productImage['image1']=$imageencode;
+                 }
+             } else {
+                 $imageencode=$this->get_img_data($baseImageUrl);
+                 if(!empty($imageencode)) {
+                     $productImage['image'.$imagecount]=$imageencode;
+                     $imagecount++;
+                 }
+             }
         }
 //      New Changes END By Shikhar
+
         if(isset($productImage)) {
             $productImages['images']=json_encode($productImage);
             if($type!='EditProduct') {
@@ -828,7 +827,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $productArray['category_ids']=[$catId];
         return json_encode($productArray);
     }
-    
+
     /**
      * @param $product
      * @param $profile
@@ -933,7 +932,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $productArray['category_ids']=[$catId];
         return json_encode($productArray);
     }
-
 
 //    /**
 //     * @param $image_url_id
