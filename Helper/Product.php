@@ -844,6 +844,22 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return json_encode($productArray);
     }
 
+
+    /**
+     * Get Weight Unit
+     *
+     * @return mixed
+     */
+    public function getWeightUnit()
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->_scopeConfig = $objectManager->create(\Magento\Framework\App\Config\ScopeConfigInterface::class);
+        return $this->_scopeConfig->getValue(
+            'general/locale/weight_unit', \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    
     /**
      * @param $product
      * @param $profile
