@@ -486,7 +486,15 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $productArray['url_key']= $product->getData('name').'12345678988668';
         $productArray['quantity_and_stock_status']= 'null';
         if (!$weight) {
-            $productweight = !empty($product->getWeight()) ? $product->getWeight() : '2';
+            //    $productweight=!empty($product->getWeight())?$product->getWeight():'2';
+            //    Change weight to grams 30Nov - Shikhar
+            $weightUnit = $this->getWeightUnit();
+            if ($weightUnit == 'lbs') {
+                $productWeight = $product->getWeight() * 453.6;
+            } elseif($weightUnit == 'kg'){
+                $productWeight = $product->getWeight() * 1000;
+            }
+            $productweight = !empty($product->getWeight()) ? round($productWeight) : '2';
             $productArray['weight'] = $productweight;
             $productArray['product_has_weight'] = '1';
 
@@ -784,7 +792,15 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $productArray[$optional_attribute['goodmarket_attribute_name']]=$product->getData($optional_attribute['magento_attribute_code']);
         }
         if(!$weight) {
-            $productweight=!empty($product->getWeight())?$product->getWeight():'2';
+            //    $productweight=!empty($product->getWeight())?$product->getWeight():'2';
+            //    Change weight to grams 30Nov - Shikhar
+            $weightUnit = $this->getWeightUnit();
+            if ($weightUnit == 'lbs') {
+                $productWeight = $product->getWeight() * 453.6;
+            } elseif($weightUnit == 'kg'){
+                $productWeight = $product->getWeight() * 1000;
+            }
+            $productweight = !empty($product->getWeight()) ? round($productWeight) : '2';
             $productArray['weight']=$productweight;
             $productArray['product_has_weight']='1';
 
