@@ -48,6 +48,7 @@
 						<GoodMarket>1</GoodMarket>
 						<Magento>0</Magento>
 					</item2>
+					<varient>0</varient>
 				</mapping>
 			</goodmarket_product>
 		</goodmarket>

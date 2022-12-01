@@ -121,7 +121,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $store->setCurrencyCode($store->getDefaultCurrencyCode());
 //        echo '<pre>';print_r($store->getDefaultCurrencyCode()); exit;
 
-        $order_Days ='31';// $this->config->getOrderImport();
+        $order_Days ='60';// $this->config->getOrderImport();
         $startDate = date('Y-m-d', strtotime('-' . $order_Days . ' days'));
         $endDate=date('Y-m-d', strtotime(' +1 day'));
         $response = $this->sdk->getOrderIDs($startDate, $endDate);
@@ -359,22 +359,22 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
             if ($itemAccepted == count($items)) {
-//                $shipname=explode(' ',$order['address_information']['s_name'],'2');
-//                $shippingAddressStreet=isset($order['address_information']['s_street'])?$order['address_information']['s_street']:'street';
-//                $shipAddress = [
-//                    'firstname' => isset($shipname['0'])?$shipname['0']:'firstname',
-//                    'lastname' => isset($shipname['1'])?$shipname['1']:'lastname',
-//                    'street' => $shippingAddressStreet,
-//                    'city' => isset($order['address_information']['s_city'])?$order['address_information']['s_city']:'Bareilly',
-//                    'country_id' => 'US',//isset($order['address_information']['s_country'])?$order['address_information']['s_country']:'', //$this->getValue('country', $order,'US'),
-//                    'region' => isset($order['address_information']['s_region'])?$order['address_information']['s_region']:'UttarPradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
-//                    'postcode' => isset($order['address_information']['s_postcode'])?$order['address_information']['s_postcode']:'243001',
-//                    'telephone' =>isset($order['address_information']['s_telephone'])?$order['address_information']['s_telephone']:'00000000',
-//                    'fax' => '', 'save_in_address_book' => 1];
+                $shipname=explode(' ',$order['address_information']['s_name'],'2');
+                $shippingAddressStreet=isset($order['address_information']['s_street'])?$order['address_information']['s_street']:'street';
+                $shipAddress = [
+                    'firstname' => isset($shipname['0'])?$shipname['0']:'firstname',
+                    'lastname' => isset($shipname['1'])?$shipname['1']:'lastname',
+                    'street' => $shippingAddressStreet,
+                    'city' => isset($order['address_information']['s_city'])?$order['address_information']['s_city']:'Bareilly',
+                    'country_id' => 'US',//isset($order['address_information']['s_country'])?$order['address_information']['s_country']:'', //$this->getValue('country', $order,'US'),
+                    'region' => isset($order['address_information']['s_region'])?$order['address_information']['s_region']:'UttarPradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
+                    'postcode' => isset($order['address_information']['s_postcode'])?$order['address_information']['s_postcode']:'243001',
+                    'telephone' =>isset($order['address_information']['s_telephone'])?$order['address_information']['s_telephone']:'00000000',
+                    'fax' => '', 'save_in_address_book' => 1];
+               // $billname=explode(' ',$order['address_information']['b_name'],'2');
                 $billname=explode(' ',$order['address_information']['b_name'],'2');
-                $shipname=explode(' ',$order['address_information']['b_name'],'2');
+                //$billingAddressStreet=isset($order['address_information']['b_street'])?$order['address_information']['b_street']:'street';
                 $billingAddressStreet=isset($order['address_information']['b_street'])?$order['address_information']['b_street']:'street';
-                $shippingAddressStreet=isset($order['address_information']['b_street'])?$order['address_information']['b_street']:'street';
                 $billAddress = [
                     'firstname' => isset($billname['0'])?$billname['0']:'firstname',
                     'lastname' => isset($billname['1'])?$billname['1']:'lastname',
@@ -385,16 +385,16 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     'postcode' => isset($order['address_information']['b_postcode'])?$order['address_information']['b_postcode']:'243001',
                     'telephone' =>isset($order['address_information']['b_telephone'])?$order['address_information']['b_telephone']:'00000000',
                     'fax' => '', 'save_in_address_book' => 1];
-                $shipAddress = [
-                    'firstname' => isset($billname['0'])?$billname['0']:'firstname',
-                    'lastname' => isset($billname['1'])?$billname['1']:'lastname',
-                    'street' => $billingAddressStreet,
-                    'city' => isset($order['address_information']['b_city'])?$order['address_information']['b_city']:'Bareilly',
-                    'country_id' => 'US',//isset($order['address_information']['b_country'])?$order['address_information']['b_country']:'', //$this->getValue('country', $order,'US'),
-                    'region' => isset($order['address_information']['b_region'])?$order['address_information']['b_region']:'Uttar Pradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
-                    'postcode' => isset($order['address_information']['b_postcode'])?$order['address_information']['b_postcode']:'243001',
-                    'telephone' =>isset($order['address_information']['b_telephone'])?$order['address_information']['b_telephone']:'00000000',
-                    'fax' => '', 'save_in_address_book' => 1];
+//                $shipAddress = [
+//                    'firstname' => isset($billname['0'])?$billname['0']:'firstname',
+//                    'lastname' => isset($billname['1'])?$billname['1']:'lastname',
+//                    'street' => $billingAddressStreet,
+//                    'city' => isset($order['address_information']['b_city'])?$order['address_information']['b_city']:'Bareilly',
+//                    'country_id' => 'US',//isset($order['address_information']['b_country'])?$order['address_information']['b_country']:'', //$this->getValue('country', $order,'US'),
+//                    'region' => isset($order['address_information']['b_region'])?$order['address_information']['b_region']:'Uttar Pradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
+//                    'postcode' => isset($order['address_information']['b_postcode'])?$order['address_information']['b_postcode']:'243001',
+//                    'telephone' =>isset($order['address_information']['b_telephone'])?$order['address_information']['b_telephone']:'00000000',
+//                    'fax' => '', 'save_in_address_book' => 1];
 
                 $quote->getBillingAddress()
                     ->addData($billAddress);
@@ -487,6 +487,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             }
         } catch(\Exception $exception) {
             $reason[] = $exception->getMessage() . $exception->getline();
+            echo "<pre>";
+            print_r($order);
+            echo "<pre>";
+            print_r($exception->getMessage());
+            die(__FILE__);
             $this->reject($order, $reason);
 
             $this

@@ -34,7 +34,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="username" translate="label" type="text" sortOrder="35" showInDefault="1">
-                    <label>Email</label>
+                    <label>GoodMarket Email</label>
                     <validate>required-entry validate-email</validate>
                     <comment>
                         <model>Ced\GoodMarket\Model\Config\Comment</model>
@@ -44,7 +44,7 @@
                     </depends>
                 </field>
                 <field id="vendor_id" translate="label" type="text" sortOrder="35" showInDefault="1">
-                    <label>Vendor-ID</label>
+                    <label>GoodMarket Vendor-ID</label>
                     <depends>
                         <field id="enable">1</field>
                     </depends>
@@ -57,7 +57,7 @@
 <!--                    </depends>-->
 <!--                </field>-->
                 <field id="token" translate="label" type="text" sortOrder="35" showInDefault="1">
-                    <label>Vendor-Token</label>
+                    <label>GoodMarket Vendor-Token</label>
                     <frontend_model>Ced\Integrator\Block\System\Config\Form\Field\Disable</frontend_model>
                     <depends>
                         <field id="enable">1</field>
@@ -163,6 +163,18 @@
                         <field id="use_msi">1</field>
                     </depends>
                 </field>
+
+<!--                New changes-->
+                <field id="carrierMapping" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Order Carrier Mapping</label>
+                    <frontend_model>Ced\GoodMarket\Block\Adminhtml\Form\Config\Field</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+<!--                    <depends>-->
+<!--                        <field id="use_msi">1</field>-->
+<!--                    </depends>-->
+                </field>
+
+
                 <field id="use_salable_qty" translate="label comment" type="select" sortOrder="60" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Use Salable Quantity</label>
@@ -183,27 +195,45 @@
             <group id="goodmarket_product" translate="label" type="text" sortOrder="40" showInDefault="1">
                 <label>GoodMarket Product Settings</label>
                 <group id="mapping" translate="label" type="text" sortOrder="40" showInDefault="1">
-                    <label>Varient-Attributes Mapping</label>
-                    <field id="product_color" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Product Attribute Mapping</label>
+                    <field id="varient" translate="label comment" type="select" sortOrder="50" showInDefault="1"
+                           showInWebsite="0" showInStore="0">
+                        <label>Map Configurable Product Attribute</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>Enable this field if you want to Upload Configurable Product on GoodMarket</comment>
+                    </field>
+                    <field id="product_color" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Color</label>
                         <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
+                        <validate>required-entry validate-select</validate>
                         <comment><![CDATA[Select product color attribute]]></comment>
+                        <depends>
+                            <field id="varient">1</field>
+                        </depends>
                     </field>
-                    <field id="product_size" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <field id="product_size" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Size</label>
                         <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
+                        <validate>required-entry validate-select</validate>
                         <comment><![CDATA[Select product size attribute]]></comment>
+                        <depends>
+                            <field id="varient">1</field>
+                        </depends>
                     </field>
-                    <field id="product_type" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <field id="product_type" translate="label" type="multiselect" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Type</label>
                         <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
+                        <validate>required-entry validate-select</validate>
                         <comment><![CDATA[Select product type attribute]]></comment>
+                        <depends>
+                            <field id="varient">1</field>
+                        </depends>
                     </field>
-                    <field id="product_material" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
-                        <label>Material</label>
-                        <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>
-                        <comment><![CDATA[Select product material attribute]]></comment>
-                    </field>
+<!--                    <field id="product_material" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">-->
+<!--                        <label>Material</label>-->
+<!--                        <source_model>Ced\GoodMarket\Model\Source\Attribute</source_model>-->
+<!--                        <comment><![CDATA[Select product material attribute]]></comment>-->
+<!--                    </field>-->
                 </group>
 <!--                <field id="mapping" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">-->
 <!--                    <label>Varients Mapping</label>-->

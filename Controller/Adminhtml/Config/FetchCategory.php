@@ -232,14 +232,14 @@ class FetchCategory extends Action
             fclose($file);
             $this->messageManager->addSuccessMessage(__('Categories Updated Successfully !!'));
 
-            //    $response['data'] = "<span style='color:green'>Categories Updated Successfully !!</span>";
-            //    $response['msg'] = "success";
+//            $response['data'] = "<span style='color:green'>Categories Updated Successfully !!</span>";
+//            $response['msg'] = "success";
         } catch (\Exception $e) {
 
             $this->messageManager->addErrorMessage(__('An Exception Has Taken Place'));
 
-            //    $response['data'] = "<span style='color:red'>Exception : " . $e->getMessage() . "</span>";
-            //    $response['msg'] = "error";
+//            $response['data'] = "<span style='color:red'>Exception : " . $e->getMessage() . "</span>";
+//            $response['msg'] = "error";
         }
 
         /**

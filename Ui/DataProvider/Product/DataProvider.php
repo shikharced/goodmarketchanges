@@ -89,15 +89,15 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 
         $this->addFilter(
             $this->filterBuilder->setField('type_id')->setConditionType('in')
-                ->setValue(['simple','configurable'])
+                ->setValue(['simple', 'configurable', 'virtual'])
                 ->create()
         );
 
-        /* $this->addFilter(
+         $this->addFilter(
             $this->filterBuilder->setField('visibility')->setConditionType('nin')
                 ->setValue([1])
                 ->create()
-        );*/
+        );
         $this->addFieldStrategies = $addFieldStrategies;
         $this->addFilterStrategies = $addFilterStrategies;
     }
