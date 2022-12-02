@@ -150,6 +150,14 @@
             </group>
             <group id="inventory_settings" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Inventory Settings</label>
+
+                <!-- New changes-->
+                <field id="inventoryMapping" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Inventory Source Mapping</label>
+                    <frontend_model>Ced\GoodMarket\Block\Adminhtml\Form\Config\Field</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+
                 <field id="use_msi" translate="label comment" type="select" sortOrder="50" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Use Multi Source Inventory (MSI)</label>
@@ -163,17 +171,6 @@
                         <field id="use_msi">1</field>
                     </depends>
                 </field>
-
-<!--                New changes-->
-                <field id="carrierMapping" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Order Carrier Mapping</label>
-                    <frontend_model>Ced\GoodMarket\Block\Adminhtml\Form\Config\Field</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-<!--                    <depends>-->
-<!--                        <field id="use_msi">1</field>-->
-<!--                    </depends>-->
-                </field>
-
 
                 <field id="use_salable_qty" translate="label comment" type="select" sortOrder="60" showInDefault="1"
                        showInWebsite="0" showInStore="0">

@@ -85,7 +85,7 @@ class GoodMarketSource extends Select
         $sourceList = json_decode($goodMarket, true);
         $arrar = [];
         foreach ($sourceList as $source) {
-            $arrar[] = ["label" => $source['name'], "value" => $source['source_code']];
+            $arrar[] = ["label" => $source['name'], "value" => $source['source_code']."-".$source['name']];
         }
         return $arrar;
     }

@@ -59,6 +59,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var MultiAccount */
     public $multiaccount;
 
+    const INVENTORYSOUCEMAPPING = 'goodmarket/inventory_settings/inventoryMapping';
+
     /**
      * Product constructor.
      * @param Context $context
@@ -102,6 +104,23 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $this->objectManager=$objectmanager;
         $this->flagManager = $flagManager;
         $this->file = $file;
+    }
+
+    /**
+     * Get inventory mapping
+     *
+     * @return string
+     */
+    public function getInventoryMapping()
+    {
+        $arr = [];
+        $getJson = $this->scopeConfig->getValue(self::INVENTORYSOUCEMAPPING);
+        $arr = json_decode($getJson, true);
+        $source = [];
+        foreach ($arr as $item) {
+            $source[$item['local_inventory_code']] = $item['good_market_source'];
+        }
+        return $source;
     }
 
     /**
@@ -500,11 +519,29 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
         if (!$quantity) {
             $allSources = [];
-            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-            $catalogSession = $objectManager->create('\Magento\Catalog\Model\Session');
-            $qty=$catalogSession->getQtyCount();
-            $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
-            $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);
+//            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+//            $catalogSession = $objectManager->create('\Magento\Catalog\Model\Session');
+//            $qty=$catalogSession->getQtyCount();
+//            $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
+//            $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);
+
+            /*Inventory Work - SHIKHAR*/
+            $sourceMapping = $this->getInventoryMapping();
+            foreach ($sourceMapping as $localSource => $gdmarketSource){
+                $quantity = $this->getQuantityForMsi($product, $localSource);
+                $gdmarketSourceArr = [];
+                $gdmarketSourceArr = explode('-', $gdmarketSource);
+                $allSources[] = [
+                    'source_code' => $gdmarketSourceArr[0],
+                    'name' => $gdmarketSourceArr[1],
+                    'quantity' => $quantity,
+                    'source_status' => 1,
+                    'status' => 1
+                ];
+            }
+
+            /*Inventory Work END - SHIKHAR*/
+
             $productArray['sources']=json_encode($allSources);
         }
         $media_gallery = $product->getData('media_gallery');
@@ -536,6 +573,22 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $productArray['category_ids'][] = $catId;
 //        echo '<pre>'; print_r($productArray);exit;
         return json_encode($productArray);
+    }
+
+    public function getQuantityForMsi($product, $sourceCode)
+    {
+        $_children = $product->getTypeInstance()->getUsedProducts($product);
+        $qtySum = 0;
+        foreach ($_children as $child){
+            $msiSourceDataModel = $this->objectManager->create('\Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku');
+            $invSourceData = $msiSourceDataModel->execute($child->getSku());
+            if ($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
+                $invSourceData = array_column($invSourceData, 'quantity', 'source_code');
+                $quantity = isset($invSourceData[$sourceCode]) ? $invSourceData[$sourceCode] : 0;
+                $qtySum = $qtySum + $quantity;
+            }
+        }
+        return $qtySum;
     }
 
     /**
@@ -694,7 +747,29 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 $catalogSession->setQtyCount($qty);
             }
             $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
-            $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);
+            /*$allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);*/
+
+            /*Shikhar - Changes for source Quantity*/
+            $sourceMapping = $this->getInventoryMapping();
+            foreach ($sourceMapping as $localSource => $gdmarketSource){
+                /*$msiSourceCode = $this->config->getMsiSourceCode();*/
+                $msiSourceDataModel = $this->objectManager->create('\Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku');
+                $invSourceData = $msiSourceDataModel->execute($child->getSku());
+                if ($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
+                    $invSourceData = array_column($invSourceData, 'quantity', 'source_code');
+                    $quantity = isset($invSourceData[$localSource]) ? $invSourceData[$localSource] : 0;
+                }
+                $gdmarketSourceArr = [];
+                $gdmarketSourceArr = explode('-', $gdmarketSource);
+                $allSources[] = [
+                    'source_code' => $gdmarketSourceArr[0],
+                    'name' => $gdmarketSourceArr[1],
+                    'quantity' => $quantity,
+                    'source_status' => 1,
+                    'status' => 1
+                ];
+            }
+            /*Shikhar - Changes for source Quantity END*/
             $productArray['sources']=json_encode($allSources);
 //            $productArray['quantity'] = $qty;
             $price = $this->getGoodMarketProfilePrice($child, 'price');
@@ -706,6 +781,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //        }
             $productArray['configurable_attribute'] = $configurableAttri;
             $productArray['config_attributes'] = $config_attributes;
+//            echo '<pre>'; print_r($productArray); exit;
             return $productArray;
         }catch (\Exception $e)
         {
@@ -821,9 +897,40 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
         if(!$quantity) {
             $allSources = [];
-            $qty=$this->getQuantityForUpload($product,$profile);
+            /*$qty=$this->getQuantityForUpload($product,$profile);
             $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
-            $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);
+            $allSources[] = array(
+                "source_code"=>$location_saved_data[0]['source_code'],
+                "name"=> $location_saved_data[0]['name'],
+                "quantity"=>$qty,
+                "source_status"=>1,
+                "status"=>1
+            );*/
+
+            /*Quantity Multi Source Assign Work - Shikhar*/
+
+            $sourceMapping = $this->getInventoryMapping();
+            foreach ($sourceMapping as $localSource => $gdmarketSource){
+                /*$msiSourceCode = $this->config->getMsiSourceCode();*/
+                $msiSourceDataModel = $this->objectManager->create('\Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku');
+                $invSourceData = $msiSourceDataModel->execute($product->getSku());
+                if ($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
+                    $invSourceData = array_column($invSourceData, 'quantity', 'source_code');
+                    $quantity = isset($invSourceData[$localSource]) ? $invSourceData[$localSource] : 0;
+                }
+                $gdmarketSourceArr = [];
+                $gdmarketSourceArr = explode('-', $gdmarketSource);
+                $allSources[] = [
+                    'source_code' => $gdmarketSourceArr[0],
+                    'name' => $gdmarketSourceArr[1],
+                    'quantity' => $quantity,
+                    'source_status' => 1,
+                    'status' => 1
+                ];
+            }
+            /*Quantity Multi Source Assign Work END - Shikhar*/
+
+
             $productArray['sources']=json_encode($allSources);
         }
         $media_gallery=$product->getData('media_gallery');
@@ -928,7 +1035,30 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $allSources = [];
             $qty=$this->getQuantityForUpload($product,$profile);
             $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
-            $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);
+
+            /*Quantity Multi Source Assign Work - Shikhar*/
+
+            $sourceMapping = $this->getInventoryMapping();
+            foreach ($sourceMapping as $localSource => $gdmarketSource){
+                /*$msiSourceCode = $this->config->getMsiSourceCode();*/
+                $msiSourceDataModel = $this->objectManager->create('\Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku');
+                $invSourceData = $msiSourceDataModel->execute($product->getSku());
+                if ($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
+                    $invSourceData = array_column($invSourceData, 'quantity', 'source_code');
+                    $quantity = isset($invSourceData[$localSource]) ? $invSourceData[$localSource] : 0;
+                }
+                $gdmarketSourceArr = [];
+                $gdmarketSourceArr = explode('-', $gdmarketSource);
+                $allSources[] = [
+                    'source_code' => $gdmarketSourceArr[0],
+                    'name' => $gdmarketSourceArr[1],
+                    'quantity' => $quantity,
+                    'source_status' => 1,
+                    'status' => 1
+                ];
+            }
+            /*Quantity Multi Source Assign Work END - Shikhar*/
+
             $productArray['sources']=json_encode($allSources);
         }
         $media_gallery=$product->getData('media_gallery');
@@ -960,6 +1090,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
         }
         $productArray['category_ids']=[$catId];
+//        echo '<pre>'; print_r($productArray); exit;
         return json_encode($productArray);
     }
 
