@@ -18,11 +18,11 @@
  */
 /* @var $block \Magento\Catalog\Block\Adminhtml\Profile\Create */
 ?>
-<!--<div class="row">-->
-<!--    <div class="col-1" style="float: right">-->
-<!--        <a id="updatecategory" href="--><?php // $block->getUrl('goodmarket/config/fetchCategory');?><!--"><button">UpdateCategory</button></a>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="row">
+    <div class="col-1" style="float: right">
+        <a id="updatecategory" href="<?php echo $block->getUrl('goodmarket/config/fetchCategory');?>"><button">Update Category</button></a>
+    </div>
+</div>
 <div class='row'>
     <div class='col-1'>
         <h3>Magento Category</h3>
@@ -37,7 +37,7 @@
 <?php /*echo '<pre>';print_r($category); exit; */?>
 
 <?php foreach ($category as $catId => $catName) { ?>
-    <?php 
+    <?php
     $value = $block->checkCatId($catId);
     $value = substr($value, 2, -2);
     $ex = explode('","', $value);
@@ -93,7 +93,8 @@
 <style>
      .row {
         width: 100%;
-        display: inline;
+        display: inline-block;
+         margin : 10px 0;
     }
 
     .col-1 {
@@ -121,5 +122,15 @@
         margin: 5px;
         text-align: center;
     }
-
+     a#updatecategory {
+         padding: 10px;
+         background-color: #ff6225;
+         font-size: 16px;
+         font-weight: bold;
+         color: #fff;
+     }
+     a#updatecategory:hover, a#updatecategory:visited {
+         text-decoration: none;
+         color: #fff;
+     }
 </style>

@@ -358,11 +358,25 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 foreach ($childs as $child) {
                                     if ($type == 'SyncInvProduct') {
                                         $price=$this->getGoodMarketProfilePrice($child,$priceAttribute);
-                                        $qty = $this->getQuantityForUpload($child, $profile);
+                                        /*$qty = $this->getQuantityForUpload($child, $profile);
                                         $allSources=[];
                                         $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
-                                        $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);
-                                        $reportInv[] = $this->data->getProductInventorySync($child->getData(), $qty,$price, $type,$allSources,$categoryId);
+                                        $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);*/
+                                        $allSources=[];
+                                        $sourceMapping = $this->getInventoryMapping();
+                                        foreach ($sourceMapping as $localSource => $gdmarketSource){
+                                            $quantity = $this->getQuantityForMsi($child, $localSource);
+                                            $gdmarketSourceArr = [];
+                                            $gdmarketSourceArr = explode('-', $gdmarketSource);
+                                            $allSources[] = [
+                                                'source_code' => $gdmarketSourceArr[0],
+                                                'name' => $gdmarketSourceArr[1],
+                                                'quantity' => $quantity,
+                                                'source_status' => 1,
+                                                'status' => 1
+                                            ];
+                                        }
+                                        $reportInv[] = $this->data->getProductInventorySync($child->getData(), $quantity, $price, $type,$allSources, $categoryId);
                                         continue;
                                     }
                                     if ($type == 'DeleteProduct') {
@@ -383,11 +397,26 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                         } else if ($product->getTypeId() == 'simple') {
                             if ($type == 'SyncInvProduct') {
                                 $price=$this->getGoodMarketProfilePrice($product,$priceAttribute);
-                                $qty = $this->getQuantityForUpload($product, $profile);
+                                /*$qty = $this->getQuantityForUpload($product, $profile);
                                 $allSources=[];
                                 $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
-                                $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);
-                                $reportInv[] = $this->data->getProductInventorySync($product->getData(), $qty, $price,$type,$allSources,$categoryId);
+                                $allSources[] = array("source_code"=>$location_saved_data[0]['source_code'], "name"=> $location_saved_data[0]['name'],"quantity"=>$qty,"source_status"=>1,"status"=>1);*/
+                                $allSources=[];
+                                $sourceMapping = $this->getInventoryMapping();
+                                foreach ($sourceMapping as $localSource => $gdmarketSource){
+                                    $quantity = $this->getQuantityForMsi($product, $localSource);
+                                    $gdmarketSourceArr = [];
+                                    $gdmarketSourceArr = explode('-', $gdmarketSource);
+                                    $allSources[] = [
+                                        'source_code' => $gdmarketSourceArr[0],
+                                        'name' => $gdmarketSourceArr[1],
+                                        'quantity' => $quantity,
+                                        'source_status' => 1,
+                                        'status' => 1
+                                    ];
+                                }
+
+                                $reportInv[] = $this->data->getProductInventorySync($product->getData(), $quantity, $price,$type,$allSources,$categoryId);
                                 return $reportInv;
                             }
                             if ($type == 'DeleteProduct') {

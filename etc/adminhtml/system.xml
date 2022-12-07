@@ -154,11 +154,12 @@
                 <!-- New changes-->
                 <field id="inventoryMapping" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Inventory Source Mapping</label>
+                    <validate>required-entry validate-select</validate>
                     <frontend_model>Ced\GoodMarket\Block\Adminhtml\Form\Config\Field</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                 </field>
 
-                <field id="use_msi" translate="label comment" type="select" sortOrder="50" showInDefault="1"
+                <field id="use_msi" translate="label comment" type="select" sortOrder="50" showInDefault="0"
                        showInWebsite="0" showInStore="0">
                     <label>Use Multi Source Inventory (MSI)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

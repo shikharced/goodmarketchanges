@@ -9,4 +9,7 @@
     <event name="adminhtml_block_html_before">
         <observer name="ced_integrator_dynamic_menu" instance="Ced\GoodMarket\Observer\Menu\AdminhtmlBlockHtmlBefore" />
     </event>
+    <!--<event name="catalog_product_save_after">
+        <observer name="ced_goodmarket_product_save_after" instance="Ced\GoodMarket\Observer\Productsaveafter" />
+    </event>-->
 </config>

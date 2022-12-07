@@ -82,7 +82,7 @@
                     </item>
                 </argument>
             </action>
-            <action name="syncproduct">
+            <!--<action name="syncproduct">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="confirm" xsi:type="array">
@@ -94,7 +94,7 @@
                         <item name="url" xsi:type="url" path="goodmarket/product/masssync"/>
                     </item>
                 </argument>
-            </action>
+            </action>-->
             <action name="deleteproduct">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
@@ -184,7 +184,7 @@
                 </item>
             </argument>
         </column>
-        <column name="qty">
+        <!--<column name="qty">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
@@ -193,7 +193,7 @@
                     <item name="sortOrder" xsi:type="number">80</item>
                 </item>
             </argument>
-        </column>
+        </column>-->
         <column name="goodmarket_profile_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
