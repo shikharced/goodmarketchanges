@@ -164,7 +164,7 @@
                     <label>Use Multi Source Inventory (MSI)</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="msi_source_code" translate="label" type="text" sortOrder="55" showInDefault="1" showInWebsite="0" showInStore="0">
+                <!--<field id="msi_source_code" translate="label" type="text" sortOrder="55" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>MSI Source Code</label>
                     <validate>required-entry</validate>
                     <comment><![CDATA[Put name of your Source ( Stores -> Inventory -> Sources ) which you would like to use for catch e.g, default for Default Source]]></comment>
@@ -188,7 +188,7 @@
                     <depends>
                         <field id="use_salable_qty">1</field>
                     </depends>
-                </field>
+                </field>-->
             </group>
             <group id="goodmarket_product" translate="label" type="text" sortOrder="40" showInDefault="1">
                 <label>GoodMarket Product Settings</label>

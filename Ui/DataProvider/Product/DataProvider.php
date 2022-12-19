@@ -78,6 +78,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                 ->setValue('true')
                 ->create()
         );
+//        echo '<pre>'; print_r($this->collection->getData());exit;
 
 
 //        $this->addFilter(
