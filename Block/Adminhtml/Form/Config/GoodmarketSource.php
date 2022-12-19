@@ -84,8 +84,11 @@ class GoodMarketSource extends Select
         $goodMarket = $this->flagManager->getFlagData(self::FLAG_CODE);
         $sourceList = json_decode($goodMarket, true);
         $arrar = [];
-        foreach ($sourceList as $source) {
-            $arrar[] = ["label" => $source['name'], "value" => $source['source_code']."-".$source['name']];
+//        echo '<pre>'; print_r($goodMarket); exit;
+        if (!empty($sourceList)) {
+            foreach ($sourceList as $source) {
+                $arrar[] = ["label" => $source['name'], "value" => $source['source_code']."+".$source['name']];
+            }
         }
         return $arrar;
     }

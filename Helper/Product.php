@@ -178,7 +178,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $categoryId = end($filterCategoryId);
                             $productAttributes['set'] = $profile['attribute_set'];//$categoryAttribute['attribute_set_id'];
                             $productAttributes['type'] = 'configurable';
-                            $productAttributes['integ_type']='magento';
+//                            $productAttributes['integ_type']='magento';
                             $image_role = array('image'=>'image1','small_image'=>'image1','thumbnail'=>'image1','swatch_image'=> '');
                             $productAttributes['image_role'] = json_encode($image_role);
                             if ($type == 'EditProduct') {
@@ -238,7 +238,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $categoryId = end($filterCategoryId);
                             $productAttributes['set'] = $profile['attribute_set'];//$categoryAttribute['attribute_set_id'];
                             $productAttributes['type'] = 'simple';
-                            $productAttributes['integ_type']='magento';
+//                            $productAttributes['integ_type']='magento';
                             $image_role = array('image'=>'image1','small_image'=>'image1','thumbnail'=>'image1','swatch_image'=> '');
                             $productAttributes['image_role'] = json_encode($image_role);
                             $category[] = $categoryId;
@@ -259,7 +259,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $categoryId = end($filterCategoryId);
                             $productAttributes['set'] = $profile['attribute_set'];//$categoryAttribute['attribute_set_id'];
                             $productAttributes['type'] = 'simple';
-                            $productAttributes['integ_type']='magento';
+//                            $productAttributes['integ_type']='magento';
                             $image_role = array('image'=>'image1','small_image'=>'image1','thumbnail'=>'image1','swatch_image'=> '');
                             $productAttributes['image_role'] = json_encode($image_role);
                             $category[] = $categoryId;
@@ -367,7 +367,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                         foreach ($sourceMapping as $localSource => $gdmarketSource){
                                             $quantity = $this->getQuantityForMsi($child, $localSource);
                                             $gdmarketSourceArr = [];
-                                            $gdmarketSourceArr = explode('-', $gdmarketSource);
+                                            $gdmarketSourceArr = explode('+', $gdmarketSource);
                                             $allSources[] = [
                                                 'source_code' => $gdmarketSourceArr[0],
                                                 'name' => $gdmarketSourceArr[1],
@@ -406,7 +406,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 foreach ($sourceMapping as $localSource => $gdmarketSource){
                                     $quantity = $this->getQuantityForMsi($product, $localSource);
                                     $gdmarketSourceArr = [];
-                                    $gdmarketSourceArr = explode('-', $gdmarketSource);
+                                    $gdmarketSourceArr = explode('+', $gdmarketSource);
                                     $allSources[] = [
                                         'source_code' => $gdmarketSourceArr[0],
                                         'name' => $gdmarketSourceArr[1],
@@ -559,7 +559,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             foreach ($sourceMapping as $localSource => $gdmarketSource){
                 $quantity = $this->getQuantityForMsi($product, $localSource);
                 $gdmarketSourceArr = [];
-                $gdmarketSourceArr = explode('-', $gdmarketSource);
+                $gdmarketSourceArr = explode('+', $gdmarketSource);
                 $allSources[] = [
                     'source_code' => $gdmarketSourceArr[0],
                     'name' => $gdmarketSourceArr[1],
@@ -600,6 +600,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             }
         }
         $productArray['category_ids'][] = $catId;
+        $productArray['integ_type']='magento';
 //        echo '<pre>'; print_r($productArray);exit;
         return json_encode($productArray);
     }
@@ -789,7 +790,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $quantity = isset($invSourceData[$localSource]) ? $invSourceData[$localSource] : 0;
                 }
                 $gdmarketSourceArr = [];
-                $gdmarketSourceArr = explode('-', $gdmarketSource);
+                $gdmarketSourceArr = explode('+', $gdmarketSource);
                 $allSources[] = [
                     'source_code' => $gdmarketSourceArr[0],
                     'name' => $gdmarketSourceArr[1],
@@ -803,6 +804,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //            $productArray['quantity'] = $qty;
             $price = $this->getGoodMarketProfilePrice($child, 'price');
             $productArray['price'] = $price;
+            $productArray['integ_type']='magento';
 //        foreach ($variationAttributes as $attribute) {
 //            if(in_array($attribute,$profileVariationAttribute)) {
 //                $configurable_attribute[$attribute] = $child->getData($attribute);
@@ -948,7 +950,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $quantity = isset($invSourceData[$localSource]) ? $invSourceData[$localSource] : 0;
                 }
                 $gdmarketSourceArr = [];
-                $gdmarketSourceArr = explode('-', $gdmarketSource);
+                $gdmarketSourceArr = explode('+', $gdmarketSource);
+//                echo '<pre>'; print_r($gdmarketSourceArr); exit;
                 $allSources[] = [
                     'source_code' => $gdmarketSourceArr[0],
                     'name' => $gdmarketSourceArr[1],
@@ -982,14 +985,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
              }
         }
 //      New Changes END By Shikhar
-
         if(isset($productImage)) {
             $productImages['images']=json_encode($productImage);
             if($type!='EditProduct') {
                 $productArray['media_gallery']=json_encode($productImages);
             }
+            /*$productArray['media_gallery']=json_encode($productImages);*/
         }
+
         $productArray['category_ids']=[$catId];
+        $productArray['integ_type']='magento';
 //        echo '<pre>'; print_r($productArray);exit;
         return json_encode($productArray);
     }
@@ -1077,7 +1082,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $quantity = isset($invSourceData[$localSource]) ? $invSourceData[$localSource] : 0;
                 }
                 $gdmarketSourceArr = [];
-                $gdmarketSourceArr = explode('-', $gdmarketSource);
+                $gdmarketSourceArr = explode('+', $gdmarketSource);
                 $allSources[] = [
                     'source_code' => $gdmarketSourceArr[0],
                     'name' => $gdmarketSourceArr[1],
@@ -1119,6 +1124,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
         }
         $productArray['category_ids']=[$catId];
+        $productArray['integ_type']='magento';
 //        echo '<pre>'; print_r($productArray); exit;
         return json_encode($productArray);
     }
