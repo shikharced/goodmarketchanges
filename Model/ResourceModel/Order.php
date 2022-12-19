@@ -19,9 +19,14 @@
 
 namespace Ced\GoodMarket\Model\ResourceModel;
 
+/**
+ * Class Order to get Orders
+ */
 class Order extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
+     * Constructor method
+     *
      * @return void
      */
     public function _construct()

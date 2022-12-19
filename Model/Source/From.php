@@ -22,12 +22,13 @@ namespace Ced\GoodMarket\Model\Source;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class From
- * @package Ced\GoodMarket\Model\Source
+ * Class From to getAllOptions
  */
 class From extends AbstractSource
 {
     /**
+     * getAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

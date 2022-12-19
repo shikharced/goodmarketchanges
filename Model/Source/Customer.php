@@ -23,19 +23,28 @@ use Magento\Framework\Option\ArrayInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 
+/**
+ * Class Customer for customers
+ */
 class Customer implements ArrayInterface
 {
     /**
+     * Protected param $customerRepository
+     *
      * @var CustomerRepositoryInterface
-     * */
+     */
     protected $customerRepository;
 
     /**
+     * Protected param $searchCriteriaBuilder
+     *
      * @var SearchCriteriaBuilder
      */
     protected $searchCriteriaBuilder;
 
     /**
+     * Public function __construct
+     *
      * @param CustomerRepositoryInterface $customerRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * */
@@ -47,8 +56,9 @@ class Customer implements ArrayInterface
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
-    /*
+    /**
      * Option getter
+     *
      * @return array
      */
     public function toOptionArray()
@@ -66,8 +76,9 @@ class Customer implements ArrayInterface
         return $ret;
     }
 
-    /*
+    /**
      * Get options in "key-value" format
+     *
      * @return array
      */
     public function toArray()

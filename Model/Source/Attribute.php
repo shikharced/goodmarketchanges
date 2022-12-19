@@ -22,21 +22,22 @@ namespace Ced\GoodMarket\Model\Source;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class From
- * @package Ced\GoodMarket\Model\Source
+ * Class Attribute for form
  */
 class Attribute extends AbstractSource
 {
     /**
+     * public function get all options
+     *
      * @return array
      */
     public function getAllOptions()
     {
         $magentoattributeCodeArray=[];
         $this->_objectManager=\Magento\Framework\App\ObjectManager::getInstance();
-        $attributes = $this->_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection')
+        $attributes = $this->_objectManager->create(\Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection::class)
             ->getItems();
-        foreach ($attributes as $attribute){
+        foreach ($attributes as $attribute) {
             $magentoattributeCodeArray[]=[
                 'value'=> $attribute->getAttributecode(),
             'label'=>$attribute->getFrontendLabel()

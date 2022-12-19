@@ -22,14 +22,15 @@ namespace Ced\GoodMarket\Model\Source\Cron;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class Status
- * @package Ced\GoodMarket\Model\Source\Cron\Status
+ * Class Status to get status
  */
 class Type extends AbstractSource
 {
-    const INVENTORY = 'inventory';
+    public const INVENTORY = 'inventory';
 
     /**
+     * getAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

@@ -22,21 +22,18 @@ namespace Ced\GoodMarket\Model\Source\Order;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class Status
- *
- * @package Ced\GoodMarket\Model\Source
+ * Class Status to get API Status
  */
 class Status extends AbstractSource
 {
 
-
     // Api Status
-    const ALL = 'all';
-    const NEWORDER = 'new';
-    const PENDING = 'pending';
-    const HISTORIC = 'historic';
-    const CANCELLED='cancelled';
-    const FAILED='failed';
+    public const ALL = 'all';
+    public const NEWORDER = 'new';
+    public const PENDING = 'pending';
+    public const HISTORIC = 'historic';
+    public const CANCELLED='cancelled';
+    public const FAILED='failed';
 
     // const STATUS = [
     //     self::ALL,
@@ -49,6 +46,8 @@ class Status extends AbstractSource
     // ];
 
     /**
+     * public function getAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

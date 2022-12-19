@@ -19,28 +19,42 @@
 
 namespace Ced\GoodMarket\Model;
 
+/**
+ * Class Order to get ORders
+ */
 class Order extends \Magento\Framework\Model\AbstractModel
 {
-    const NAME = "ced_goodmarket_order";
+    public const NAME = "ced_goodmarket_order";
 
-    const COLUMN_ID = 'id';
-    const COLUMN_MAGENTO_ORDER_ID = 'magento_order_id';
-    const COLUMN_MAGENTO_INCREMENT_ID = 'magento_increment_id';
-    const COLUMN_MARKETPLACE_ORDER_ID = 'goodmarket_order_id';
-    const COLUMN_MARKETPLACE_SHIPMENT_ID = 'goodmarket_shipment_id';
-    const COLUMN_MARKETPLACE_DATE_CREATED = 'date_created';
-    const COLUMN_MARKETPLACE_SITE_ID = 'site_id';
-    const COLUMN_STATUS = 'status';
-    const COLUMN_FAILURE_REASON = 'reason';
-    const COLUMN_ORDER_DATA = 'order_data';
-    const COLUMN_SHIPMENT_DATA = 'shipment_data';
-    const COLUMN_CANCELLATION_DATA = 'cancellation_data';
-    const COLUMN_ORDER_ACCOUNT_CODE='account_code';
+    public const COLUMN_ID = 'id';
+    public const COLUMN_MAGENTO_ORDER_ID = 'magento_order_id';
+    public const COLUMN_MAGENTO_INCREMENT_ID = 'magento_increment_id';
+    public const COLUMN_MARKETPLACE_ORDER_ID = 'goodmarket_order_id';
+    public const COLUMN_MARKETPLACE_SHIPMENT_ID = 'goodmarket_shipment_id';
+    public const COLUMN_MARKETPLACE_DATE_CREATED = 'date_created';
+    public const COLUMN_MARKETPLACE_SITE_ID = 'site_id';
+    public const COLUMN_STATUS = 'status';
+    public const COLUMN_FAILURE_REASON = 'reason';
+    public const COLUMN_ORDER_DATA = 'order_data';
+    public const COLUMN_SHIPMENT_DATA = 'shipment_data';
+    public const COLUMN_CANCELLATION_DATA = 'cancellation_data';
+    public const COLUMN_ORDER_ACCOUNT_CODE='account_code';
+    /**
+     * public function _construct
+     * 
+     * @throws error 
+     */ 
     public function _construct()
     {
         $this->_init(\Ced\GoodMarket\Model\ResourceModel\Order::class);
     }
 
+    /**
+     * public function getByPurchaseOrderId
+     * 
+     * @param $poId
+     * @return string
+     */
     public function getByPurchaseOrderId($poId)
     {
         $order = $this->load($poId, self::COLUMN_MARKETPLACE_ORDER_ID);
@@ -51,6 +65,12 @@ class Order extends \Magento\Framework\Model\AbstractModel
         return null;
     }
 
+    /**
+     * public function loadByMagentoOrderId
+     * 
+     * @param $magentoOrderId
+     * @return array
+     */
     public function loadByMagentoOrderId($magentoOrderId)
     {
         $this->load($magentoOrderId, self::COLUMN_MAGENTO_ORDER_ID);

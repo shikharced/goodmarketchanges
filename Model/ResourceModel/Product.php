@@ -19,9 +19,14 @@ namespace Ced\GoodMarket\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
+/**
+ * Class Product to get products
+ */
 class Product extends AbstractDb
 {
     /**
+     * Constructor method
+     *
      * @return void
      */
     public function _construct()

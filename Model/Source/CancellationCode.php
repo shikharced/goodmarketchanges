@@ -22,12 +22,13 @@ namespace Ced\GoodMarket\Model\Source;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class From
- * @package Ced\GoodMarket\Model\Source
+ * Class From for CancellationCode
  */
 class CancellationCode extends AbstractSource
 {
     /**
+     * public function getAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

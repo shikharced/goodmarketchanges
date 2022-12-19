@@ -21,12 +21,13 @@ namespace Ced\GoodMarket\Model\ResourceModel\Product;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
- * Class Collection
- * @package Ced\GoodMarket\Model\ResourceModel\Cron
+ * Class Collection to get Collection
  */
 class Collection extends AbstractCollection
 {
     /**
+     * Construct Function
+     *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function _construct()

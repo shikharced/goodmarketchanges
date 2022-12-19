@@ -22,27 +22,28 @@ namespace Ced\GoodMarket\Model\Source;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class ServiceUrl
- * @package Ced\GoodMarket\Model\Source
+ * Class ServiceUrl for url
  */
 class Cron extends AbstractSource
 {
-    const CRON_2MINUTES ='*/2 * * * *';
-    const CRON_15MINUTES = '*/15 * * * *';
-    const CRON_30MINUTES = '*/30 * * * *';
-    const CRON_HOURLY = '0 * * * *';
-    const CRON_2HOURLY = '0 */2 * * *';
-    const CRON_6HOURLY = '0 */2 * * *';
-    const CRON_12HOURLY = '0 0,12 * * *';
-    const CRON_DAILY = '0 0 * * *';
+    public const CRON_2MINUTES ='*/2 * * * *';
+    public const CRON_15MINUTES = '*/15 * * * *';
+    public const CRON_30MINUTES = '*/30 * * * *';
+    public const CRON_HOURLY = '0 * * * *';
+    public const CRON_2HOURLY = '0 */2 * * *';
+    public const CRON_6HOURLY = '0 */2 * * *';
+    public const CRON_12HOURLY = '0 0,12 * * *';
+    public const CRON_DAILY = '0 0 * * *';
 
     /**
+     * public function getAllOptions
+     *
      * @return array
      */
     public function getAllOptions()
     {
         $expressions = [
-[
+            [
                 'label' => __('Every  2 Minutes'),
                 'value' => self::CRON_2MINUTES
             ],

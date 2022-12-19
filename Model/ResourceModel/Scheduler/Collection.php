@@ -12,24 +12,28 @@
  *
  * @category    Ced
  * @package     Ced_GoodMarket
- * @author        CedCommerce Core Team <connect@cedcommerce.com>
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
- * @license      http://cedcommerce.com/license-agreement.txt
+ * @license     http://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\GoodMarket\Model\ResourceModel\Scheduler;
 
 use \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
+/**
+ * Class Collection
+ */
 class Collection extends AbstractCollection
 {
     /**
+     * Public function constructor
+     *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function _construct()
     {
-        $this->_init('Ced\GoodMarket\Model\Scheduler', 'Ced\GoodMarket\Model\ResourceModel\Scheduler');
+        $this->_init(\Ced\GoodMarket\Model\Scheduler::class, \Ced\GoodMarket\Model\ResourceModel\Scheduler::class);
         $this->_setIdFieldName($this->getResource()->getIdFieldName());
     }
-
 }

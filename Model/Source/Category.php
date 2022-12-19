@@ -22,21 +22,32 @@ use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 
+/**
+ * Class Category for menus
+ */
 class Category implements OptionSourceInterface
 {
     /**
+     * public param $category
+     *
      * @var CollectionFactory
      */
     public $category;
-
+    
+    /**
+     * public param $storeManager
+     *
+     * @var StoreManagerInterface
+     */
     public $storeManager;
 
     public $allowedLevels = [1, 2, 3, 4, 5];
 
     /**
      * Category constructor.
+     *
      * @param StoreManagerInterface $storeManager
-     * @param CollectionFactory $collectionFactory
+     * @param CollectionFactory $CollectionFactory
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -46,6 +57,11 @@ class Category implements OptionSourceInterface
         $this->category = $collectionFactory;
     }
 
+    /**
+     * public function toOptionArray
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         $categories = $this->category->create()
@@ -72,12 +88,19 @@ class Category implements OptionSourceInterface
         return $options;
     }
 
+    /**
+     * getAllOptions
+     *
+     * @return array
+     */
     public function getAllOptions()
     {
         return $this->getOptionArray();
     }
 
     /**
+     * getOptionArray
+     *
      * @return array
      */
     public function getOptionArray()

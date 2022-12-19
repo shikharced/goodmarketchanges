@@ -24,15 +24,19 @@ use \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 class Collection extends AbstractCollection
 {
     /**
+     * Public function condtructor
+     *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function _construct()
     {
-        $this->_init('Ced\GoodMarket\Model\Profile', 'Ced\GoodMarket\Model\ResourceModel\Profile');
+        $this->_init(\Ced\GoodMarket\Model\Profile::class, \Ced\GoodMarket\Model\ResourceModel\Profile::class);
         $this->_setIdFieldName($this->getResource()->getIdFieldName());
     }
 
     /**
+     * Update status function
+     *
      * @param $dataToUpdate
      * @param $condition
      */

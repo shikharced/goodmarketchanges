@@ -21,17 +21,18 @@ namespace Ced\GoodMarket\Model\ResourceModel\Cron;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
- * Class Collection
- * @package Ced\GoodMarket\Model\ResourceModel\Cron
+ * Class Collection for cron
  */
 class Collection extends AbstractCollection
 {
     /**
+     * Constructor function
+     *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function _construct()
     {
-        $this->_init('Ced\GoodMarket\Model\Cron', 'Ced\GoodMarket\Model\ResourceModel\Cron');
+        $this->_init(\Ced\GoodMarket\Model\Cron::class, \Ced\GoodMarket\Model\ResourceModel\Cron::class);
         $this->_setIdFieldName($this->getResource()->getIdFieldName());
     }
 }

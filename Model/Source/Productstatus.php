@@ -18,15 +18,16 @@
 namespace Ced\GoodMarket\Model\Source;
 
 /**
- * Class Productstatus
- * @package Ced\GoodMarket\Model\Source
+ * Class Productstatus to get Product status
  */
 class Productstatus extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
 {
-    const NOT_UPLOADED = 'Not-Uploaded';
-    const UPLOADED = 'Uploaded';
+    public const NOT_UPLOADED = 'Not-Uploaded';
+    public const UPLOADED = 'Uploaded';
 
     /**
+     * toOptionArray
+     *
      * @return array
      */
     public function toOptionArray()
@@ -35,6 +36,8 @@ class Productstatus extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractS
     }
 
     /**
+     * GetAllOption
+     *
      * @return array
      */
     public function getAllOptions()
@@ -66,6 +69,8 @@ class Productstatus extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractS
     }
 
     /**
+     * GetAllOption
+     *
      * @return array
      */
     public function getAllOption()
@@ -76,6 +81,8 @@ class Productstatus extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractS
     }
 
     /**
+     * GetOptions
+     *
      * @return array
      */
     public function getOptions()
@@ -88,6 +95,8 @@ class Productstatus extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractS
     }
 
     /**
+     * GetOptionText
+     *
      * @param int|string $optionId
      * @return mixed|null
      */
@@ -96,5 +105,4 @@ class Productstatus extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractS
         $options = $this->getOptionArray();
         return isset($options[$optionId]) ? $options[$optionId] : null;
     }
-
 }

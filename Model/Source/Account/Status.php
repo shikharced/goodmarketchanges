@@ -19,6 +19,9 @@ namespace Ced\GoodMarket\Model\Source\Account;
 
 use Magento\Framework\Data\OptionSourceInterface;
 
+/**
+ * Class to get account Status
+ */
 class Status implements OptionSourceInterface
 {
     /**
@@ -47,5 +50,4 @@ class Status implements OptionSourceInterface
         }
         return $options;
     }
-
 }

@@ -18,9 +18,17 @@
 
 namespace Ced\GoodMarket\Model\Config;
 
+/**
+ * class Carrier Array Serialized 
+ */
 class CarrierArraySerialized extends \Magento\Config\Model\Config\Backend\Serialized
 {
 
+    /**
+     * befpreSave func
+     *
+     * @return array
+     */
     public function beforeSave()
     {
         $value = $this->getValue();
@@ -32,13 +40,21 @@ class CarrierArraySerialized extends \Magento\Config\Model\Config\Backend\Serial
         return parent::beforeSave();
     }
 
-    function unique($array, $key1) {
+    /**
+     * function unique
+     *
+     * @param $array
+     * @param $key1
+     * @return array
+     */
+    function unique($array, $key1)
+    {
         $parsedArray = [];
         $i = 0;
         $keyArray = [];
         foreach ($array as $key => $val) {
             if (!isset($val[$key1])) {
-               continue;
+                continue;
             }
 
             if (!in_array($val[$key1], $keyArray)) {

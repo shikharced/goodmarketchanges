@@ -14,19 +14,23 @@
  * @package     Ced_GoodMarket
  * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
- * @license      http://cedcommerce.com/license-agreement.txt
+ * @license     http://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\GoodMarket\Model\ResourceModel;
 
+/**
+ * Class Profile to assign categories and products
+ */
 class Profile extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
+     * public method construct
+     *
      * @return void
      */
     public function _construct()
     {
-
         $this->_init('goodmarket_profile', 'id');
     }
 }

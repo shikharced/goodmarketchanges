@@ -19,9 +19,14 @@ namespace Ced\GoodMarket\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
+/**
+ * Class Cron for crons
+ */
 class Cron extends AbstractDb
 {
     /**
+     * Constructor Function
+     *
      * @return void
      */
     public function _construct()

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * CedCommerce
  *
@@ -22,16 +21,17 @@ namespace Ced\GoodMarket\Model\Source\Cron;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class Status
- * @package Ced\GoodMarket\Model\Source\Cron\Status
+ * Class Status to get cron status
  */
 class Status extends AbstractSource
 {
-    const PENDING = 'pending';
-    const FAILED = 'failed';
-    const SUBMITTED = 'submitted';
+    public const PENDING = 'pending';
+    public const FAILED = 'failed';
+    public const SUBMITTED = 'submitted';
 
     /**
+     * getAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

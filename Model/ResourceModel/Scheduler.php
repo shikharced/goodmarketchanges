@@ -14,19 +14,23 @@
  * @package     Ced_GoodMarket
  * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
- * @license      http://cedcommerce.com/license-agreement.txt
+ * @license     http://cedcommerce.com/license-agreement.txt
  */
 
 namespace Ced\GoodMarket\Model\ResourceModel;
 
+/**
+ * Class Schedular for bulk schedule
+ */
 class Scheduler extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
+     * Constructor function
+     *
      * @return void
      */
     public function _construct()
     {
-
         $this->_init('ced_goodmarket_bulk_scheduler', 'id');
     }
 }

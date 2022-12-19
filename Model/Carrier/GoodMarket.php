@@ -53,16 +53,6 @@ class GoodMarket extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     public $registry;
 
     /**
-     * Shipbygoodmarket constructor.
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory
-     * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory
-     * @param array $data
-     */
-
-    /**
      * GoodMarket constructor.
      * @param \Magento\Framework\App\State $appState
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -92,6 +82,8 @@ class GoodMarket extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     }
 
     /**
+     * public function collectRates
+     *
      * @param RateRequest $request
      * @return bool|\Magento\Framework\DataObject|\Magento\Shipping\Model\Rate\Result|null
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -130,7 +122,9 @@ class GoodMarket extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     }
 
     /**
-     * @return array
+     * public function getAllowedMethods
+     *
+     *  @return array
      */
     public function getAllowedMethods()
     {
@@ -138,6 +132,8 @@ class GoodMarket extends \Magento\Shipping\Model\Carrier\AbstractCarrier impleme
     }
 
     /**
+     * public function getCode
+     *
      * @return string
      */
     public function getCode()

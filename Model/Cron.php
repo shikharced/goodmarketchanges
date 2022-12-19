@@ -21,13 +21,17 @@ namespace Ced\GoodMarket\Model;
 use Magento\Framework\Model\AbstractModel;
 
 /**
- * Class Cron
- * @package Ced\GoodMarket\Model
+ * Class Cron to get Crons update
  */
 class Cron extends AbstractModel
 {
+    /**
+     * public function _construct
+     *
+     * @throws Exception  
+     */
     public function _construct()
     {
-        $this->_init('Ced\GoodMarket\Model\ResourceModel\Cron');
+        $this->_init(\Ced\GoodMarket\Model\ResourceModel\Cron::class);
     }
 }

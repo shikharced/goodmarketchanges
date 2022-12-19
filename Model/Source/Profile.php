@@ -20,8 +20,7 @@
 namespace Ced\GoodMarket\Model\Source;
 
 /**
- * Class Profile
- * @package Ced\GoodMarket\Model\Source
+ * Class Profile source
  */
 class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
 {
@@ -40,28 +39,33 @@ class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
+     * public function getAllOptions
+     *
      * @return array
      */
     public function getAllOptions($accountId = 0)
     {
         $data = [];
-        $collection = \Magento\Framework\App\ObjectManager::getInstance()->get('Ced\GoodMarket\Model\Profile')->getCollection();
+        $collection = \Magento\Framework\App\ObjectManager::getInstance()
+        ->get(\Ced\GoodMarket\Model\Profile::class)->getCollection();
         if ($accountId && $accountId > 0) {
             $collection->addFieldToFilter('account_id', $accountId);
             $data[] = ['value' => 0, 'label' => '--Not Assigned--'];
         }
 
-        foreach($collection as $profile){
-            $data[] = ['value' => $profile->getId(), 'label' => $profile->getProfileName() . ' [' . $profile->getId() . ']' ];
+        foreach ($collection as $profile) {
+            $data[] = [
+                'value' => $profile->getId(),
+                'label' => $profile->getProfileName() . ' [' . $profile->getId() . ']'
+            ];
         }
-
         return $data;
-
     }
 
     /**
      * Retrieve option array
      *
+     * @param $accountId
      * @return array
      */
     public function getOptionArray($accountId = 0)
@@ -74,6 +78,8 @@ class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
+     * toOptionArray
+     *
      * {@inheritdoc}
      */
     public function toOptionArray()
@@ -105,5 +111,4 @@ class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
         $options = $this->getOptionArray();
         return isset($options[$optionId]) ? $options[$optionId] : null;
     }
-
 }

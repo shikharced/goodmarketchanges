@@ -21,14 +21,24 @@ namespace Ced\GoodMarket\Model;
 use \Magento\Framework\Model\AbstractModel;
 
 /**
- * Class Profile
- *
- * @package Ced\GoodMarket\Model
+ * Class Profile for profiles
  */
 class Profile extends AbstractModel
 {
 
     public $productIds = [];
+
+    /**
+     * public function __construct
+     *
+     * @param \Magento\Framework\Model\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollection
+     * @param \Magento\Catalog\Model\Product\ActionFactory $productActionFactory
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null
+     * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null
+     * @param array $data
+     */
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
@@ -43,14 +53,18 @@ class Profile extends AbstractModel
         $this->productActionFactory = $productActionFactory;
     }
     /**
+     * public function _construct
+     *
      * @return void
      */
     public function _construct()
     {
-        $this->_init('Ced\GoodMarket\Model\ResourceModel\Profile');
+        $this->_init(\Ced\GoodMarket\Model\ResourceModel\Profile::class);
     }
 
     /**
+     * public function loadByField
+     *
      * @param $field
      * @param $value
      * @param string $additionalAttributes
@@ -78,6 +92,11 @@ class Profile extends AbstractModel
         return $this;
     }
 
+    /**
+     * public function getProductsPosition
+     *
+     * @return array
+     */
     public function getProductsPosition()
     {
         if ($id = $this->getId()) {
@@ -90,11 +109,12 @@ class Profile extends AbstractModel
         } else {
             $this->productIds = [];
         }
-
         return $this->productIds;
     }
 
     /**
+     * public function updateProducts
+     *
      * @param $profileProducts
      */
     public function updateProducts($profileProducts)
@@ -103,7 +123,7 @@ class Profile extends AbstractModel
             $oldIds = $this->productCollection->create()
                 ->addAttributeToFilter('goodmarket_profile_id', ['eq' => $id])
                 ->getAllIds();
-            $productId =explode(',',$profileProducts);
+            $productId = explode(',', $profileProducts);
 
             $newIds = array_diff($productId, $oldIds);
             $toBeRemoveIds = array_diff($oldIds, $productId);

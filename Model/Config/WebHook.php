@@ -19,10 +19,25 @@
 
 namespace Ced\GoodMarket\Model\Config;
 
+/**
+ * Class Webhook for redirect uri
+ */
 class WebHook extends \Magento\Framework\App\Config\Value
 {
     public $redirectUri;
 
+    /**
+     * public function __construct
+     *
+     * @param \Ced\GoodMarket\Helper\Config $zalando
+     * @param \Magento\Framework\Model\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
+     * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null
+     * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null
+     * @param array $data
+     */
     public function __construct(
         \Ced\GoodMarket\Helper\Config $zalando,
         \Magento\Framework\Model\Context $context,
@@ -37,6 +52,11 @@ class WebHook extends \Magento\Framework\App\Config\Value
         $this->redirectUri = $zalando->getRedirectUri();
     }
 
+    /**
+     * public function getValue
+     * 
+     * @return string
+     */
     public function getValue()
     {
         return $this->redirectUri;

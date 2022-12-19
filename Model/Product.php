@@ -21,13 +21,17 @@ namespace Ced\GoodMarket\Model;
 use Magento\Framework\Model\AbstractModel;
 
 /**
- * Class Cron
- * @package Ced\GoodMarket\Model
+ * Class Product for collection
  */
 class Product extends AbstractModel
 {
+    /**
+     * Public function _construct
+     *
+     * @throw exception 
+     */
     public function _construct()
     {
-        $this->_init('Ced\GoodMarket\Model\ResourceModel\Product');
+        $this->_init(\Ced\GoodMarket\Model\ResourceModel\Product::class);
     }
 }

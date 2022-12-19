@@ -19,8 +19,14 @@
 
 namespace Ced\GoodMarket\Model\ResourceModel\Order;
 
+/**
+ * Class Collection for Orders
+ */
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
+    /**
+     * public method _construct()
+     */
     public function _construct()
     {
         $this->_init(

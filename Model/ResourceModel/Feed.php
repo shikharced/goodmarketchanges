@@ -19,14 +19,18 @@
 
 namespace Ced\GoodMarket\Model\ResourceModel;
 
+/**
+ * Class Feed to get Feed by id
+ */
 class Feed extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
+     * Constructor Method
+     *
      * @return void
      */
     public function _construct()
     {
-
         $this->_init('ced_goodmarket_feed_data', 'id');
     }
 }

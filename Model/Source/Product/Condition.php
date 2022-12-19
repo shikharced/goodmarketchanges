@@ -22,12 +22,13 @@ namespace Ced\GoodMarket\Model\Source\Product;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class From
- * @package Ced\GoodMarket\Model\Source
+ * Class Condition for Form
  */
 class Condition extends AbstractSource
 {
     /**
+     * public function getAllOption
+     *
      * @return array
      */
     public function getAllOptions()

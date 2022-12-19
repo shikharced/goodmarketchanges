@@ -25,9 +25,7 @@ use \Magento\Framework\Filesystem;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
- * Class Rootlevel
- *
- * @package Ced\GoodMarket\Model\Source\Profile\Category
+ * Class Rootlevel for root categories
  */
 class Rootlevel implements ArrayInterface
 {
@@ -83,5 +81,4 @@ class Rootlevel implements ArrayInterface
         }
         return $options;
     }
-
 }

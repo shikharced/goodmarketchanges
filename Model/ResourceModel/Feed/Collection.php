@@ -21,15 +21,19 @@ namespace Ced\GoodMarket\Model\ResourceModel\Feed;
 
 use \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
+/**
+ * Class Collection for feed
+ */
 class Collection extends AbstractCollection
 {
     /**
+     * Method COnstruct
+     *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function _construct()
     {
-        $this->_init('Ced\GoodMarket\Model\Feed', 'Ced\GoodMarket\Model\ResourceModel\Feed');
+        $this->_init(\Ced\GoodMarket\Model\Feed::class, \Ced\GoodMarket\Model\ResourceModel\Feed::class);
         $this->_setIdFieldName($this->getResource()->getIdFieldName());
     }
-
 }

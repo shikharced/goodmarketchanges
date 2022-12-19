@@ -22,26 +22,24 @@ namespace Ced\GoodMarket\Model\Source\Order\Shipment;
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
 /**
- * Class Status
- *
- * @package Ced\GoodMarket\Model\Source\Order\Shipment
+ * Class Status of shimpments
  */
 class Status extends AbstractSource
 {
-    const ALL = 'all';
-    const TO_BE_AGREED = 'to_be_agreed';
-    const PENDING = 'pending';
-    const HANDLING = 'handling';
-    const READY_TO_SHIP = 'ready_to_ship';
-    const SHIPPED = 'shipped';
-    const DELIVERED = 'delivered';
-    const NOT_DELIVERED = 'not_delivered';
-    const NOT_VERIFIED = 'not_verified';
-    const CANCELLED = 'cancelled';
-    const CLOSED = 'closed';
-    const ACTIVE = 'active';
+    public const ALL = 'all';
+    public const TO_BE_AGREED = 'to_be_agreed';
+    public const PENDING = 'pending';
+    public const HANDLING = 'handling';
+    public const READY_TO_SHIP = 'ready_to_ship';
+    public const SHIPPED = 'shipped';
+    public const DELIVERED = 'delivered';
+    public const NOT_DELIVERED = 'not_delivered';
+    public const NOT_VERIFIED = 'not_verified';
+    public const CANCELLED = 'cancelled';
+    public const CLOSED = 'closed';
+    public const ACTIVE = 'active';
 
-    const STATUS = [
+    public const STATUS = [
         self::ALL,
         self::TO_BE_AGREED,
         self::PENDING,
@@ -57,6 +55,8 @@ class Status extends AbstractSource
     ];
 
     /**
+     * public function getAllOptions
+     *
      * @return array
      */
     public function getAllOptions()

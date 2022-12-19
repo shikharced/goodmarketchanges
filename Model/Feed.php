@@ -21,11 +21,13 @@ namespace Ced\GoodMarket\Model;
 
 class Feed extends \Magento\Framework\Model\AbstractModel
 {
-    const NAME = "ced_goodmarket_feed_data";
+    public const NAME = "ced_goodmarket_feed_data";
 
+    /**
+     * Public function Construct
+     */
     public function _construct()
     {
         $this->_init(\Ced\GoodMarket\Model\ResourceModel\Feed::class);
     }
-
 }

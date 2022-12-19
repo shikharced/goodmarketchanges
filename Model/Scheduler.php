@@ -19,13 +19,20 @@
 
 namespace Ced\GoodMarket\Model;
 
+/**
+ * Class scheduler for bulk schedule
+ */
 class Scheduler extends \Magento\Framework\Model\AbstractModel
 {
-    const NAME = "ced_goodmarket_bulk_scheduler";
+    public const NAME = "ced_goodmarket_bulk_scheduler";
 
+    /**
+     * public function _construct
+     *
+     * @throws exception
+     */
     public function _construct()
     {
         $this->_init(\Ced\GoodMarket\Model\ResourceModel\Scheduler::class);
     }
-
 }

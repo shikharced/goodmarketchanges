@@ -20,8 +20,7 @@
 namespace Ced\GoodMarket\Model\Source;
 
 /**
- * Class Profile
- * @package Ced\MlibreMultiAccount\Model\Source
+ * Class Profile form
  */
 class Accounts extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
 {
@@ -40,20 +39,21 @@ class Accounts extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
+     * Public function getAlloptions
+     *
      * @return array
      */
     public function getAllOptions()
     {
 
-        $collection = \Magento\Framework\App\ObjectManager::getInstance()->get('Ced\GoodMarket\Model\Accounts')->getCollection();
+        $collection = \Magento\Framework\App\ObjectManager::getInstance()
+        ->get(\Ced\GoodMarket\Model\Accounts::class)->getCollection();
 
         $data = [];
-        foreach($collection as $account){
+        foreach ($collection as $account) {
             $data[] = ['value' => $account->getId(), 'label' => $account->getAccountCode()];
         }
-
         return $data;
-
     }
 
     /**
@@ -72,6 +72,8 @@ class Accounts extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
+     * public function toOptionArray
+     *
      * {@inheritdoc}
      */
     public function toOptionArray()
@@ -103,5 +105,4 @@ class Accounts extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
         $options = $this->getOptionArray();
         return isset($options[$optionId]) ? $options[$optionId] : null;
     }
-
 }
