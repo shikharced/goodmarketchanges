@@ -27,8 +27,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
- * Class CategoryJs
- * @package Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute
+ * Class CategoryJs for category
  */
 class CategoryJs extends Widget implements RendererInterface
 {
@@ -38,19 +37,19 @@ class CategoryJs extends Widget implements RendererInterface
     public $_template = 'profile/categoryMapping.phtml';
 
     /**
-     * @var
-     */
-    public  $_profile;
-    /**
      * @var Data
      */
     public $helper;
+
     /**
-     * CategoryJs constructor.
+     * Category constructor.
+     *
      * @param Context $context
-     * @param array $data
+     * @param Data $helper
+     * @param Registry $registry
+     * @param $data
      */
-    public function __construct(
+    function __construct(
         Context $context,
         Data $helper,
         Registry $registry,
@@ -63,6 +62,8 @@ class CategoryJs extends Widget implements RendererInterface
     }
 
     /**
+     * get level
+     *
      * @param $level
      * @return array
      */
@@ -80,6 +81,12 @@ class CategoryJs extends Widget implements RendererInterface
         return $option;
     }
 
+    /**
+     * Render
+     *
+     * @param AbstractElement $element
+     * @return string
+     */
     public function render(AbstractElement $element)
     {
         $this->setElement($element);

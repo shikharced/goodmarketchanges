@@ -16,44 +16,56 @@
  * @license   http://cedcommerce.com/license-agreement.txt
  */
 namespace Ced\GoodMarket\Helper;
+
 use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Backend\Model\Session;
 
+/**
+ * class MultiAccount Helper
+ */
 class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
      * @var \Magento\Framework\Registry
      */
     protected $_coreRegistry;
+
     /**
      * @var \Ced\GoodMarket\Model\Accounts
      */
     protected $accountModel;
+
     /**
      * @var \Ced\GoodMarket\Model\Profile
      */
     protected $profileModel;
+
     /**
      * @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute
      */
     public $eavAttribute;
-    /** @var EavSetup $eavSetup */
+
+    /**
+     * @var EavSetup $eavSetup
+     */
     public $eavSetup;
+
     /**
      * @var \Ced\GoodMarket\Model\ResourceModel\Accounts\Collection
      */
     protected $accountsCollectionFactory;
 
+    /**
+     * @var Session
+     */
     public $adminSession;
 
     /**
-     * MultiAccount constructor.
+     * MultiAccount constructor
+     *
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Ced\GoodMarket\Model\AccountsFactory $accounts
-     * @param \Ced\GoodMarket\Model\ProfileFactory $profile
-     * @param \Ced\GoodMarket\Model\ResourceModel\Accounts\CollectionFactory $accountsCollectionFactory
      * @param \Magento\Framework\Setup\ModuleDataSetupInterface $setup
      * @param \Magento\Eav\Setup\EavSetupFactory $eavSetupFactory
      * @param \Magento\Catalog\Model\ResourceModel\Eav\Attribute $eavAttribute
@@ -66,8 +78,7 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Eav\Setup\EavSetupFactory $eavSetupFactory,
         \Magento\Catalog\Model\ResourceModel\Eav\Attribute $eavAttribute,
         Session $session
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->_coreRegistry = $coreRegistry;
         $this->eavAttribute = $eavAttribute;
@@ -91,9 +102,15 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
 //        return $this->_coreRegistry->registry('mlibre_account');
 //    }
 
+    /**
+     * getProfileAttrForAcc
+     *
+     * @param $accId
+     * @return string
+     */
     public function getProfileAttrForAcc($accId = null) {
         $attributeCode = '';
-        if($accId > 0) {
+        if ($accId > 0) {
             $attributeCode = 'goodmarket_profile_' . $accId;
         } else {
             $attributeCode = '';
@@ -101,18 +118,32 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
         return $attributeCode;
     }
 
-    public function getItemIdAttrForAcc($accId = null) {
+    /**
+     * getItemIdAttrForAcc
+     *
+     * @param $accId
+     * @return string
+     */
+    public function getItemIdAttrForAcc($accId = null)
+    {
         $attributeCode = '';
-        if($accId > 0) {
+        if ($accId > 0) {
             $attributeCode = 'goodmarket_product_' . $accId;
         } else {
             $attributeCode = '';
         }
         return $attributeCode;
     }
+
+    /**
+     * getItemIdAttrForVariantAcc
+     *
+     * @param $accId
+     * @return string
+     */
     public function getItemIdAttrForVariantAcc($accId = null) {
         $attributeCode = '';
-        if($accId > 0) {
+        if ($accId > 0) {
             $attributeCode = 'goodmarket_product_variant_' . $accId;
         } else {
             $attributeCode = '';
@@ -120,9 +151,15 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
         return $attributeCode;
     }
 
+    /**
+     * getProdStatusAttrForAcc
+     *
+     * @param $accId
+     * @return string
+     */
     public function getProdStatusAttrForAcc($accId = null) {
         $attributeCode = '';
-        if($accId > 0) {
+        if ($accId > 0) {
             $attributeCode = 'goodmarket_prod_status_' . $accId;
         } else {
             $attributeCode = '';
@@ -130,9 +167,15 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
         return $attributeCode;
     }
 
+    /**
+     * getProdListingErrorAttrForAcc
+     *
+     * @param $accId
+     * @return string
+     */
     public function getProdListingErrorAttrForAcc($accId = null) {
         $attributeCode = '';
-        if($accId > 0) {
+        if ($accId > 0) {
             $attributeCode = 'goodmarket_error_' . $accId;
         } else {
             $attributeCode = '';
@@ -195,16 +238,23 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
 //        return $accountId;
 //    }
 
-
+    /**
+     * GetReason function
+     *
+     * @param $reason
+     * @return string
+     */
     public function getReason($reason)
     {
-        switch($reason)
-        {
-            case 'Stock Not Available': $cancelCode='No available stock for an item(s) ordered';
+        switch ($reason) {
+            case 'Stock Not Available':
+                $cancelCode='No available stock for an item(s) ordered';
                 break;
-            case 'Unable to Deliver to Address': $cancelCode='Courier unable to deliver ordered item(s) to specified delivery address';
+            case 'Unable to Deliver to Address':
+                $cancelCode='Courier unable to deliver ordered item(s) to specified delivery address';
                 break;
-            case 'Unable to Contact Customer to Argoodmarket Delivery': $cancelCode='You are unable to contact the customer to argoodmarket delivery of item(s)';
+            case 'Unable to Contact Customer to Argoodmarket Delivery':
+                $cancelCode='You are unable to contact the customer to argoodmarket delivery of item(s)';
                 break;
         }
         return $cancelCode;

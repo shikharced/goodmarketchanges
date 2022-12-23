@@ -29,8 +29,14 @@ use Magento\Framework\View\Element\Template\Context;
  */
 class GoodMarketSource extends Select
 {
-    const FLAG_CODE = 'CED_GOODMARKET_SOURCE';
+    public const FLAG_CODE = 'CED_GOODMARKET_SOURCE';
 
+    /**
+     * GoodMarketSource Constructor
+     *
+     * @param Context $context
+     * @param FlagManager $flagManager
+     */
     public function __construct(
         Context $context,
         FlagManager $flagManager

@@ -24,7 +24,7 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
- * Class Response
+ * Class ProductFeedErrors for columns listing
  */
 class ProductFeedErrors extends Column
 {
@@ -59,8 +59,7 @@ class ProductFeedErrors extends Column
         UrlInterface $urlBuilder,
         $components = [],
         $data = []
-    )
-    {
+    ) {
         $this->file = $fileIo;
         $this->dl = $directoryList;
         $this->urlBuilder = $urlBuilder;
@@ -68,6 +67,8 @@ class ProductFeedErrors extends Column
     }
 
     /**
+     * Prepare Data Source
+     *
      * @param array $dataSource
      * @return array
      */
@@ -96,5 +97,4 @@ class ProductFeedErrors extends Column
 
         return $dataSource;
     }
-
 }

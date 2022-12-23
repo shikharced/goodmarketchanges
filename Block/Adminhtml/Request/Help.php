@@ -19,8 +19,7 @@
 namespace Ced\GoodMarket\Block\Adminhtml\Request;
 
 /**
- * Class Help
- * @package Ced\GoodMarket\Block\Adminhtml\Request
+ * Class Help request
  */
 class Help extends \Magento\Backend\Block\Template
 {
@@ -31,17 +30,23 @@ class Help extends \Magento\Backend\Block\Template
 
     /**
      * Help constructor.
+     *
      * @param \Magento\Backend\Block\Template\Context $context
      * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
-                                                $data = []
+        $data = []
     )
     {
         parent::__construct($context, $data);
     }
 
+    /**
+     * Construct
+     *
+     * @return void
+     */
     public function _construct()
     {
         parent::_construct();

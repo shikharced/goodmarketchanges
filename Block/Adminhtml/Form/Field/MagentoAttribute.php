@@ -5,6 +5,9 @@ namespace Ced\GoodMarket\Block\Adminhtml\Form\Field;
 
 use Magento\Framework\View\Element\Html\Select;
 
+/**
+ * Mage attr in config
+ */
 class MagentoAttribute extends Select
 {
     /**
@@ -22,7 +25,7 @@ class MagentoAttribute extends Select
      * Set "id" for <select> element
      *
      * @param $value
-     * @return $this
+     * @return MagentoAttribute
      */
     public function setInputId($value)
     {
@@ -42,6 +45,11 @@ class MagentoAttribute extends Select
         return parent::_toHtml();
     }
 
+    /**
+     * getSourceOptions
+     *
+     * @return \string[][]
+     */
     private function getSourceOptions(): array
     {
         return [

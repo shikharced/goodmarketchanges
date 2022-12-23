@@ -19,6 +19,9 @@
 
 namespace Ced\GoodMarket\Cron;
 
+/**
+ * class OrderImport cron
+ */
 class OrderImport
 {
     /**
@@ -33,6 +36,7 @@ class OrderImport
 
     /**
      * OrderImport constructor.
+     *
      * @param \Ced\GoodMarket\Helper\Order $order
      * @param \Ced\GoodMarket\Helper\Config $config
      */
@@ -45,6 +49,8 @@ class OrderImport
     }
 
     /**
+     * Execute method
+     *
      * @throws \Exception
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\CouldNotSaveException

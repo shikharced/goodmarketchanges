@@ -21,6 +21,9 @@ use Magento\Framework\Registry;
 use Magento\Backend\Block\Template;
 use Ced\GoodMarket\Model\ProfileFactory;
 
+/**
+ * Class Create template
+ */
 class Create extends Template
 {
     /**
@@ -38,6 +41,15 @@ class Create extends Template
      */
     protected $category;
 
+    /**
+     * Create Constructor.
+     *
+     * @param Template\Context $context
+     * @param \Magento\Framework\Filesystem\DirectoryList $dir
+     * @param \Magento\Framework\Filesystem\Driver\File $fileDriver
+     * @param ProfileFactory $profileFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $category
+     */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Filesystem\DirectoryList $dir,
@@ -62,6 +74,12 @@ class Create extends Template
         return $this->_dir->getPath('media');
     }
 
+    /**
+     * Get Goodmarket Categories.
+     *
+     * @return array
+     * @throws \Magento\Framework\Exception\FileSystemException
+     */
     public function getGoodMarketCategories()
     {
         $txtFileName = 'categoryLevel.json';
@@ -71,9 +89,10 @@ class Create extends Template
         $categories = $this->fileDriver->fileRead($readFile, filesize($file));
         $category = json_decode($categories, true);
         // echo '<pre>'; print_r($category[1]); exit;
-        $catName = [];$i=0;
+        $catName = [];
+        $i=0;
         foreach ($category as $catl2) {
-            if (!empty($catl2['children'])) {                
+            if (!empty($catl2['children'])) {
                 foreach ($catl2['children'] as $catl3) {
                     $name = $catl2['name'] . ' -> '. $catl3['name'];
                     if (!empty($catl3['children'])) {
@@ -94,11 +113,17 @@ class Create extends Template
         // echo '<pre>'; print_r($catName);
     }
 
+    /**
+     * Get Categories.
+     *
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getCategories()
     {
         $categories = $this->category->create()->addAttributeToSelect('*');
         $category = [];
-        foreach ($categories as $cat){
+        foreach ($categories as $cat) {
             if ($cat->getId() > 2) {
                 $category[$cat->getId()] = $cat->getName();
             }
@@ -106,6 +131,12 @@ class Create extends Template
         return $category;
     }
 
+    /**
+     * Check Category Id.
+     *
+     * @param $catId
+     * @return array|mixed|string|null
+     */
     public function checkCatId($catId){
         $profile = $this->profileFactory->create()->load($catId, 'magento_category');
         if ($profile->getData()) {

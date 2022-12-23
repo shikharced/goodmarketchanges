@@ -5,18 +5,32 @@
  */
 namespace Ced\GoodMarket\Block\Adminhtml\Profile\Widget\Grid\Massaction;
 
+/**
+ * Class Extended for massaction
+ */
 class Extended extends \Magento\Backend\Block\Widget\Grid\Massaction\Extended
 {
 
     protected $_objectManager;
     protected $_template = 'Ced_GoodMarket::widget/grid/massaction.phtml';
 
+    /**
+     * Get Selected Json
+     *
+     * @return string
+     */
     public function getSelectedJson()
     {
         return join(",", $this->_getProducts());
     }
 
-    public function _getProducts($isJson=false)
+    /**
+     * Get Products
+     *
+     * @param $isJson
+     * @return array|string|string[]
+     */
+    public function _getProducts($isJson = false)
     {
         $this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
@@ -25,32 +39,33 @@ class Extended extends \Magento\Backend\Block\Widget\Grid\Massaction\Extended
         }
 
         $profileId = $this->getRequest()->getParam('pcode');
-        $profile = $this->_objectManager->get('Magento\Framework\Registry')->registry('current_profile');
+        $profile = $this->_objectManager->get(\Magento\Framework\Registry::class)->registry('current_profile');
 
         if ($profile && $profile->getId()) {
             $profileId = $profile->getId();
         }
-       // $productIds  = $this->_objectManager->create('\Ced\GoodMarket\Model\Profileproducts')->getProfileProducts($profileId);
+       // $productIds  = $this->_objectManager->create('\Ced\GoodMarket\Model\Profileproducts')
+        //->getProfileProducts($profileId);
 
 //        if (sizeof($productIds) > 0) {
-            $products = $this->_objectManager->create('\Magento\Catalog\Model\Product')
-                ->getCollection()
-                ->addAttributeToFilter('visibility', array('neq' => 1))
-                ->addAttributeToFilter('type_id', array('simple', 'configurable'))
-                ->addFieldToFilter('goodmarket_profile_id', array('in' => $profileId));
-            if ($isJson) {
-                $jsonProducts = array();
-                foreach($products as $product)  {
-                    $jsonProducts[$product->getEntityId()] = 0;
-                }
-                return $this->_jsonEncoder->encode((object)$jsonProducts);
-            } else {
-                $jsonProducts = array();
-                foreach($products as $product)  {
-                    $jsonProducts[$product->getEntityId()] = $product->getEntityId();
-                }
-                return $jsonProducts;
+        $products = $this->_objectManager->create('\Magento\Catalog\Model\Product')
+            ->getCollection()
+            ->addAttributeToFilter('visibility', ['neq' => 1])
+            ->addAttributeToFilter('type_id', ['simple', 'configurable'])
+            ->addFieldToFilter('goodmarket_profile_id', ['in' => $profileId]);
+        if ($isJson) {
+            $jsonProducts = [];
+            foreach ($products as $product)  {
+                $jsonProducts[$product->getEntityId()] = 0;
             }
+            return $this->_jsonEncoder->encode((object)$jsonProducts);
+        } else {
+            $jsonProducts = [];
+            foreach ($products as $product)  {
+                $jsonProducts[$product->getEntityId()] = $product->getEntityId();
+            }
+            return $jsonProducts;
+        }
 //        } else {
 //            if ($isJson) {
 //                return '{}';
@@ -60,8 +75,9 @@ class Extended extends \Magento\Backend\Block\Widget\Grid\Massaction\Extended
        // }
     }
 
-
     /**
+     * Get Custom Grid Id Json
+     *
      * @return string
      */
     public function getCustomGridIdsJson()

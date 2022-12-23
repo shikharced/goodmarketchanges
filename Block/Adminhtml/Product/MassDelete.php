@@ -18,23 +18,28 @@
 
 namespace Ced\GoodMarket\Block\Adminhtml\Product;
 
+/**
+ * Massdelete to delete product
+ */
 class MassDelete extends \Magento\Backend\Block\Widget\Container
 {
     /**
      * MassUpload constructor.
+     *
      * @param \Magento\Backend\Block\Widget\Context $context
      * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Widget\Context $context,
-        array $data = []
-    )
-    {
+        $data = []
+    ) {
         parent::__construct($context, $data);
         $this->setTemplate('Ced_GoodMarket::product/massdelete.phtml');
     }
 
     /**
+     * totalcount
+     *
      * @return int
      */
     public function totalcount()

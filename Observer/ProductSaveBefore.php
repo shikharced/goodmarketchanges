@@ -26,6 +26,7 @@ class ProductSaveBefore extends InventoryChange implements ObserverInterface
     /**
      * Catalog product save after event handler
      *
+     * @param $observer
      * @return \Magento\Framework\Event\Observer $observer
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -43,9 +44,15 @@ class ProductSaveBefore extends InventoryChange implements ObserverInterface
             $this->registry->register($stockRegistryKey, $stockItem);
             return $observer;
         } catch (\Exception $e) {
-            $this->logger->error('Inv Save Observer', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error(
+                'Inv Save Observer',
+                [
+                    'path' => __METHOD__,
+                    'exception' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            );
             return $observer;
         }
     }
-
 }

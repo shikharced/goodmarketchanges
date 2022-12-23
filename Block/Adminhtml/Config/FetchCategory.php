@@ -19,16 +19,18 @@ namespace Ced\GoodMarket\Block\Adminhtml\Config;
 
 use Magento\Config\Block\System\Config\Form\Field;
 
+/**
+ * Class FetchCategory to fetch cats
+ */
 class FetchCategory extends Field
 {
     /**
+     * _prepareLayout
+     *
      * @return $this
      */
-
     public function _prepareLayout()
     {
-
-
         parent::_prepareLayout();
         if (!$this->getTemplate()) {
             $this->setTemplate('config/fetchcategory.phtml');
@@ -37,6 +39,8 @@ class FetchCategory extends Field
     }
 
     /**
+     * render
+     *
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string
      */
@@ -48,12 +52,13 @@ class FetchCategory extends Field
     }
 
     /**
+     * _getElementHtml
+     *
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string
      */
     public function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
-
         $originalData = $element->getOriginalData();
         $buttonLabel = $originalData['button_label'];
         $this->addData(

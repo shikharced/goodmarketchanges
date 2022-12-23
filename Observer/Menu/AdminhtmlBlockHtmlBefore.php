@@ -21,11 +21,14 @@ namespace Ced\GoodMarket\Observer\Menu;
 
 use Magento\Framework\Event\ObserverInterface;
 
+/**
+ * Adminhtml Block Html Before class
+ */
 class AdminhtmlBlockHtmlBefore implements ObserverInterface
 {
-    const CEDCOMMERCE_VENDOR_PREFIX = 'Ced_';
-    const CEDCOMMERCE_INTEGRATOR_MODULE_ID = 'Ced_GoodMarket::GoodMarket';
-    const CONFIG_PATH_MENU_MERGE = 'goodmarket/settings/enable';
+    public const CEDCOMMERCE_VENDOR_PREFIX = 'Ced_';
+    public const CEDCOMMERCE_INTEGRATOR_MODULE_ID = 'Ced_GoodMarket::GoodMarket';
+    public const CONFIG_PATH_MENU_MERGE = 'goodmarket/settings/enable';
 
     /** @var \Magento\Framework\App\Config\ScopeConfigInterface  */
     public $scopeConfigManager;
@@ -36,12 +39,23 @@ class AdminhtmlBlockHtmlBefore implements ObserverInterface
 
     public $index = null;
 
+    /**
+     * AdminhtmlBlockHtmlBefore construct
+     *
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface
+     */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $config
     ) {
         $this->scopeConfigManager = $config;
     }
 
+    /**
+     * Public function execute
+     *
+     * @param $observer
+     * @return $this
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         /** @var \Magento\Backend\Block\Menu $block */
@@ -94,6 +108,7 @@ class AdminhtmlBlockHtmlBefore implements ObserverInterface
 
     /**
      * Remove duplicate childs
+     *
      * @param \Magento\Backend\Model\Menu\Item $integrator
      * @param \Magento\Backend\Model\Menu\Item $item
      * @param \Magento\Backend\Model\Menu $menu
@@ -116,6 +131,7 @@ class AdminhtmlBlockHtmlBefore implements ObserverInterface
 
     /**
      * Remove child-less parent
+     *
      * @param \Magento\Backend\Model\Menu\Item $item
      * @param \Magento\Backend\Model\Menu $menu
      */
@@ -131,6 +147,7 @@ class AdminhtmlBlockHtmlBefore implements ObserverInterface
 
     /**
      * Remove duplicate childs
+     *
      * @param \Magento\Backend\Model\Menu\Item $integrator
      * @param \Magento\Backend\Model\Menu\Item $item
      * @param \Magento\Backend\Model\Menu $menu
@@ -147,6 +164,12 @@ class AdminhtmlBlockHtmlBefore implements ObserverInterface
         }
     }
 
+    /**
+     * private function find
+     *
+     * @param $menu
+     * @return html|string
+     */
     private function find($menu)
     {
         $integrator = null;

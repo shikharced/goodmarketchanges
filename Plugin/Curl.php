@@ -4,6 +4,7 @@
  * See COPYING.txt for license details.
  */
 namespace Ced\GoodMarket\Plugin;
+
 /**
  * Class to work with HTTP protocol using curl library
  *

@@ -24,13 +24,16 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 
+/**
+ * Class actions for listing
+ */
 class Actions extends Column
 {
     /**
      * Url path
      */
-    const URL_PATH_EDIT = 'catalog/Product/edit';
-    const URL_PATH_VIEW = 'goodmarket/Product/view';
+    public const URL_PATH_EDIT = 'catalog/Product/edit';
+    public const URL_PATH_VIEW = 'goodmarket/Product/view';
 
     /**
      * @var UrlBuilder
@@ -43,9 +46,10 @@ class Actions extends Column
     protected $urlBuilder;
 
     /**
+     * Constructor method.
+     *
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
-     * @param UrlBuilder $actionUrlBuilder
      * @param UrlInterface $urlBuilder
      * @param array $components
      * @param array $data

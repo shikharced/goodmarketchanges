@@ -22,6 +22,9 @@ namespace Ced\GoodMarket\Block\Adminhtml\Order\Button;
 use Magento\Backend\Block\Widget\Container;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
+/**
+ * Back button Url
+ */
 class Back extends Container implements ButtonProviderInterface
 {
     /**
@@ -39,6 +42,11 @@ class Back extends Container implements ButtonProviderInterface
         ];
     }
 
+    /**
+     * getBackUrl
+     *
+     * @return string
+     */
     public function getBackUrl()
     {
         return $this->getUrl('goodmarket/order/index');

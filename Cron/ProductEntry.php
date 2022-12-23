@@ -21,6 +21,9 @@ namespace Ced\GoodMarket\Cron;
 use Ced\GoodMarket\Model\Source\Cron\Status;
 use Ced\GoodMarket\Model\Source\Cron\Type;
 
+/**
+ * Class ProductEntry Cron
+ */
 class ProductEntry
 {
     /**
@@ -55,6 +58,7 @@ class ProductEntry
 
     /**
      * InventoryPrice constructor.
+     *
      * @param \Ced\GoodMarket\Helper\Logger $logger
      * @param \Ced\GoodMarket\Helper\Config $config
      * @param \Ced\GoodMarket\Helper\Product $product
@@ -68,8 +72,8 @@ class ProductEntry
         \Ced\GoodMarket\Helper\Product $product,
         \Ced\GoodMarket\Model\ProductFactory $cronFactory,
         \Ced\GoodMarket\Model\ResourceModel\Product\CollectionFactory $cronCollectionFactory,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory)
-    {
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+    ) {
         $this->logger = $logger;
         $this->config = $config;
         $this->product = $product;
@@ -84,42 +88,42 @@ class ProductEntry
     public function execute()
     {
         try {
-                $cronModel = $this
-                    ->cronCollection
-                    ->create()
-                    ->addFieldToFilter('status', Status::PENDING)
-                    ->addFieldToFilter('cron_type', Type::INVENTORY)
-                    ->getFirstItem();
+            $cronModel = $this
+                ->cronCollection
+                ->create()
+                ->addFieldToFilter('status', Status::PENDING)
+                ->addFieldToFilter('cron_type', Type::INVENTORY)
+                ->getFirstItem();
 
-                if ($cronModel && $cronModel->getId()) {
-                    $chunkIds = json_decode($cronModel->getChunkIds(), true);
-                    if (!empty($chunkIds)) {
-                        $response = $this->product->updateBulkInventory($chunkIds);
-                        $cronModel->setData('status', Status::SUBMITTED);
-                        $cronModel->save();
-                    }
-                } else {
-                    $productIds = $this
-                        ->productCollection
-                        ->create()
-                        ->addFieldToFilter('goodmarket_profile_id', ['neq' => ''])
-                        ->addFieldToFilter('goodmarket_product_id', ['neq' => ''])
-                        ->addAttributeToFilter('type_id', ['in' => ['simple', 'configurable']])
-                        ->addAttributeToFilter('visibility', ['neq' => 1])
-                        ->getAllIds();
-                    if (!empty($productIds)) {
-                        $productChunk = array_chunk($productIds, 5);
-                        foreach ($productChunk as $product_ids) {
-                            $cronObject = $this->cron->create();
-                            $cronObject->setData('cron_type', Type::INVENTORY);
-                            $cronObject->setData('status', Status::PENDING);
-                            $cronObject->setData('chunk_ids', json_encode($product_ids));
-                            $cronObject->save();
-                        }
+            if ($cronModel && $cronModel->getId()) {
+                $chunkIds = json_decode($cronModel->getChunkIds(), true);
+                if (!empty($chunkIds)) {
+                    $response = $this->product->updateBulkInventory($chunkIds);
+                    $cronModel->setData('status', Status::SUBMITTED);
+                    $cronModel->save();
+                }
+            } else {
+                $productIds = $this
+                    ->productCollection
+                    ->create()
+                    ->addFieldToFilter('goodmarket_profile_id', ['neq' => ''])
+                    ->addFieldToFilter('goodmarket_product_id', ['neq' => ''])
+                    ->addAttributeToFilter('type_id', ['in' => ['simple', 'configurable']])
+                    ->addAttributeToFilter('visibility', ['neq' => 1])
+                    ->getAllIds();
+                if (!empty($productIds)) {
+                    $productChunk = array_chunk($productIds, 5);
+                    foreach ($productChunk as $product_ids) {
+                        $cronObject = $this->cron->create();
+                        $cronObject->setData('cron_type', Type::INVENTORY);
+                        $cronObject->setData('status', Status::PENDING);
+                        $cronObject->setData('chunk_ids', json_encode($product_ids));
+                        $cronObject->save();
                     }
                 }
-        } catch(\Exception $e) {
-            $this->logger->addError('Error Occur Inside Inventory Cron '.$e->getMessage(), ['path' => __METHOD__]);
+            }
+        } catch (\Exception $e) {
+            $this->logger->addError('Error Occur Inside Inventory Cron ' . $e->getMessage(), ['path' => __METHOD__]);
         }
     }
 }

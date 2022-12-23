@@ -4,7 +4,7 @@
        <observer name="ced_goodmarket_inventory_save_before" instance="Ced\GoodMarket\Observer\ProductSaveBefore"/>
    </event>
    <event name="cataloginventory_stock_item_save_after">
-       <observer name="ced_goodmarket_inventory_save_after" instance="Ced\GoodMarket\Observer\ProductSaveAfter"/>
+       <observer name="ced_goodmarket_inventory_save_after" instance="Ced\GoodMarket\Observer\ProductSavedAfter"/>
    </event> -->
     <!-- <event name="adminhtml_block_html_before">
         <observer name="ced_integrator_dynamic_menu" instance="Ced\GoodMarket\Observer\Menu\AdminhtmlBlockHtmlBefore" />

@@ -21,22 +21,22 @@ namespace Ced\GoodMarket\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 
+/**
+ * Invoice observer class
+ */
 class Invoice implements ObserverInterface
 {
     /**
-     * Request
      * @var  \Magento\Framework\App\RequestInterface
      */
     public $request;
 
     /**
-     * Object Manager
      * @var \Magento\Framework\ObjectManagerInterface
      */
     public $objectManager;
 
     /**
-     * Registry
      * @var \Magento\Framework\Registry
      */
     public $registry;
@@ -48,10 +48,13 @@ class Invoice implements ObserverInterface
 
     /**
      * Shipment constructor.
-     * @param \Ced\GoodMarket\Helper\Logger $logger
+     *
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\App\RequestInterface $request
+     * @param \Ced\GoodMarket\Helper\Config $config
+     * @param \Ced\GoodMarket\Model\OrderFactory $collection
+     * @param \Ced\GoodMarket\Helper\Data $data
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -70,10 +73,11 @@ class Invoice implements ObserverInterface
     }
 
     /**
+     * Invoice Execute function
+     *
      * @param \Magento\Framework\Event\Observer $observer
      * @return \Magento\Framework\Event\Observer|void
      */
-    // phpcs:ignore Generic.Metrics.NestingLevel
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         try {
@@ -82,7 +86,7 @@ class Invoice implements ObserverInterface
             $incrementId = $order->getIncrementId();
             $orderCollection = $this->collection->create();
             $orderCollection =$this->collection->create()->load($incrementId, 'magento_increment_id');
-            if(isset($orderCollection) && !empty($orderCollection)) {
+            if (isset($orderCollection) && !empty($orderCollection)) {
                 $invoice = $this->data->createOrderInvoice(json_decode($orderCollection->getData('order_data'), true));
 
                 if (isset($invoice) && ($invoice == 1)) {
@@ -91,15 +95,13 @@ class Invoice implements ObserverInterface
                 }
             }
             return $observer;
-        }catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->logger->addError(
                 $e->getMessage() . "Exception in Invoice Creation"
             );
             return $observer;
         }
-        catch (\Error $e)
-        {
+        catch (\Error $e) {
             $this->logger->addError(
                 $e->getMessage() . "Error in Invoice Creation"
             );

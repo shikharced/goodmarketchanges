@@ -31,14 +31,18 @@ class Data implements DataPatchInterface
     private $eavAttribute;
 
     /**
+     * Data Constructor.
+     *
      * @param ModuleDataSetupInterface $moduleDataSetup
+     * @param EavSetupFactory $eavSetupFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Eav\Attribute $eavAttribute
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
         EavSetupFactory $eavSetupFactory,
         \Magento\Catalog\Model\ResourceModel\Eav\Attribute $eavAttribute
 //        \Ced\GoodMarket\Controller\Adminhtml\Config\Save $save
-) {
+    ) {
         $this->moduleDataSetup = $moduleDataSetup;
         $this->eavSetupFactory = $eavSetupFactory;
         $this->eavAttribute = $eavAttribute;
@@ -148,7 +152,6 @@ class Data implements DataPatchInterface
                 ]
             );
         }
-
     }
 
     /**

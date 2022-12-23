@@ -30,7 +30,7 @@
                 $.ajax({
                     showLoader: true, // enable loader
                     type: "POST",
-                    url: "<?php echo $block->getAjaxUrl();?>",
+                    url: "<?= $block->getAjaxUrl(); ?>",
                     data: {'username': username, 'vendorId': vendorId,'form_key': window.FORM_KEY},
                     success: function (response) {
                         if (response.hasOwnProperty('success') && response['success'] === true ) {
@@ -65,4 +65,4 @@
     });
 </script>
 
-<?php echo $block->getButtonHtml() ?>
+<?= $block->getButtonHtml() ?>

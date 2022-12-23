@@ -21,6 +21,9 @@ use Magento\Backend\Block\Widget\Form\Container;
 use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Registry;
 
+/**
+ * Class Edit block
+ */
 class Edit extends Container
 {
     /**
@@ -30,6 +33,7 @@ class Edit extends Container
 
     /**
      * Edit constructor.
+     *
      * @param Context $context
      * @param Registry $registry
      * @param array $data
@@ -38,17 +42,17 @@ class Edit extends Container
         Context $context,
         Registry $registry,
         array $data = []
-    )
-    {
+    ) {
         $this->_coreRegistry = $registry;
         parent::__construct($context, $data);
     }
 
     /**
-     * return void
+     * Edit Construct.
+     *
+     * @return void
      */
-    protected function _construct()
-    {
+    protected function _construct() {
         $this->_objectId = 'profile_id';
         $this->_blockGroup = 'ced_goodMarket';
         $this->_controller = 'adminhtml_profile';
@@ -88,29 +92,30 @@ class Edit extends Container
                 groupVendorPpcode_massaction = document.getElementById('groupVendorPpcode_massaction-form');
                 if(groupVendorPpcode_massaction != null) {
                     groupVendorPpcode_massaction.parentElement.removeChild(groupVendorPpcode_massaction);
-                     new Insertion.Bottom('edit_form',               
+                     new Insertion.Bottom('edit_form',
                      groupVendorPpcode_massactionJsObject.fieldTemplate(
-                     {name: 'in_profile_products', 
+                     {name: 'in_profile_products',
                      value: groupVendorPpcode_massactionJsObject.checkedString}));
                  }
             if(flag) {
                     var editForm = jQuery('#edit_form');
                     editForm.attr('action', urlTemplate);
                     editForm.submit();
-                } 
+                }
             }
         ";
     }
 
     /**
-     * @param string $buttonId
-     * @param array $data
-     * @param int $level
-     * @param int $sortOrder
-     * @param string $region
-     * @return void
+     * Add Buttons.
+     *
+     * @param $buttonId
+     * @param $data
+     * @param $level
+     * @param $sortOrder
+     * @param $region
+     * @return Edit|void
      */
-
     public function addButton($buttonId, $data, $level = 0, $sortOrder = 0, $region = 'toolbar')
     {
         if ($this->getRequest()->getParam('popup')) {
@@ -120,6 +125,8 @@ class Edit extends Container
     }
 
     /**
+     * Save And continue Url
+     *
      * @param $back
      * @return string
      */
@@ -140,6 +147,8 @@ class Edit extends Container
     }
 
     /**
+     * Get Header Text
+     *
      * @return \Magento\Framework\Phrase
      */
     public function getHeaderText()
@@ -152,6 +161,8 @@ class Edit extends Container
     }
 
     /**
+     * Get Save Url function
+     *
      * @return string
      */
     public function getSaveUrl()
@@ -164,6 +175,8 @@ class Edit extends Container
     }
 
     /**
+     * Get Delete Url
+     *
      * @return string
      */
     public function getDeleteUrl()

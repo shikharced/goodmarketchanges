@@ -21,22 +21,22 @@ namespace Ced\GoodMarket\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 
+/**
+ * Observer class shipment
+ */
 class Shipment implements ObserverInterface
 {
     /**
-     * Request
      * @var  \Magento\Framework\App\RequestInterface
      */
     public $request;
 
     /**
-     * Object Manager
      * @var \Magento\Framework\ObjectManagerInterface
      */
     public $objectManager;
 
     /**
-     * Registry
      * @var \Magento\Framework\Registry
      */
     public $registry;
@@ -48,10 +48,13 @@ class Shipment implements ObserverInterface
 
     /**
      * Shipment constructor.
-     * @param \Ced\GoodMarket\Helper\Logger $logger
+     *
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\App\RequestInterface $request
+     * @param \Ced\GoodMarket\Helper\Config $config
+     * @param \Ced\GoodMarket\Model\OrderFactory $collection
+     * @param \Ced\GoodMarket\Helper\Data $data
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -70,10 +73,11 @@ class Shipment implements ObserverInterface
     }
 
     /**
+     * Shipment observer
+     *
      * @param \Magento\Framework\Event\Observer $observer
      * @return \Magento\Framework\Event\Observer|void
      */
-    // phpcs:ignore Generic.Metrics.NestingLevel
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $autoDespatch = $this->config->getAutoDespatch();
@@ -84,7 +88,7 @@ class Shipment implements ObserverInterface
             try {
                 $event = $observer->getEvent();
                 $eventName = $event->getName();
-                if($eventName == 'sales_order_shipment_save_after') {
+                if ($eventName == 'sales_order_shipment_save_after') {
                     $track = $event;
                 } else {
                     $track = $observer->getEvent()->getTrack();
@@ -101,27 +105,30 @@ class Shipment implements ObserverInterface
                 }
                 $incrementId=$order->getIncrementId();
                 $orderCollection =$this->collection->create()->load($incrementId, 'magento_increment_id');
-                if(isset($orderCollection) && !empty($orderCollection)) {
+                if (isset($orderCollection) && !empty($orderCollection)) {
                     if (empty($trackArray)) {
-                        $shipData = $this->data->createOrderShipment(json_decode($orderCollection->getData('order_data'), true));
+                        $shipData = $this->data
+                        ->createOrderShipment(
+                            json_decode($orderCollection->getData('order_data'), true)
+                        );
                     } else {
-                        $shipData = $this->data->createTrackOrderShipment(json_decode($orderCollection->getData('order_data'), true), $trackArray);
+                        $shipData = $this->data
+                        ->createTrackOrderShipment(
+                            json_decode($orderCollection->getData('order_data'),true),
+                            $trackArray
+                        );
                     }
-
-
                     if (isset($shipData) && ($shipData == 1)) {
                         $orderCollection->setStatus('Shipped');
                         $orderCollection->save();
                     }
                 }
-
-
             } catch (\Exception $e) {
                 $this->logger->addError(
                     $e->getMessage() . "Exception in Shipment"
                 );
                 return $observer;
-            } catch (\Error $e) {;
+            } catch (\Error $e) {
                 $this->logger->addError(
                     $e->getMessage() . "Error in Shipment"
                 );

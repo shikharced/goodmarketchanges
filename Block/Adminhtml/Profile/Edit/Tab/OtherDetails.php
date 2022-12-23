@@ -23,8 +23,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 
 /**
- * Class OtherDetails
- * @package Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab
+ * Class OtherDetails for form
  */
 class OtherDetails extends Generic
 {
@@ -35,11 +34,10 @@ class OtherDetails extends Generic
 
     /**
      * Info constructor.
+     *
      * @param Context $context
      * @param Registry $registry
      * @param FormFactory $formFactory
-     * @param Recipient $recipient
-     * @param Recipient $recipient
      */
     public function __construct(
         Context $context,
@@ -51,13 +49,14 @@ class OtherDetails extends Generic
     }
 
     /**
+     * Prepare form
+     *
      * @return $this
      */
     protected function _prepareForm()
     {
         $form = $this->_formFactory->create();
         $profile = $this->_coreRegistry->registry('current_profile');
-      
         $fieldset = $form->addFieldset(
             'other_details',
             [

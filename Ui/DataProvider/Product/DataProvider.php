@@ -22,8 +22,7 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\Api\FilterBuilder;
 
 /**
- * Class Grid
- * @package Ced\Range\Ui\DataProvider\Product
+ * Class DataProvider of Product filter
  */
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
@@ -42,6 +41,22 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      */
     public $filterBuilder;
 
+    /**
+     * DataProvider Constructot
+     *
+     * @param $name
+     * @param $primaryFieldName
+     * @param $requestFieldName
+     * @param CollectionFactory $collectionFactory
+     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param \Ced\GoodMarket\Helper\Config $config
+     * @param FilterBuilder $filterBuilder
+     * @param array $addFieldStrategies
+     * @param array $addFilterStrategies
+     * @param array $meta
+     * @param array $data
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function __construct(
         $name,
         $primaryFieldName,
@@ -95,18 +110,20 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         );
 
          $this->addFilter(
-            $this->filterBuilder->setField('visibility')->setConditionType('nin')
-                ->setValue([1])
-                ->create()
-        );
+             $this->filterBuilder->setField('visibility')->setConditionType('nin')
+                 ->setValue([1])
+                 ->create()
+         );
         $this->addFieldStrategies = $addFieldStrategies;
         $this->addFilterStrategies = $addFilterStrategies;
     }
 
 
     /**
+     * Add Filter Function
+     *
      * @param \Magento\Framework\Api\Filter $filter
-     * @return void
+     * @return mixed|void
      */
     public function addFilter(\Magento\Framework\Api\Filter $filter)
     {
@@ -123,6 +140,8 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
+     * Get Data function
+     *
      * @return array
      */
     public function getData()
@@ -141,6 +160,13 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         ];
     }
 
+    /**
+     * Add Field function
+     *
+     * @param $field
+     * @param $alias
+     * @return void
+     */
     public function addField($field, $alias = null)
     {
         if (isset($this->addFieldStrategies[$field])) {
@@ -149,6 +175,4 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             parent::addField($field, $alias);
         }
     }
-
 }
-

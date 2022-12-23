@@ -24,7 +24,7 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
- * Class ProductValidation
+ * Class Product Validation count
  */
 class ProductCount extends Column
 {
@@ -33,8 +33,9 @@ class ProductCount extends Column
      */
     public $urlBuilder;
 
-    public $profileProduct;
-
+    /**
+     * @var \Magento\Catalog\Model\Product
+     */
     public $productModel;
 
     /**
@@ -43,9 +44,12 @@ class ProductCount extends Column
     protected $multiAccountHelper;
 
     /**
+     * Product Count constuctor
+     *
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder
+     * @param \Magento\Catalog\Model\Product $productModel
      * @param array $components
      * @param array $data
      */
@@ -62,14 +66,21 @@ class ProductCount extends Column
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
+    /**
+     * Prepare Data Source
+     *
+     * @param array $dataSource
+     * @return array
+     */
     public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 $value = 0;
-                    $products = $this->productModel->getCollection()->addFieldToFilter('goodmarket_profile_id', $item['id']);
+                    $products = $this->productModel->getCollection()
+                    ->addFieldToFilter('goodmarket_profile_id', $item['id']);
                     $products->addFieldToFilter('type_id', ['simple', 'configurable'])
-                        ->addAttributeToFilter('visibility',  ['neq' => 1]);
+                        ->addAttributeToFilter('visibility', ['neq' => 1]);
                     $value = count($products);
                 $item['product_count'] = $value;
             }
@@ -77,5 +88,4 @@ class ProductCount extends Column
 
         return $dataSource;
     }
-
 }

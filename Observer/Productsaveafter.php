@@ -6,24 +6,23 @@ use Magento\Catalog\Model\ProductCategoryList;
 use Ced\GoodMarket\Model\ProfileFactory;
 use Magento\Framework\ObjectManagerInterface;
 
+/**
+ * Observer class Product Save after
+ */
 class Productsaveafter implements ObserverInterface
 {
-    /*
-     * Public function Contructor
+    /**
+     * Execute Function
+     *
+     * @param $observer
+     * @return $this
      */
-    /*public function __construct(
-        ProductCategoryList $productCategory,
-        ProfileFactory $profileFactory
-    ) {
-        $this->productCategory = $productCategory;
-        $this->profileFactory = $profileFactory;
-    }*/
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $_product = $observer->getProduct();  // you will get product object
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 //        echo $product->getId();exit;
-        if ($_product->getTypeId() == 'Simple'){
+        if ($_product->getTypeId() == 'Simple') {
             $product = $objectManager->get(\Magento\Catalog\Model\Product::class)->load($_product->getId());
             $this->productCategory = $objectManager->get(\Magento\Catalog\Model\ProductCategoryList::class);
             $categoryIds = $this->productCategory->getCategoryIds($_product->getId());
@@ -66,7 +65,6 @@ class Productsaveafter implements ObserverInterface
                 }
             }
         }
-
         return $this;
     }
 }

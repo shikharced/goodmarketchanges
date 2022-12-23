@@ -27,6 +27,9 @@ use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\AttributeSet\Options;
 
+/**
+ * class Products grid
+ */
 class Products extends Extended
 {
     /**
@@ -63,6 +66,7 @@ class Products extends Extended
 
     /**
      * Products constructor.
+     *
      * @param Context $context
      * @param Data $backendHelper
      * @param ObjectManagerInterface $objectInterface
@@ -70,7 +74,6 @@ class Products extends Extended
      * @param Type $type
      * @param Status $status
      * @param Options $options
-     * @param Profileproducts $profileproducts
      */
     public function __construct(
         Context $context,
@@ -80,8 +83,7 @@ class Products extends Extended
         Type $type,
         Status $status,
         Options $options
-    )
-    {
+    ) {
         $this->_coreRegistry = $registry;
         $this->objectManager = $objectInterface;
         $this->type = $type;
@@ -94,10 +96,11 @@ class Products extends Extended
         $this->_massactionBlockName = 'Ced\GoodMarket\Block\Adminhtml\Profile\Widget\Grid\Massaction\Extended';
         $this->setDefaultFilter(['massaction' => 1]);
         $this->setUseAjax(true);
-
     }
 
     /**
+     * function _addColumnFilterToCollection
+     *
      * @param \Magento\Backend\Block\Widget\Grid\Column $column
      * @return $this
      */
@@ -123,6 +126,8 @@ class Products extends Extended
     }
 
     /**
+     * _prepareCollection
+     *
      * @return $this
      */
     protected function _prepareCollection()
@@ -131,7 +136,7 @@ class Products extends Extended
 
         $this->_coreRegistry->register('PCODE', $profileCode);
 
-        $collection = $this->objectManager->create('Magento\Catalog\Model\Product')
+        $collection = $this->objectManager->create(\Magento\Catalog\Model\Product::class)
             ->getCollection()
             ->addAttributeToSelect('*')
             ->addAttributeToFilter('visibility', ['neq' => 1])
@@ -145,13 +150,16 @@ class Products extends Extended
     }
 
     /**
+     * _prepareColumns
+     *
      * @return $this
      */
     protected function _prepareColumns()
     {
         $this->addColumn(
             'entity_id',
-            ['header' => __('Product Id'),
+            [
+                'header' => __('Product Id'),
                 'align' => 'right',
                 'width' => '50px',
                 'index' => 'entity_id',
@@ -161,13 +169,13 @@ class Products extends Extended
 
         $this->addColumn(
             'image',
-            array(
+            [
                 'header' => __('Image'),
                 'index' => 'image',
-                'renderer'  => 'Ced\GoodMarket\Block\Adminhtml\Profile\Renderer\Image',
+                'renderer'  => \Ced\GoodMarket\Block\Adminhtml\Profile\Renderer\Image::class,
                 'filter' => false,
                 'sortable'  => false
-            )
+            ]
         );
 
         $this->addColumn(
@@ -198,8 +206,8 @@ class Products extends Extended
                 'index'     => 'category',
                 'sortable'  => false,
                 'type'  => 'options',
-                'options'   => $this->objectManager->create('Ced\GoodMarket\Model\Source\Category')->getAllOptions(),
-                'renderer'  => 'Ced\GoodMarket\Block\Adminhtml\Profile\Renderer\Category',
+                'options'   => $this->objectManager->create(\Ced\GoodMarket\Model\Source\Category::class)->getAllOptions(),
+                'renderer'  => \Ced\GoodMarket\Block\Adminhtml\Profile\Renderer\Category::class,
                 'filter_condition_callback' => [$this, 'filterCategory'],
             ]
         );
@@ -254,21 +262,24 @@ class Products extends Extended
     }
 
     /**
+     * getGridUrl
+     *
      * @return string
      */
     public function getGridUrl()
     {
         return $this->getUrl('*/*/editProfileProductGrid', ['_secure' => true, '_current' => true]);
-
     }
 
     /**
+     * getProducts
+     *
      * @param bool $json
      * @return array|string
      */
     public function getProducts($json = false)
     {
-        if ( $this->getRequest()->getPost('in_profile_products') != "" ) {
+        if ($this->getRequest()->getPost('in_profile_products') != "" ) {
             return $this->getRequest()->getPost('in_profile_products');
         }
         $this->getRequest()->getParam('pcode');
@@ -280,7 +291,7 @@ class Products extends Extended
         }
 
         $products = [];//$this->profileproducts->getProfileProducts($profileId);
-        if (sizeof($products) > 0) {
+        if (count($products) > 0) {
             if ($json) {
                 $jsonProducts = [];
                 foreach ($products as $productId) {
@@ -300,6 +311,8 @@ class Products extends Extended
     }
 
     /**
+     * isPartUppercase
+     *
      * @param $string
      * @return bool
      */
@@ -309,33 +322,47 @@ class Products extends Extended
     }
 
     /**
+     * _getSelectedProducts
+     *
      * @return array
      */
     protected function _getSelectedProducts()
     {
         $products = $this->getRequest()->getPost('selected_products');
-        if ($products === null) {
+        //if ($products === null) {
             //$products = $this->getCategory()->getProductsPosition();
             //return array_keys($products);
-        }
+        //}
         return $products;
     }
 
-
+    /**
+     * _prepareMassaction
+     *
+     * @return $this|Products
+     */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('entity_id');
         $this->getMassactionBlock()->setFormFieldName('entity_id[]');
 
         $this->getMassactionBlock()->addItem(
-            'addproduct', array(
+            'addproduct',
+            [
                 'label' => __('Add Products'),
                 'url' => $this->getUrl('goodmarket/profile/save'),
-            )
+            ]
         );
         return $this;
     }
 
+    /**
+     * filterCategory function
+     *
+     * @param $collection
+     * @param $column
+     * @return mixed
+     */
     public function filterCategory($collection, $column)
     {
         $value = $column->getFilter()->getValue();

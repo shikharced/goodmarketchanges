@@ -44,6 +44,7 @@ class Feed extends \Magento\Ui\DataProvider\AbstractDataProvider
 
     /**
      * DataProvider constructor.
+     *
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -65,7 +66,6 @@ class Feed extends \Magento\Ui\DataProvider\AbstractDataProvider
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->collection = $collectionFactory->create();
-
     }
 
     /**

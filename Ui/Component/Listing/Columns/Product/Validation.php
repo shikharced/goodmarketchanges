@@ -26,8 +26,7 @@ use Magento\Catalog\Model\ProductFactory;
 use Magento\Framework\Json\Helper\Data;
 
 /**
- * Class Validation
- * @package Ced\EbayMultiAccount\Ui\Component\Listing\Columns\Product
+ * Class Validation for Listing\Columns
  */
 class Validation extends Column
 {
@@ -42,12 +41,13 @@ class Validation extends Column
     public $json;
 
     /**
-     * @var
+     * @var ProductFactory
      */
     public $product;
 
     /**
      * Validation constructor.
+     *
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder
@@ -72,6 +72,8 @@ class Validation extends Column
     }
 
     /**
+     * Prepare Data source
+     *
      * @param array $dataSource
      * @return array
      */

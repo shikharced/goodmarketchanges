@@ -21,8 +21,7 @@ namespace Ced\GoodMarket\Ui\DataProvider\Order;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 
 /**
- * Class Search
- * @package Ced\GoodMarket\Ui\DataProvider\Order
+ * Class Search order
  */
 class Search extends AbstractDataProvider
 {
@@ -43,6 +42,17 @@ class Search extends AbstractDataProvider
      */
     public $addFilterStrategies;
 
+    /**
+     * Search COnstructor
+     *
+     * @param $name
+     * @param $primaryFieldName
+     * @param $requestFieldName
+     * @param array $addFieldStrategies
+     * @param array $addFilterStrategies
+     * @param array $meta
+     * @param array $data
+     */
     public function __construct(
         $name,
         $primaryFieldName,
@@ -62,6 +72,12 @@ class Search extends AbstractDataProvider
         return [];
     }
 
+    /**
+     * Add Filter Function
+     *
+     * @param \Magento\Framework\Api\Filter $filter
+     * @return bool
+     */
     public function addFilter(\Magento\Framework\Api\Filter $filter)
     {
         return true;
