@@ -22,7 +22,7 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\Api\FilterBuilder;
 
 /**
- * Class DataProvider of Product filter
+ * Class DataProvider of Product
  */
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
@@ -42,7 +42,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     public $filterBuilder;
 
     /**
-     * DataProvider Constructot
+     * DataProvider Constructor
      *
      * @param $name
      * @param $primaryFieldName
@@ -55,7 +55,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      * @param array $addFilterStrategies
      * @param array $meta
      * @param array $data
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function __construct(
         $name,
@@ -109,21 +108,21 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                 ->create()
         );
 
-         $this->addFilter(
-             $this->filterBuilder->setField('visibility')->setConditionType('nin')
-                 ->setValue([1])
-                 ->create()
-         );
+        $this->addFilter(
+            $this->filterBuilder->setField('visibility')->setConditionType('nin')
+                ->setValue([1])
+                ->create()
+        );
         $this->addFieldStrategies = $addFieldStrategies;
         $this->addFilterStrategies = $addFilterStrategies;
     }
 
 
     /**
-     * Add Filter Function
+     * Function AddFilter
      *
      * @param \Magento\Framework\Api\Filter $filter
-     * @return mixed|void
+     * @return void
      */
     public function addFilter(\Magento\Framework\Api\Filter $filter)
     {
@@ -140,7 +139,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
-     * Get Data function
+     * Function get Data
      *
      * @return array
      */
@@ -161,11 +160,10 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
-     * Add Field function
+     * AddField Function
      *
      * @param $field
      * @param $alias
-     * @return void
      */
     public function addField($field, $alias = null)
     {

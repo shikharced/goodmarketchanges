@@ -27,29 +27,29 @@ use Magento\Framework\Registry;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 /**
- * Class CategoryJs for category
+ * Class CategoryJs for categories
  */
 class CategoryJs extends Widget implements RendererInterface
 {
-	/**
+    /**
      * @var string
      */
     public $_template = 'profile/categoryMapping.phtml';
-
+    
     /**
      * @var Data
      */
     public $helper;
 
     /**
-     * Category constructor.
+     * CategoryJs constructor.
      *
      * @param Context $context
      * @param Data $helper
      * @param Registry $registry
      * @param $data
      */
-    function __construct(
+    public function __construct(
         Context $context,
         Data $helper,
         Registry $registry,
@@ -62,7 +62,7 @@ class CategoryJs extends Widget implements RendererInterface
     }
 
     /**
-     * get level
+     * Method Get Level
      *
      * @param $level
      * @return array
@@ -82,7 +82,7 @@ class CategoryJs extends Widget implements RendererInterface
     }
 
     /**
-     * Render
+     * Render Method
      *
      * @param AbstractElement $element
      * @return string
