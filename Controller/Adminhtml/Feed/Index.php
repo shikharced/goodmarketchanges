@@ -19,8 +19,7 @@
 namespace Ced\GoodMarket\Controller\Adminhtml\Feed;
 
 /**
- * Class Product
- * @package Ced\Range\Controller\Adminhtml\Order
+ * Class Product Index
  */
 class Index extends \Magento\Backend\App\Action
 {
@@ -31,6 +30,7 @@ class Index extends \Magento\Backend\App\Action
 
     /**
      * Product constructor.
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      */

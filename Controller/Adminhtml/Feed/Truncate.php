@@ -22,9 +22,7 @@ use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class Truncate
- *
- * @package Ced\Range\Controller\Adminhtml\Log
+ * Class Truncate Feed
  */
 class Truncate extends Action
 {
@@ -45,6 +43,7 @@ class Truncate extends Action
 
     /**
      * Delete constructor.
+     *
      * @param Action\Context $context
      * @param PageFactory $resultPageFactory
      * @param \Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory $logs
@@ -59,6 +58,11 @@ class Truncate extends Action
         $this->logs = $logs;
     }
 
+    /**
+     * Truncate Execute method
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     */
     public function execute()
     {
         $status = false;

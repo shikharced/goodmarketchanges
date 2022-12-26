@@ -22,6 +22,9 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Category;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 
+/**
+ * Class Index Category
+ */
 class Index extends \Magento\Backend\App\Action
 {
     /**
@@ -53,7 +56,7 @@ class Index extends \Magento\Backend\App\Action
     public function execute()
     {
         /**
-         * @var \Magento\Backend\Model\View\Result\Page $resultPage 
+         * @var \Magento\Backend\Model\View\Result\Page $resultPage
          */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Ced_GoodMarket::GoodMarket_profile');

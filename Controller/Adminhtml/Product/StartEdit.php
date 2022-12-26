@@ -21,15 +21,13 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Product;
 use Ced\GoodMarket\Model\Carrier\GoodMarket;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class Startrevise
- * @package Ced\GoodMarket\Controller\Adminhtml\Product
+ * Class Startrevise Controller
  */
-class StartEdit  extends Action
+class StartEdit extends Action
 {
     const FLAG_CODE = 'CED_JSON_FIL';
     /**
@@ -65,6 +63,7 @@ class StartEdit  extends Action
 
     /**
      * Startrevise constructor.
+     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
@@ -90,6 +89,11 @@ class StartEdit  extends Action
         $this->logger=$logger;
     }
 
+    /**
+     * Execute method
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $resultJson = $this->resultJsonFactory->create();
@@ -108,29 +112,28 @@ class StartEdit  extends Action
             $errorMessage=[];
             if (isset($totalChunk[$key])) {
                 $ids = $totalChunk[$key];
-                $productData=$this->product->prepareData($ids,'EditProduct');
+                $productData=$this->product->prepareData($ids, 'EditProduct');
 //                        echo "<pre>";
 //                        print_r($productData);
 //                        die(__FILE__);
-                if(isset($productData['data']['errorMessage']))
-                {
-                    $errorMessage[] = implode(',',$productData['data']['errorMessage']);
+                if (isset($productData['data']['errorMessage'])) {
+                    $errorMessage[] = implode(',', $productData['data']['errorMessage']);
                 }
 //                        $productId = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($prodIds);
-                if(isset($productData['data']['saveBulkProduct'])) {
+                if (isset($productData['data']['saveBulkProduct'])) {
                     if ($productData['data']['saveBulkProduct']['success'] == '1') {
                         $uploadMessage[] = "Product Update Request Has Been Send Successfully!!,Check Feed Section and Bulk Scheduler Section.";
                     } else {
                         $errorMessage[] = $productData['data']['saveBulkProduct']['message'];
                     }
-                }else{
+                } else {
                     $errorMessage[] = "Something Went Wrong,Please Try After Sometime.";
                 }
 
-                $message['success'] = implode(',',$uploadMessage);
-                $message['error'] = implode(',',$errorMessage);
-            }else {
-                $message['error'] = "Batch ".$index.":included Product(s) data not found.";
+                $message['success'] = implode(',', $uploadMessage);
+                $message['error'] = implode(',', $errorMessage);
+            } else {
+                $message['error'] = "Batch " . $index . ":included Product(s) data not found.";
             }
         } catch (\Exception $e) {
             $message['error'] = $e->getMessage();

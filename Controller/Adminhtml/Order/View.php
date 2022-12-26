@@ -20,9 +20,7 @@
 namespace Ced\GoodMarket\Controller\Adminhtml\Order;
 
 /**
- * TODO: dev
- * Class View
- * @package Ced\GoodMarket\Controller\Adminhtml\Order
+ * Class View Orders
  */
 class View extends \Magento\Backend\App\Action
 {
@@ -49,6 +47,7 @@ class View extends \Magento\Backend\App\Action
 
     /**
      * View constructor.
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Ui\Component\MassAction\Filter $filter
@@ -79,7 +78,7 @@ class View extends \Magento\Backend\App\Action
         $id = $this->getRequest()->getParam('id');
         if (!empty($id)) {
             $goodmarketOrder = $this->orders->load($id);
-            if ($goodmarketOrder and $goodmarketOrder->getId()) {
+            if ($goodmarketOrder && $goodmarketOrder->getId()) {
                 $order['order'] = json_decode($goodmarketOrder->getOrderData());
                 $order['order_items'] = json_decode($goodmarketOrder->getOrderItems());
             }

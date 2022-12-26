@@ -20,6 +20,9 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 
+/**
+ * New Action to create new profile
+ */
 class NewAction extends \Magento\Backend\App\Action
 {
     /**
@@ -33,14 +36,13 @@ class NewAction extends \Magento\Backend\App\Action
      * @param Context                                           $context
      * @param \Magento\Backend\Model\View\Result\ForwardFactory $resultForwardFactory
      */
-
     public function __construct(
         Context $context,
         \Magento\Backend\Model\View\Result\ForwardFactory $resultForwardFactory
     ) {
         parent::__construct($context);
         $this->resultForwardFactory = $resultForwardFactory;
-        $this->scopeConfigManager = $this->_objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
+        $this->scopeConfigManager = $this->_objectManager->get(\Magento\Framework\App\Config\ScopeConfigInterface::class);
         $this->_token = $this->scopeConfigManager->getValue('goodmarket_config/goodmarket_setting/token');
     }
 

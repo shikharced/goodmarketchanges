@@ -16,26 +16,35 @@
  * @license   http://cedcommerce.com/license-agreement.txt
  */
 namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
- 
+
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
- 
- 
+
+/**
+ * Class Edit Constructor
+ */
 class Edit extends \Magento\Backend\App\Action
 {
     /**
      * @var PageFactory
      */
     protected $resultPageFactory;
-    protected $_entityTypeId;
-    protected $_coreRegistry;
-    
+
     /**
-     * @param Context     $context
-     * @param PageFactory $resultPageFactory
+     * @var \Magento\Framework\Registry
      */
-    
-    
+    protected $_coreRegistry;
+
+    /**
+     * Edit Constructor.
+     *
+     * @param Context $context
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param PageFactory $resultPageFactory
+     * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
+     * @param \Ced\GoodMarket\Helper\Data $data
+     * @param \Ced\GoodMarket\Helper\Product $product
+     */
     public function __construct(
         Context $context,
         \Magento\Framework\Registry $coreRegistry,
@@ -50,20 +59,20 @@ class Edit extends \Magento\Backend\App\Action
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->data=$data;
         $this->product=$product;
-       }
+    }
+
     /**
      * Index action
      *
      * @return void
      */
-    
     public function execute()
     {
         $result = $this
             ->resultRedirectFactory
             ->create();
         $credentials=$this->data->checkAccountSetup();
-        if($credentials!=1) {
+        if ($credentials!=1) {
             $this
                 ->messageManager
                 ->addNoticeMessage($credentials);
@@ -73,8 +82,9 @@ class Edit extends \Magento\Backend\App\Action
         $this->product->profileCategory();
         //$this->_objectManager->create('Ced\GoodMarket\Cron\InventoryPriceSync')->execute();
         $profileCode = $this->getRequest()->getParam('id');
-        if($profileCode) {
-            $profile = $this->_objectManager->create('Ced\GoodMarket\Model\Profile')->getCollection()->addFieldToFilter('id', $profileCode)->getFirstItem();
+        if ($profileCode) {
+            $profile = $this->_objectManager->create(\Ced\GoodMarket\Model\Profile::class)
+                ->getCollection()->addFieldToFilter('id', $profileCode)->getFirstItem();
             $this->getRequest()->setParam('is_profile', 1);
             $this->_coreRegistry->register('current_profile', $profile);
             if ($profile->getId() && !empty($profile)) {
@@ -92,7 +102,7 @@ class Edit extends \Magento\Backend\App\Action
                 ->setIsPopup((bool)$this->getRequest()->getParam('popup'));
             return $resultPage;
         } else {
-            $profile = $this->_objectManager->create('Ced\GoodMarket\Model\Profile');
+            $profile = $this->_objectManager->create(\Ced\GoodMarket\Model\Profile::class);
             $this->_coreRegistry->register('current_profile', $profile);
             $breadCrumb = __('Add New Profile');
             $breadCrumbTitle = __('Add New Profile');
@@ -104,5 +114,5 @@ class Edit extends \Magento\Backend\App\Action
                 ->setIsPopup((bool)$this->getRequest()->getParam('popup'));
             return $resultPage;
         }
-    }   
+    }
 }

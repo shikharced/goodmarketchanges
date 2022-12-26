@@ -18,6 +18,9 @@
 
 namespace Ced\Range\Controller\Adminhtml\Cron;
 
+/**
+ * Index Cron
+ */
 class Index extends \Magento\Backend\App\Action
 {
     /**

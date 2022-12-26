@@ -16,9 +16,13 @@
  * @license      http://cedcommerce.com/license-agreement.txt
  */
 namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
-use Magento\Framework\View\Result\PageFactory;
-use Ced\GoodMarket\Helper\Data;
 
+use Ced\GoodMarket\Helper\Data;
+use Magento\Framework\View\Result\PageFactory;
+
+/**
+ * To Update category attributes
+ */
 class Updatecategoryattribute extends \Magento\Backend\App\Action
 {
     /**
@@ -33,6 +37,8 @@ class Updatecategoryattribute extends \Magento\Backend\App\Action
     public $helper;
 
     /**
+     * Update Category Attr Constructor.
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param Data $helper
@@ -47,17 +53,23 @@ class Updatecategoryattribute extends \Magento\Backend\App\Action
         $this->helper = $helper;
     }
 
+    /**
+     * Execute methode
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     */
     public function execute()
     {
         $c_id = $this->getRequest()->getParam('c_id');
         if (!empty($c_id)) {
             $this->_session->setCategoryValue($c_id);
-                $response = $this->helper->getCategoryAttributes($c_id);
-                if (isset($response)) {
-                    $result = $this->resultPageFactory->create(true)->getLayout()->createBlock('Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute\Requiredattribute')->setAttributeResponse($response)->toHtml();
-                }
+            $response = $this->helper->getCategoryAttributes($c_id);
+            if (isset($response)) {
+                $result = $this->resultPageFactory->create(true)->getLayout()->createBlock(\Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute\Requiredattribute::class)
+                    ->setAttributeResponse($response)->toHtml();
+            }
 
-        $this->getResponse()->setBody($result);
+            $this->getResponse()->setBody($result);
         }
     }
 }

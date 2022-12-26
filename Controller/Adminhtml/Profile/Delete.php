@@ -21,8 +21,7 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
 use Magento\Customer\Controller\Adminhtml\Group;
 
 /**
- * Class Delete
- * @package Ced\GoodMarket\Controller\Adminhtml\Profile
+ * Class Delete profile
  */
 class Delete extends Group
 {
@@ -34,11 +33,13 @@ class Delete extends Group
         $code = $this->getRequest()->getParam('pcode');
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($code) {
-            $model = $this->_objectManager->create('Ced\GoodMarket\Model\Profile')->getCollection()->addFieldToFilter('profile_code', $code);
+            $model = $this->_objectManager->create(\Ced\GoodMarket\Model\Profile::class)
+                ->getCollection()
+                ->addFieldToFilter('profile_code', $code);
             // entity type check
             try {
                 foreach ($model as $value) {
-                    if($code == $value->getData('profile_code')) {
+                    if ($code == $value->getData('profile_code')) {
                         $value->delete();
                     }
                 }
@@ -48,12 +49,11 @@ class Delete extends Group
                 return $resultRedirect->setPath(
                     'goodmarket/profile/edit',
                     ['pcode' => $this->getRequest()->getParam('pcode')]
-                );         
+                );
                 //End
             }
         }
         $this->_redirect('goodmarket/profile/index');
-          return ;
+        return;
     }
 }
-

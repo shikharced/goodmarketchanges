@@ -18,6 +18,9 @@
 
 namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
 
+/**
+ * Validate Class for profile validation
+ */
 class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
 {
     /**
@@ -54,6 +57,8 @@ class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
     }
 
     /**
+     * Validate Excute function
+     *
      * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
@@ -66,7 +71,7 @@ class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
         $attributeCode = $attributeCode ?: $this->generateCode($frontendLabel[0]);
         $attributeId = $this->getRequest()->getParam('attribute_id');
         $attribute = $this->_objectManager->create(
-            'Magento\Catalog\Model\ResourceModel\Eav\Attribute'
+            \Magento\Catalog\Model\ResourceModel\Eav\Attribute::class
         )->loadByCode(
             $this->_entityTypeId,
             $attributeCode
@@ -82,13 +87,11 @@ class Validate extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
                     __('An attribute with the same code (%1) already exists.', $attributeCode)
                 );
             }
-
             $layout = $this->layoutFactory->create();
             $layout->initMessages();
             $response->setError(true);
             $response->setHtmlMessage($layout->getMessagesBlock()->getGroupedHtml());
         }
-       
         return $this->resultJsonFactory->create()->setJsonData($response->toJson());
     }
 }

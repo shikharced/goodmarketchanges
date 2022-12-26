@@ -15,23 +15,20 @@
  * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
  */
-
 namespace Ced\GoodMarket\Controller\Adminhtml\Product;
 
 use Ced\GoodMarket\Model\Carrier\GoodMarket;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class Startrevise
- * @package Ced\GoodMarket\Controller\Adminhtml\Product
+ * Class Start Delete Product
  */
-class StartDelete  extends Action
+class StartDelete extends Action
 {
-    const FLAG_CODE = 'CED_JSON_FIL';
+    public const FLAG_CODE = 'CED_JSON_FIL';
     /**
      * @var PageFactory
      */
@@ -64,13 +61,15 @@ class StartDelete  extends Action
     protected $_coreRegistry;
 
     /**
-     * Startrevise constructor.
+     * Start Delete constructor.
+     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
-     * @param GoodMarket $bolHelper
-     * @param Data $dataHelper
-     * @param Logger $logger
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Ced\GoodMarket\Helper\Product $product
+     * @param \Ced\GoodMarket\Helper\Config $config
+     * @param \Ced\GoodMarket\Helper\Logger $logger
      */
     public function __construct(
         Context $context,
@@ -78,7 +77,7 @@ class StartDelete  extends Action
         JsonFactory $resultJsonFactory,
         \Magento\Framework\Registry $coreRegistry,
         \Ced\GoodMarket\Helper\Product $product,
-        \Ced\GoodMarket\Helper\Config                $config,
+        \Ced\GoodMarket\Helper\Config $config,
         \Ced\GoodMarket\Helper\Logger $logger
     ) {
         parent::__construct($context);
@@ -110,7 +109,7 @@ class StartDelete  extends Action
                 $ids = $totalChunk[$key];
                 foreach ($ids as $accountId => $prodIds) {
                     if (!is_array($prodIds)) {
-                        $productData=$this->product->productDeleteSync($prodIds,'DeleteProduct');
+                        $productData=$this->product->productDeleteSync($prodIds, 'DeleteProduct');
                         if (isset($productData) && !empty($productData)) {
                             foreach ($productData as $data) {
                                 if (isset($data['success'])) {
@@ -123,16 +122,15 @@ class StartDelete  extends Action
                                     $errorMessage[] = "Something Went Wrong,Please Try After Sometime.";
                                 }
                             }
-                        }else {
+                        } else {
                             $errorMessage[] = "Something Went Wrong,Please Try After Sometime.";
                         }
-
                     }
                 }
-                $message['success'] = implode(',',$uploadMessage);
-                $message['error'] = implode(',',$errorMessage);
-            }else {
-                $message['error'] = "Batch ".$index.":included Product(s) data not found.";
+                $message['success'] = implode(',', $uploadMessage);
+                $message['error'] = implode(',', $errorMessage);
+            } else {
+                $message['error'] = "Batch " . $index . ":included Product(s) data not found.";
             }
         } catch (\Exception $e) {
             $message['error'] = $e->getMessage();

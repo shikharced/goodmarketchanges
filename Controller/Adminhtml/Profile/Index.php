@@ -46,14 +46,14 @@ class Index extends \Magento\Backend\App\Action
     }
 
     /**
-     * Execute
+     * Execute method
      *
      * @return \Magento\Backend\Model\View\Result\Page
      */
     public function execute()
     {
         /**
-         * @var \Magento\Backend\Model\View\Result\Page $resultPage 
+         * @var \Magento\Backend\Model\View\Result\Page $resultPage
          */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Ced_GoodMarket::GoodMarket_profile');

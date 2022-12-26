@@ -21,15 +21,13 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Product;
 use Ced\GoodMarket\Model\Carrier\GoodMarket;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class Startrevise
- * @package Ced\GoodMarket\Controller\Adminhtml\Product
+ * Class start product upload
  */
-class StartUpload  extends Action
+class StartUpload extends Action
 {
     const FLAG_CODE = 'CED_JSON_FIL';
     /**
@@ -65,12 +63,14 @@ class StartUpload  extends Action
 
     /**
      * Startrevise constructor.
+     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
-     * @param GoodMarket $bolHelper
-     * @param Data $dataHelper
-     * @param Logger $logger
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Ced\GoodMarket\Helper\Product $product
+     * @param \Ced\GoodMarket\Helper\Config $config
+     * @param \Ced\GoodMarket\Helper\Logger $logger
      */
     public function __construct(
         Context $context,
@@ -108,35 +108,33 @@ class StartUpload  extends Action
             $errorMessage=[];
             if (isset($totalChunk[$key])) {
                 $ids = $totalChunk[$key];
-                        $productData=$this->product->prepareData($ids,'UploadProduct');
+                $productData=$this->product->prepareData($ids, 'UploadProduct');
 //                        echo "<pre>";
 //                        print_r($productData);
 //                        die(__FILE__);
-                if(isset($productData['data']['errorMessage']))
-                {
-                    $errorMessage[] = implode(',',$productData['data']['errorMessage']);
+                if (isset($productData['data']['errorMessage'])) {
+                    $errorMessage[] = implode(',', $productData['data']['errorMessage']);
                 }
 //                        $productId = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($prodIds);
-                        if(isset($productData['data']['saveBulkProduct'])) {
-                            if ($productData['data']['saveBulkProduct']['success'] == '1') {
-                                $uploadMessage[] = "Product Upload Request Has Been Send Successfully!!,Check Feed Section and Bulk Scheduler Section.";
-                            } else {
-                                $errorMessage[] = $productData['data']['saveBulkProduct']['message'];
-                            }
-                        }else{
-                            $errorMessage[] = "Something Went Wrong,Please Try After Sometime.";
-                        }
+                if (isset($productData['data']['saveBulkProduct'])) {
+                    if ($productData['data']['saveBulkProduct']['success'] == '1') {
+                        $uploadMessage[] = "Product Upload Request Has Been Send Successfully!!,Check Feed Section and Bulk Scheduler Section.";
+                    } else {
+                        $errorMessage[] = $productData['data']['saveBulkProduct']['message'];
+                    }
+                } else {
+                    $errorMessage[] = "Something Went Wrong,Please Try After Sometime.";
+                }
 
-                $message['success'] = implode(',',$uploadMessage);
-                $message['error'] = implode(',',$errorMessage);
-            }else {
-                $message['error'] = "Batch ".$index.":included Product(s) data not found.";
+                $message['success'] = implode(',', $uploadMessage);
+                $message['error'] = implode(',', $errorMessage);
+            } else {
+                $message['error'] = "Batch " . $index . ":included Product(s) data not found.";
             }
         } catch (\Exception $e) {
             $message['error'] = $e->getMessage();
             $this->logger->addError(
-               $e->getMessage() .json_encode($productData)
-
+                $e->getMessage() . json_encode($productData)
             );
         }
         return $resultJson->setData($message);

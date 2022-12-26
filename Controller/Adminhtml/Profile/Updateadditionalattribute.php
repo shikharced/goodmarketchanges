@@ -16,9 +16,13 @@
  * @license      http://cedcommerce.com/license-agreement.txt
  */
 namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
-use Magento\Framework\View\Result\PageFactory;
-use Ced\GoodMarket\Helper\Data;
 
+use Ced\GoodMarket\Helper\Data;
+use Magento\Framework\View\Result\PageFactory;
+
+/**
+ * To Update Additional attributes
+ */
 class Updateadditionalattribute extends \Magento\Backend\App\Action
 {
     /**
@@ -33,6 +37,8 @@ class Updateadditionalattribute extends \Magento\Backend\App\Action
     protected $helper;
 
     /**
+     * Update Additional attributes Constructor
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param Data $helper
@@ -48,6 +54,8 @@ class Updateadditionalattribute extends \Magento\Backend\App\Action
     }
 
     /**
+     * Update Additional attributes
+     *
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
      * @throws \Exception
      */
@@ -58,7 +66,8 @@ class Updateadditionalattribute extends \Magento\Backend\App\Action
             if (class_exists(\GoodMarket\GoodMarketClient::class)) {
                 $response = $this->helper->ApiObject()->getTaxonomyNodeProperties(['params' => ['taxonomy_id' => (int)$c_id]]);
                 if (isset($response['results'])) {
-                    $result = $this->resultPageFactory->create(true)->getLayout()->createBlock('Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute\Additionalattribute')->setAttributeResponse($response)->toHtml();
+                    $result = $this->resultPageFactory->create(true)->getLayout()->createBlock(\Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute\Additionalattribute::class)
+                        ->setAttributeResponse($response)->toHtml();
                 }
             } else {
                 $result = '';

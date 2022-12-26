@@ -20,8 +20,7 @@
 namespace Ced\Range\Controller\Adminhtml\Cron;
 
 /**
- * Class MassDelete
- * @package Ced\EbayMultiAccount\Controller\Adminhtml\Cron
+ * Class MassDelete cron
  */
 class MassDelete extends \Magento\Backend\App\Action
 {

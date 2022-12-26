@@ -19,9 +19,7 @@
 namespace Ced\GoodMarket\Controller\Adminhtml\Order;
 
 /**
- * TODO: dev
- * Class Delete
- * @package Ced\GoodMarket\Controller\Adminhtml\Order
+ * Class Delete Order
  */
 class Delete extends \Magento\Backend\App\Action
 {
@@ -56,20 +54,16 @@ class Delete extends \Magento\Backend\App\Action
     {
         $isFilter = $this->getRequest()
             ->getParam('filters');
-        if (isset($isFilter))
-        {
+        if (isset($isFilter)) {
             $collection = $this
                 ->filter
                 ->getCollection($this
                     ->orders
                     ->getCollection());
-        }
-        else
-        {
+        } else {
             $id = $this->getRequest()
                 ->getParam('id');
-            if (isset($id) and !empty($id))
-            {
+            if (isset($id) && !empty($id)) {
                 $collection = $this
                     ->orders
                     ->getCollection()
@@ -79,19 +73,15 @@ class Delete extends \Magento\Backend\App\Action
 
         $response = false;
         $message = 'Order(s) deleted successfully.';
-        if (isset($collection) and $collection->getSize() > 0)
-        {
+        if (isset($collection) && $collection->getSize() > 0) {
             $response = $collection->walk('delete');
         }
 
-        if ($response)
-        {
+        if ($response) {
             $this
                 ->messageManager
                 ->addSuccessMessage($message);
-        }
-        else
-        {
+        } else {
             $this
                 ->messageManager
                 ->addErrorMessage('Order(s) delete failed.');
@@ -100,4 +90,3 @@ class Delete extends \Magento\Backend\App\Action
         return $this->_redirect('goodmarket/order/index');
     }
 }
-
