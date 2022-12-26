@@ -22,7 +22,8 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\Api\FilterBuilder;
 
 /**
- * Class DataProvider of Product
+ * Class Grid
+ * @package Ced\Range\Ui\DataProvider\Product
  */
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
@@ -41,21 +42,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      */
     public $filterBuilder;
 
-    /**
-     * DataProvider Constructor
-     *
-     * @param $name
-     * @param $primaryFieldName
-     * @param $requestFieldName
-     * @param CollectionFactory $collectionFactory
-     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
-     * @param \Ced\GoodMarket\Helper\Config $config
-     * @param FilterBuilder $filterBuilder
-     * @param array $addFieldStrategies
-     * @param array $addFilterStrategies
-     * @param array $meta
-     * @param array $data
-     */
     public function __construct(
         $name,
         $primaryFieldName,
@@ -119,8 +105,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 
 
     /**
-     * Function AddFilter
-     *
      * @param \Magento\Framework\Api\Filter $filter
      * @return void
      */
@@ -139,8 +123,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
-     * Function get Data
-     *
      * @return array
      */
     public function getData()
@@ -159,12 +141,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         ];
     }
 
-    /**
-     * AddField Function
-     *
-     * @param $field
-     * @param $alias
-     */
     public function addField($field, $alias = null)
     {
         if (isset($this->addFieldStrategies[$field])) {
@@ -173,4 +149,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             parent::addField($field, $alias);
         }
     }
+
 }
+
