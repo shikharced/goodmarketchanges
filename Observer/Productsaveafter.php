@@ -14,7 +14,7 @@ class Productsaveafter implements ObserverInterface
     /**
      * Execute Function
      *
-     * @param $observer
+     * @param object $observer
      * @return $this
      */
     public function execute(\Magento\Framework\Event\Observer $observer)

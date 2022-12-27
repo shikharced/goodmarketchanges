@@ -166,7 +166,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     /** @var \Magento\Catalog\Model\Product $product */
                     foreach ($collection->getItems() as $product) {
                         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-                        $configLoader = $objectManager->create('Ced\GoodMarket\Model\Profile');
+                        $configLoader = $objectManager->create(\Ced\GoodMarket\Model\Profile::class);
                         $collection = $configLoader->load($product->getData('goodmarket_profile_id'));
                         $profile = $collection->getData();
                         $validate = $this->validateProduct($product->getData(), $type, $profile);
@@ -182,7 +182,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 $prodData[]='Please Map the Product Attributes Inside "GoodMarket Product Settings->Product Attribute Mapping" in the Configuration Section';
                                 continue;
                             }
-                            $catalogSession = $objectManager->create('\Magento\Catalog\Model\Session');
+                            $catalogSession = $objectManager->create(\Magento\Catalog\Model\Session::class);
                             $catalogSession->unsQtyCount();
                             $productAttributes=[];
                             $category = [];
@@ -348,7 +348,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     /** @var \Magento\Catalog\Model\Product $product */
                     foreach ($collection->getItems() as $product) {
                         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-                        $configLoader = $objectManager->create('Ced\GoodMarket\Model\Profile');
+                        $configLoader = $objectManager->create(\Ced\GoodMarket\Model\Profile::class);
                         $collection = $configLoader->load($product->getData('goodmarket_profile_id'));
                         $profile = $collection->getData();
                         $validate = $this->validateProduct($product->getData(), $type, $profile);
@@ -483,7 +483,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $requireAttribute=json_decode($profile['profile_req_opt_attribute'], true);
         foreach ($requireAttribute['required_attributes'] as $attribute) {
-            if($attribute['goodmarket_attribute_name']=='price') {
+            if ($attribute['goodmarket_attribute_name']=='price') {
                 $price= $attribute['magento_attribute_code'];
             }
         }
@@ -572,7 +572,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //            Change weight to grams 30Nov - Shikhar
             if ($weightUnit == 'lbs') {
                 $productWeight = $product->getWeight() * 453.6;
-            } elseif ($weightUnit == 'kg') {
+            } elseif ($weightUnit == 'kgs') {
                 $productWeight = $product->getWeight()*1000;
             }
             $productweight = !empty($product->getWeight()) ? round($productWeight) : '2';
@@ -590,7 +590,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
             /*Inventory Work - SHIKHAR*/
             $sourceMapping = $this->getInventoryMapping();
-            foreach ($sourceMapping as $localSource => $gdmarketSource){
+            foreach ($sourceMapping as $localSource => $gdmarketSource) {
                 $quantity = $this->getQuantityForMsi($product, $localSource);
                 $gdmarketSourceArr = [];
                 $gdmarketSourceArr = explode('+', $gdmarketSource);
@@ -699,7 +699,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 /** @var \Magento\Catalog\Model\Product $product */
                 foreach ($collection->getItems() as $product) {
                     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-                    $configLoader = $objectManager->create('Ced\GoodMarket\Model\Profile');
+                    $configLoader = $objectManager->create(\Ced\GoodMarket\Model\Profile::class);
                     $collection = $configLoader->load($product->getData('goodmarket_profile_id'));
                     $profile = $collection->getData();
                     if (empty($product->getData('goodmarket_product_id'))) {
@@ -759,7 +759,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $price,
                             'InvSyncByCron',
                             $allSources,
-                            $categoryId);
+                            $categoryId
+                        );
                     }
                 }
                 return $reportInv;
@@ -772,7 +773,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @param $child
      * @param $profile
-     * @param $variationAttributes
+     * @param $getConfigAttribute
      * @return bool|string
      */
     public function getVariationProducts($child, $profile, $getConfigAttribute)
@@ -807,7 +808,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //            }
             foreach ($getConfigAttribute as $key=>$prodAttribute) {
                 $this->_objectManager= \Magento\Framework\App\ObjectManager::getInstance();
-                $_product = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($child->getData('entity_id'));
+                $_product = $this->_objectManager->create(\Magento\Catalog\Model\Product::class)
+                ->load($child->getData('entity_id'));
                 $_product->getResource()->getAttribute($prodAttribute)->getFrontend()->getValue($_product);
                 $optionId = $child->getData($prodAttribute);
                 $attribute = $_product->getResource()->getAttribute($prodAttribute);
@@ -829,7 +831,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $productArray['sku'] = $child->getSku();
             $qty=$this->getQuantityForUpload($child, $profile);
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-            $catalogSession = $objectManager->create('\Magento\Catalog\Model\Session');
+            $catalogSession = $objectManager->create(\Magento\Catalog\Model\Session::class);
             $sessionQty=$catalogSession->getQtyCount();
             if (isset($sessionQty)) {
                 $sessionQty=$sessionQty+$qty;
@@ -993,7 +995,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $weightUnit = $this->getWeightUnit();
             if ($weightUnit == 'lbs') {
                 $productWeight = $product->getWeight() * 453.6;
-            } elseif ($weightUnit == 'kg') {
+            } elseif ($weightUnit == 'kgs') {
                 $productWeight = $product->getWeight() * 1000;
             }
             $productweight = !empty($product->getWeight()) ? round($productWeight) : '2';
@@ -1080,6 +1082,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      * @param $product
      * @param $profile
      * @param $catId
+     * @param $type
      * @return false|string
      */
     public function getVirtualProductData($product, $profile, $catId, $type)

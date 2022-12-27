@@ -27,7 +27,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 class Condition extends AbstractSource
 {
     /**
-     * public function getAllOption
+     * Public function getAllOption
      *
      * @return array
      */

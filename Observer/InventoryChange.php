@@ -23,13 +23,11 @@ class InventoryChange
     public const STOCK_ITEM_DATA_KEY = 'CED_GOODMARKET_STOCK_DATA_';
 
     /**
-     * Object Manager
      * @var \Magento\Framework\ObjectManagerInterface
      */
     public $objectManager;
 
     /**
-     * Data Helper
      * @var \Ced\GoodMarket\Helper\Data
      */
     public $dataHelper;
@@ -71,10 +69,10 @@ class InventoryChange
     }
 
     /**
-     * processChangedProduct
+     * Function processChangedProduct
      *
-     * @param $stockItem
-     * @param $origData
+     * @param array $stockItem
+     * @param array $origData
      * @return bool
      */
     public function processChangedProduct($stockItem, $origData)

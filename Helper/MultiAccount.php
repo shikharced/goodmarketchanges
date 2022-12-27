@@ -103,12 +103,13 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
 //    }
 
     /**
-     * getProfileAttrForAcc
+     * Function getProfileAttrForAcc
      *
-     * @param $accId
+     * @param int $accId
      * @return string
      */
-    public function getProfileAttrForAcc($accId = null) {
+    public function getProfileAttrForAcc($accId = null)
+    {
         $attributeCode = '';
         if ($accId > 0) {
             $attributeCode = 'goodmarket_profile_' . $accId;
@@ -119,9 +120,9 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getItemIdAttrForAcc
+     * Function getItemIdAttrForAcc
      *
-     * @param $accId
+     * @param string $accId
      * @return string
      */
     public function getItemIdAttrForAcc($accId = null)
@@ -136,12 +137,13 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getItemIdAttrForVariantAcc
+     * Function getItemIdAttrForVariantAcc
      *
-     * @param $accId
+     * @param string $accId
      * @return string
      */
-    public function getItemIdAttrForVariantAcc($accId = null) {
+    public function getItemIdAttrForVariantAcc($accId = null)
+    {
         $attributeCode = '';
         if ($accId > 0) {
             $attributeCode = 'goodmarket_product_variant_' . $accId;
@@ -152,12 +154,13 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getProdStatusAttrForAcc
+     * Function getProdStatusAttrForAcc
      *
-     * @param $accId
+     * @param string $accId
      * @return string
      */
-    public function getProdStatusAttrForAcc($accId = null) {
+    public function getProdStatusAttrForAcc($accId = null)
+    {
         $attributeCode = '';
         if ($accId > 0) {
             $attributeCode = 'goodmarket_prod_status_' . $accId;
@@ -168,12 +171,13 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getProdListingErrorAttrForAcc
+     * Function getProdListingErrorAttrForAcc
      *
-     * @param $accId
+     * @param string $accId
      * @return string
      */
-    public function getProdListingErrorAttrForAcc($accId = null) {
+    public function getProdListingErrorAttrForAcc($accId = null)
+    {
         $attributeCode = '';
         if ($accId > 0) {
             $attributeCode = 'goodmarket_error_' . $accId;
@@ -241,7 +245,7 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * GetReason function
      *
-     * @param $reason
+     * @param string $reason
      * @return string
      */
     public function getReason($reason)

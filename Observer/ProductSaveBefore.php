@@ -26,7 +26,7 @@ class ProductSaveBefore extends InventoryChange implements ObserverInterface
     /**
      * Catalog product save after event handler
      *
-     * @param $observer
+     * @param object $observer
      * @return \Magento\Framework\Event\Observer $observer
      */
     public function execute(\Magento\Framework\Event\Observer $observer)

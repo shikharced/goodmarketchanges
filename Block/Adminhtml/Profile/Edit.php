@@ -52,7 +52,8 @@ class Edit extends Container
      *
      * @return void
      */
-    protected function _construct() {
+    protected function _construct()
+    {
         $this->_objectId = 'profile_id';
         $this->_blockGroup = 'ced_goodMarket';
         $this->_controller = 'adminhtml_profile';
@@ -127,7 +128,7 @@ class Edit extends Container
     /**
      * Save And continue Url
      *
-     * @param $back
+     * @param string $back
      * @return string
      */
     public function getSaveAndContinueUrl($back)
@@ -143,7 +144,6 @@ class Edit extends Container
                 'website' => $this->getRequest()->getParam('website', false),
             ]
         );
-
     }
 
     /**
@@ -154,7 +154,10 @@ class Edit extends Container
     public function getHeaderText()
     {
         if ($this->_coreRegistry->registry('profile_data') && $this->_coreRegistry->registry('profile_data')->getId()) {
-            return __('Edit Profile "%s" ', $this->escapeHtml($this->_coreRegistry->registry('profile_data')->getName()));
+            return __(
+                'Edit Profile "%s" ',
+                $this->escapeHtml($this->_coreRegistry->registry('profile_data')->getName())
+            );
         } else {
             return __('Add Profile');
         }

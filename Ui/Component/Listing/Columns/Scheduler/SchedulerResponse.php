@@ -24,7 +24,7 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
- * Class Feed File Schedular Response 
+ * Class Feed File Schedular Response
  */
 class SchedulerResponse extends Column
 {

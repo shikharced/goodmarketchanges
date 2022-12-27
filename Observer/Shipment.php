@@ -114,7 +114,7 @@ class Shipment implements ObserverInterface
                     } else {
                         $shipData = $this->data
                         ->createTrackOrderShipment(
-                            json_decode($orderCollection->getData('order_data'),true),
+                            json_decode($orderCollection->getData('order_data'), true),
                             $trackArray
                         );
                     }

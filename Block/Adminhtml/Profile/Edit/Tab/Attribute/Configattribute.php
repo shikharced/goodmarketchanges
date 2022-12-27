@@ -18,10 +18,13 @@
 
 namespace Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute;
 
+use Magento\Backend\Block\Widget;
+use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
+
 /**
  * Configattribute template use
  */
-class Configattribute extends \Magento\Backend\Block\Widget implements \Magento\Framework\Data\Form\Element\Renderer\RendererInterface
+class Configattribute extends Widget implements RendererInterface
 {
     protected $_template = 'Ced_GoodMarket::profile/attribute/config_attribute.phtml';
 
@@ -40,6 +43,9 @@ class Configattribute extends \Magento\Backend\Block\Widget implements \Magento\
      */
     protected $_profile;
 
+    /**
+     * @var \Magento\Framework\Json\Helper\Data
+     */
     public $json;
 
     /**
@@ -97,7 +103,7 @@ class Configattribute extends \Magento\Backend\Block\Widget implements \Magento\
     /**
      * Retrieve goodmarket attributes
      *
-     * @param $subcatattribute
+     * @param array $subcatattribute
      * @return array
      */
     public function getGoodMarketConfigAttributes($subcatattribute = null)
@@ -126,7 +132,7 @@ class Configattribute extends \Magento\Backend\Block\Widget implements \Magento\
                     $temp['goodmarket_attribute_type'] = $type;
                     $temp['property_id'] = $value['property_id'];
                     $temp['goodmarket_enum'] = $enumjson;
-                    $temp['default'] = isset ($value['default']) ? $value['default']: '';
+                    $temp['default'] = isset($value['default']) ? $value['default']: '';
                     $temp['option_values'] = '';
                     $temp['required'] = 0;
                     $configAttribute[str_replace("'", "", $value['name'])] = $temp;
@@ -183,7 +189,7 @@ class Configattribute extends \Magento\Backend\Block\Widget implements \Magento\
                     'input_type' => 'select',
                     'option_values' => ''
                 ];
-            if ($attribute->getFrontendInput() =='select' && $optionValues){
+            if ($attribute->getFrontendInput() =='select' && $optionValues) {
                 $magentoattributeCodeArray[$attribute->getAttributecode()] =
                     [
                         'attribute_code' => $attribute->getAttributecode(),
@@ -191,7 +197,7 @@ class Configattribute extends \Magento\Backend\Block\Widget implements \Magento\
                         'input_type' => 'select',
                         'option_values' => $optionValues,
                     ];
-            } else{
+            } else {
                 $magentoattributeCodeArray[$attribute->getAttributecode()] =
                     [
                         'attribute_code' => $attribute->getAttributecode(),
@@ -209,7 +215,8 @@ class Configattribute extends \Magento\Backend\Block\Widget implements \Magento\
      *
      * @return array
      */
-    public function  customFun() {
+    public function customFun()
+    {
         if ($this->_profile->getData()) {
             $configAttribute = [];
             $profile_category = $this->_profile->getData('profile_category');

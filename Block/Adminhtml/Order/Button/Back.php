@@ -43,7 +43,7 @@ class Back extends Container implements ButtonProviderInterface
     }
 
     /**
-     * getBackUrl
+     * Function getBackUrl
      *
      * @return string
      */

@@ -54,7 +54,7 @@ class Mapping extends Generic
     }
 
     /**
-     * function _prepareForm
+     * Function _prepareForm
      *
      * @return $this
      */

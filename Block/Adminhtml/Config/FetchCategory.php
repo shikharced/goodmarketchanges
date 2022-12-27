@@ -39,7 +39,7 @@ class FetchCategory extends Field
     }
 
     /**
-     * render
+     * Function render
      *
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string

@@ -46,7 +46,7 @@ class MagentoAttribute extends Select
     }
 
     /**
-     * getSourceOptions
+     * Function getSourceOptions
      *
      * @return \string[][]
      */

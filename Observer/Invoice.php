@@ -100,8 +100,7 @@ class Invoice implements ObserverInterface
                 $e->getMessage() . "Exception in Invoice Creation"
             );
             return $observer;
-        }
-        catch (\Error $e) {
+        } catch (\Error $e) {
             $this->logger->addError(
                 $e->getMessage() . "Error in Invoice Creation"
             );

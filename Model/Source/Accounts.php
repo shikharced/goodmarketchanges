@@ -72,7 +72,7 @@ class Accounts extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
-     * public function toOptionArray
+     * Public function toOptionArray
      *
      * {@inheritdoc}
      */

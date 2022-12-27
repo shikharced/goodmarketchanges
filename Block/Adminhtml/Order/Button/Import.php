@@ -40,7 +40,7 @@ class Import extends Container implements ButtonProviderInterface
     }
 
     /**
-     * getBackUrl
+     * Function getBackUrl
      *
      * @return string
      */

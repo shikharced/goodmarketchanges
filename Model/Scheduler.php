@@ -27,7 +27,7 @@ class Scheduler extends \Magento\Framework\Model\AbstractModel
     public const NAME = "ced_goodmarket_bulk_scheduler";
 
     /**
-     * public function _construct
+     * Function _construct
      *
      * @throws exception
      */

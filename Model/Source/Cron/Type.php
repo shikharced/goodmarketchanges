@@ -29,7 +29,7 @@ class Type extends AbstractSource
     public const INVENTORY = 'inventory';
 
     /**
-     * getAllOptions
+     * To getAllOptions
      *
      * @return array
      */

@@ -28,7 +28,7 @@ class Product extends AbstractModel
     /**
      * Public function _construct
      *
-     * @throw exception 
+     * @throw exception
      */
     public function _construct()
     {

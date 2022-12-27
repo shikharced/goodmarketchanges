@@ -41,7 +41,7 @@ class Data implements DataPatchInterface
         ModuleDataSetupInterface $moduleDataSetup,
         EavSetupFactory $eavSetupFactory,
         \Magento\Catalog\Model\ResourceModel\Eav\Attribute $eavAttribute
-//        \Ced\GoodMarket\Controller\Adminhtml\Config\Save $save
+        // \Ced\GoodMarket\Controller\Adminhtml\Config\Save $save
     ) {
         $this->moduleDataSetup = $moduleDataSetup;
         $this->eavSetupFactory = $eavSetupFactory;

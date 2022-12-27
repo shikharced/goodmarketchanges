@@ -105,7 +105,7 @@ class Create extends Template
                     }
                 }
             } else {
-                $catName['162,'.$catl2['id'].',,,,,'] = 'Default -> '.$name;
+                $catName['162,' . $catl2['id'].',,,,,'] = 'Default -> ' . $catl2['name'];
             }
 
         }
@@ -134,10 +134,11 @@ class Create extends Template
     /**
      * Check Category Id.
      *
-     * @param $catId
+     * @param string $catId
      * @return array|mixed|string|null
      */
-    public function checkCatId($catId){
+    public function checkCatId($catId)
+    {
         $profile = $this->profileFactory->create()->load($catId, 'magento_category');
         if ($profile->getData()) {
             return $profile->getData('profile_category');

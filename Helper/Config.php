@@ -165,9 +165,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setSellerEmail
+     * Function setSellerEmail
      *
-     * @param $email
+     * @param string $email
      * @return void
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -183,7 +183,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getSellerEmail
+     * Function getSellerEmail
      *
      * @return mixed
      */
@@ -198,9 +198,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setSellerName
+     * Function setSellerName
      *
-     * @param $name
+     * @param string $name
      * @return void
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -218,7 +218,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getSellerName
+     * Function getSellerName
      *
      * @return mixed
      */
@@ -233,9 +233,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setSellerId
+     * Function setSellerId
      *
-     * @param $id
+     * @param string $id
      * @return void
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -251,7 +251,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getSellerId
+     * Function getSellerId
      *
      * @return mixed
      */
@@ -266,7 +266,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setSellerCountryId
+     * Function setSellerCountryId
      *
      * @param $id
      * @return void
@@ -284,7 +284,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getSellerCountryId
+     * Function getSellerCountryId
      *
      * @return mixed
      */
@@ -299,7 +299,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setSellerPhone
+     * Function setSellerPhone
      *
      * @param $phone
      * @return void
@@ -317,7 +317,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getSellerPhone
+     * Function getSellerPhone
      *
      * @return mixed
      */
@@ -332,9 +332,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setSellerAddress
+     * Function setSellerAddress
      *
-     * @param $address
+     * @param string $address
      * @return void
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -350,7 +350,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getSellerAddress
+     * Function getSellerAddress
      *
      * @return mixed
      */
@@ -365,9 +365,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setAccount
+     * Function setAccount
      *
-     * @param $accountDetail
+     * @param string $accountDetail
      * @return void
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -383,7 +383,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getAccount
+     * Function getAccount
      *
      * @return mixed
      */
@@ -398,7 +398,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getAccessToken
+     * Function getAccessToken
      *
      * @return mixed
      */
@@ -413,7 +413,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getRefreshToken
+     * Function getRefreshToken
      *
      * @return mixed
      */
@@ -428,7 +428,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getTokenExpiry
+     * Function getTokenExpiry
      *
      * @return mixed
      */
@@ -445,7 +445,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Set access Token
      *
-     * @param $token
+     * @param string $token
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -492,7 +492,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * isValid
+     * Function isValid
      *
      * @return bool
      */
@@ -505,9 +505,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setValid
+     * Function setValid
      *
-     * @param $status
+     * @param string $status
      * @return void
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\LocalizedException'
@@ -538,7 +538,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getOrderIdPrefix
+     * Function getOrderIdPrefix
      *
      * @return string
      */
@@ -552,7 +552,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getOrderMethod
+     * Function getOrderMethod
      *
      * @return mixed
      */
@@ -563,7 +563,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getOrderLatestTime
+     * Function getOrderLatestTime
      *
      * @return string
      */
@@ -579,7 +579,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getDefaultStoreId
+     * Function getDefaultStoreId
      *
      * @return int
      */
@@ -590,7 +590,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getStoreId
+     * Function getStoreId
      *
      * @return int|mixed
      */
@@ -605,7 +605,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getStore
+     * Function getStore
      *
      * @return int|mixed
      */
@@ -615,7 +615,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getClientId
+     * Function getClientId
      *
      * @return mixed
      */
@@ -626,7 +626,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getApiKey
+     * Function getApiKey
      *
      * @return mixed
      */
@@ -637,7 +637,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getOrderApiKey
+     * Function getOrderApiKey
      *
      * @return mixed
      */
@@ -648,7 +648,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getNotificationEmail
+     * Function getNotificationEmail
      *
      * @return mixed
      */
@@ -659,7 +659,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getLoggingLevel
+     * Function getLoggingLevel
      *
      * @return mixed
      */
@@ -670,7 +670,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getAppId
+     * Function getAppId
      *
      * @return mixed
      */
@@ -681,7 +681,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getSiteId
+     * Function getSiteId
      *
      * @return mixed
      */
@@ -692,7 +692,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getSecretKey
+     * Function getSecretKey
      *
      * @return mixed
      */
@@ -703,7 +703,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getDebug
+     * Function getDebug
      *
      * @return bool|mixed
      */
@@ -718,7 +718,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getPriceSync
+     * Function getPriceSync
      *
      * @return mixed
      */
@@ -729,7 +729,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getInventorySync
+     * Function getInventorySync
      *
      * @return mixed
      */
@@ -740,7 +740,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getOrderCronStatus
+     * Function getOrderCronStatus
      *
      * @return mixed
      */
@@ -751,7 +751,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getPriceFixed
+     * Function getPriceFixed
      *
      * @return string
      */
@@ -762,7 +762,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getPricePercentage
+     * Functoin getPricePercentage
      *
      * @return string
      */
@@ -773,7 +773,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getPriceAttribute
+     * Functoin getPriceAttribute
      *
      * @return string
      */
@@ -785,7 +785,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getRedirectUri
+     * Functoin getRedirectUri
      *
      * @return string
      */
@@ -830,7 +830,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getCurrency
+     * Functoin getCurrency
      *
      * @return mixed
      */
@@ -841,7 +841,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getFirstName
+     * Functoin getFirstName
      *
      * @return mixed
      */
@@ -852,7 +852,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getLastName
+     * Functoin getLastName
      *
      * @return mixed
      */
@@ -863,7 +863,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getGroupName
+     * Functoin getGroupName
      *
      * @return mixed
      */
@@ -874,7 +874,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getCustomerEmail
+     * Functoin getCustomerEmail
      *
      * @return mixed
      */
@@ -885,7 +885,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getZeroInventory
+     * Functoin getZeroInventory
      *
      * @return mixed
      */
@@ -928,7 +928,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getAutoDespatch
+     * Function getAutoDespatch
      *
      * @return false|mixed
      */
@@ -943,7 +943,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getAutoAcknowledgement
+     * Function getAutoAcknowledgement
      *
      * @return false|mixed
      */
@@ -957,7 +957,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setOrderImport
+     * Function setOrderImport
      *
      * @param $address
      * @return void
@@ -975,7 +975,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getOrderImport
+     * Function getOrderImport
      *
      * @return mixed
      */
@@ -986,9 +986,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * setOrderStatus
+     * Function setOrderStatus
      *
-     * @param $address
+     * @param string $address
      * @return void
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -1004,7 +1004,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getOrderStatus
+     * Function getOrderStatus
      *
      * @return mixed
      */
@@ -1015,7 +1015,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getShipmentMapping
+     * Function getShipmentMapping
      *
      * @return mixed
      */
@@ -1026,7 +1026,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getCancellationCode
+     * Function getCancellationCode
      *
      * @return mixed
      */
@@ -1037,7 +1037,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getProductAutoUpdate
+     * Function getProductAutoUpdate
      *
      * @return mixed
      */
@@ -1048,7 +1048,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getUsername
+     * Function getUsername
      *
      * @return mixed
      */
@@ -1059,7 +1059,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getPassword
+     * Function getPassword
      *
      * @return mixed
      */
@@ -1069,6 +1069,9 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         return $data;
     }
 
+    /**
+     * Function Use Msi
+     */
     public function getUseMsi()
     {
         $useMsi = $this->scopeConfigManager
@@ -1077,27 +1080,29 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getUseSalableQty
+     * Function getUseSalableQty
      *
      * @return mixed
      */
-    public function getUseSalableQty() {
+    public function getUseSalableQty()
+    {
         return $this->scopeConfigManager
             ->getValue('goodmarket/inventory_settings/use_salable_qty');
     }
 
     /**
-     * getSalableStockName
+     * Function getSalableStockName
      *
      * @return mixed
      */
-    public function getSalableStockName() {
+    public function getSalableStockName()
+    {
         return $this->scopeConfigManager
             ->getValue('goodmarket/inventory_settings/salable_stock_name');
     }
 
     /**
-     * getMsiSourceCode
+     * Function getMsiSourceCode
      *
      * @return mixed
      */

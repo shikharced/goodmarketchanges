@@ -25,7 +25,7 @@ namespace Ced\GoodMarket\Model\ResourceModel;
 class Profile extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
-     * public method construct
+     * Profile construct.
      *
      * @return void
      */

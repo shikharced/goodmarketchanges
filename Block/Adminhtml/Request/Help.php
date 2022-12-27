@@ -37,8 +37,7 @@ class Help extends \Magento\Backend\Block\Template
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $data);
     }
 

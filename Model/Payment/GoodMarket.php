@@ -27,6 +27,10 @@ class GoodMarket extends \Magento\Payment\Model\Method\AbstractMethod
      * @var string
      */
     public const PAYMENT_METHOD_CODE = 'paybygoodmarket';
+    
+    /**
+     * @var string
+     */
     public $_code = self::PAYMENT_METHOD_CODE;
 
     /**
@@ -106,6 +110,9 @@ class GoodMarket extends \Magento\Payment\Model\Method\AbstractMethod
 
     /* START */
     /* Setting for disable from front-end. */
+    /**
+     * @var bool
+     */
     public $_canUseCheckout = false;
 
     /**
@@ -146,7 +153,7 @@ class GoodMarket extends \Magento\Payment\Model\Method\AbstractMethod
     /* END */
 
     /**
-     * public function isAvailable
+     * Function isAvailable
      *
      * @param \Magento\Quote\Api\Data\CartInterface|null $quote
      * @return bool
@@ -157,7 +164,7 @@ class GoodMarket extends \Magento\Payment\Model\Method\AbstractMethod
     }
 
     /**
-     * public function getCode
+     * Function getCode
      *
      * @return string
      */

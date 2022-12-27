@@ -63,7 +63,7 @@ class Truncate extends Action
     {
         $status = false;
         $collection = $this->logs->create();
-        if (isset($collection) and $collection->getSize() > 0) {
+        if (isset($collection) && $collection->getSize() > 0) {
             $status = true;
             $collection->walk('delete');
         }

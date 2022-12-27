@@ -18,32 +18,34 @@
 
 namespace Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute;
 
+use \Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
+
 /**
  * Class attribute Additional
  */
-class Additionalattribute extends \Magento\Backend\Block\Widget implements \Magento\Framework\Data\Form\Element\Renderer\RendererInterface
+class Additionalattribute extends \Magento\Backend\Block\Widget implements RendererInterface
 {
     protected $_template = 'Ced_GoodMarket::profile/attribute/additional_attribute.phtml';
 
     /**
      * @var \Magento\Framework\ObjectManagerInterface
      */
-    protected  $_objectManager;
+    protected $_objectManager;
 
     /**
      * @var \Magento\Framework\Registry
      */
-    protected  $_coreRegistry;
+    protected $_coreRegistry;
 
     /**
      * @var mixed|null
      */
-    protected  $_profile;
+    protected $_profile;
 
     /**
      * @var \Magento\Framework\Json\Helper\Data
      */
-    public  $json;
+    public $json;
 
     /**
      * Additionla attr.
@@ -103,7 +105,7 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
     /**
      * Retrieve goodmarket attributes
      *
-     * @param $subcatattribute
+     * @param array $subcatattribute
      * @return array|string
      */
     public function getGoodMarketAdditionalAttributes($subcatattribute = null)
@@ -159,7 +161,7 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
      */
     public function getMagentoAttributes()
     {
-        $attributes = $this->_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection')
+        $attributes = $this->_objectManager->create(\Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection::class)
             ->addFieldToFilter('frontend_input', ['in' => ['select', 'multiselect']]);
 
         $magentoattributeCodeArray = [];
@@ -202,7 +204,7 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
                         'input_type' => 'select',
                         'option_values' => $optionValues,
                     ];
-            } else{
+            } else {
                 $magentoattributeCodeArray[$attribute->getAttributecode()] =
                     [
                         'attribute_code' => $attribute->getAttributecode(),
@@ -255,7 +257,8 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
                                 $type = 'text';
                                 $enumjson = '';
                             }
-                            $this->_goodmarketAttribute[str_replace("'", "", $value['name'])] = str_replace("'","", $value['name']);
+                            $this->_goodmarketAttribute[str_replace("'", "", $value['name'])] =
+                            str_replace("'","", $value['name']);
                             $temp = [];
                             $temp['goodmarket_attribute_name'] =str_replace("'", "", $value['name']) ;
                             $temp['magento_attribute_code'] = '';
@@ -280,12 +283,12 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
     }
 
     /**
-     * getGoodMarket Attribute Values Mapping
+     * GetGoodMarket Attribute Values Mapping
      *
-     * @param $subcatattribute
+     * @param array $subcatattribute
      * @return array|array[]
      */
-    public function getGoodMarketAttributeValuesMapping($subcatattribute=null)
+    public function getGoodMarketAttributeValuesMapping($subcatattribute = null)
     {
         $additionalAttribute = [];
         $data = [];
@@ -323,7 +326,7 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
     }
 
     /**
-     * render function
+     * Function Render
      *
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string

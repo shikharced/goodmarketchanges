@@ -27,7 +27,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 class Delivery extends AbstractSource
 {
     /**
-     * public function getAllOptions
+     * Public function getAllOptions
      *
      * @return array
      */

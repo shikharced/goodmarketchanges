@@ -22,6 +22,9 @@ namespace Ced\GoodMarket\Block\Adminhtml\Profile\Renderer;
  */
 class Category extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRenderer
 {
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
+     */
     public $categoryFactory;
 
     /**

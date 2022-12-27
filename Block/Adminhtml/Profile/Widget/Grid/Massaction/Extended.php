@@ -27,7 +27,7 @@ class Extended extends \Magento\Backend\Block\Widget\Grid\Massaction\Extended
     /**
      * Get Products
      *
-     * @param $isJson
+     * @param bool $isJson
      * @return array|string|string[]
      */
     public function _getProducts($isJson = false)
@@ -48,20 +48,20 @@ class Extended extends \Magento\Backend\Block\Widget\Grid\Massaction\Extended
         //->getProfileProducts($profileId);
 
 //        if (sizeof($productIds) > 0) {
-        $products = $this->_objectManager->create('\Magento\Catalog\Model\Product')
+        $products = $this->_objectManager->create(\Magento\Catalog\Model\Product::class)
             ->getCollection()
             ->addAttributeToFilter('visibility', ['neq' => 1])
             ->addAttributeToFilter('type_id', ['simple', 'configurable'])
             ->addFieldToFilter('goodmarket_profile_id', ['in' => $profileId]);
         if ($isJson) {
             $jsonProducts = [];
-            foreach ($products as $product)  {
+            foreach ($products as $product) {
                 $jsonProducts[$product->getEntityId()] = 0;
             }
             return $this->_jsonEncoder->encode((object)$jsonProducts);
         } else {
             $jsonProducts = [];
-            foreach ($products as $product)  {
+            foreach ($products as $product) {
                 $jsonProducts[$product->getEntityId()] = $product->getEntityId();
             }
             return $jsonProducts;

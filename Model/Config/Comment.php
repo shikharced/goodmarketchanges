@@ -9,10 +9,13 @@ use Magento\Framework\UrlInterface;
  */
 class Comment implements \Magento\Config\Model\Config\CommentInterface
 {
+    /**
+     * @var UrlInterface
+     */
     protected $urlInterface;
 
     /**
-     * public function __construct
+     * Comment Function __construct
      *
      * @param UrlInterface $urlInterface
      * @return $this
@@ -24,13 +27,15 @@ class Comment implements \Magento\Config\Model\Config\CommentInterface
     }
 
     /**
-     * public function getCommentText
+     * Function getCommentText
      *
-     * @param $elementValue
+     * @param string $elementValue
      * @return string
      */
     public function getCommentText($elementValue)
     {
-        return 'If you are not Good Market approved, click <a href="https://demo8-marketplace.cedcommerce.com/gm/pub/csmarketplace/account/register/?ced_integration"target="_blank">here</a> to apply.';
+        return 'If you are not Good Market approved, click <a 
+        href="https://demo8-marketplace.cedcommerce.com/gm/pub/csmarketplace/account/register/?ced_integration"
+        target="_blank">here</a> to apply.';
     }
 }

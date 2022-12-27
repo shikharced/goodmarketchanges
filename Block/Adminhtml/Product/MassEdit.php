@@ -38,7 +38,7 @@ class MassEdit extends \Magento\Backend\Block\Widget\Container
     }
 
     /**
-     * totalcount
+     * Function totalcount
      *
      * @return int
      */

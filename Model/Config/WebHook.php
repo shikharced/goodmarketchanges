@@ -24,8 +24,6 @@ namespace Ced\GoodMarket\Model\Config;
  */
 class WebHook extends \Magento\Framework\App\Config\Value
 {
-    public $redirectUri;
-
     /**
      * public function __construct
      *
@@ -53,8 +51,8 @@ class WebHook extends \Magento\Framework\App\Config\Value
     }
 
     /**
-     * public function getValue
-     * 
+     * Function getValue
+     *
      * @return string
      */
     public function getValue()

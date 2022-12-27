@@ -49,7 +49,7 @@ class ProductFeedFile extends Column
      * @param ContextInterface $context
      * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
      * @param \Magento\Framework\Filesystem\Io\File $fileIo
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager,
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder
      * @param array $components

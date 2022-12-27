@@ -99,7 +99,7 @@ class Products extends Extended
     }
 
     /**
-     * function _addColumnFilterToCollection
+     * Function _addColumnFilterToCollection
      *
      * @param \Magento\Backend\Block\Widget\Grid\Column $column
      * @return $this
@@ -206,7 +206,8 @@ class Products extends Extended
                 'index'     => 'category',
                 'sortable'  => false,
                 'type'  => 'options',
-                'options'   => $this->objectManager->create(\Ced\GoodMarket\Model\Source\Category::class)->getAllOptions(),
+                'options'   => $this->objectManager->create(\Ced\GoodMarket\Model\Source\Category::class)
+                ->getAllOptions(),
                 'renderer'  => \Ced\GoodMarket\Block\Adminhtml\Profile\Renderer\Category::class,
                 'filter_condition_callback' => [$this, 'filterCategory'],
             ]
@@ -262,7 +263,7 @@ class Products extends Extended
     }
 
     /**
-     * getGridUrl
+     * Function getGridUrl
      *
      * @return string
      */
@@ -272,14 +273,14 @@ class Products extends Extended
     }
 
     /**
-     * getProducts
+     * Function getProducts
      *
      * @param bool $json
      * @return array|string
      */
     public function getProducts($json = false)
     {
-        if ($this->getRequest()->getPost('in_profile_products') != "" ) {
+        if ($this->getRequest()->getPost('in_profile_products') != "") {
             return $this->getRequest()->getPost('in_profile_products');
         }
         $this->getRequest()->getParam('pcode');
@@ -311,9 +312,9 @@ class Products extends Extended
     }
 
     /**
-     * isPartUppercase
+     * Function isPartUppercase
      *
-     * @param $string
+     * @param string $string
      * @return bool
      */
     public function isPartUppercase($string)
@@ -337,7 +338,7 @@ class Products extends Extended
     }
 
     /**
-     * _prepareMassaction
+     * Function prepareMassaction
      *
      * @return $this|Products
      */
@@ -357,10 +358,10 @@ class Products extends Extended
     }
 
     /**
-     * filterCategory function
+     * FilterCategory function
      *
-     * @param $collection
-     * @param $column
+     * @param object $collection
+     * @param object $column
      * @return mixed
      */
     public function filterCategory($collection, $column)

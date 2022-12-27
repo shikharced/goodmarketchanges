@@ -60,7 +60,7 @@ class Mapping extends AbstractFieldArray
     }
 
     /**
-     * getGoodMarketAttribute
+     * Function getGoodMarketAttribute
      *
      * @return TaxColumn
      * @throws LocalizedException
@@ -78,7 +78,7 @@ class Mapping extends AbstractFieldArray
     }
 
     /**
-     * getMagentoAttribute
+     * Function getMagentoAttribute
      *
      * @return \Magento\Framework\View\Element\BlockInterface
      * @throws LocalizedException

@@ -84,7 +84,7 @@ class Cancel extends \Magento\Backend\App\Action
         } else {
             $id = $this->getRequest()
                 ->getParam('id');
-            if (isset($id) and !empty($id)) {
+            if (isset($id) && !empty($id)) {
                 $collection = $this
                     ->orders
                     ->getCollection()

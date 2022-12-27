@@ -21,8 +21,10 @@ namespace Ced\GoodMarket\Block\Adminhtml\Profile\Renderer;
 
 class Image extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRenderer
 {
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
     public $_storeManager;
-    public $_filesystem;
 
     /**
      * Image COnstructor.

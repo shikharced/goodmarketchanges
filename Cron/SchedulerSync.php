@@ -67,15 +67,15 @@ class SchedulerSync
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
      * @param \Magento\Catalog\Model\ProductFactory $_productloader
      */
-    public function __construct(
+    public function __construct (
         \Ced\GoodMarket\Helper\Logger $logger,
         \Ced\GoodMarket\Helper\Config $config,
         \Ced\GoodMarket\Helper\Data $data,
         \Ced\GoodMarket\Model\SchedulerFactory $schedulerFactory,
         \Ced\GoodMarket\Model\ResourceModel\Scheduler\CollectionFactory $scheduleCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        \Magento\Catalog\Model\ProductFactory $_productloader)
-    {
+        \Magento\Catalog\Model\ProductFactory $_productloader
+    ) {
         $this->logger = $logger;
         $this->config = $config;
         $this->helper = $data;

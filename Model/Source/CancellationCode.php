@@ -27,7 +27,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 class CancellationCode extends AbstractSource
 {
     /**
-     * public function getAllOptions
+     * Function getAllOptions
      *
      * @return array
      */

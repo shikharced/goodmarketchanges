@@ -25,6 +25,7 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+
 /**
  * Class Requiredattributes in profile
  */
@@ -74,7 +75,7 @@ class Requiredattribute extends Widget implements RendererInterface
     }
 
     /**
-     * _prepareLayout
+     * Function _prepareLayout
      *
      * @return $this
      */
@@ -94,7 +95,7 @@ class Requiredattribute extends Widget implements RendererInterface
     }
 
     /**
-     * getAddButtonHtml
+     * Function getAddButtonHtml
      *
      * @return string
      */
@@ -104,7 +105,7 @@ class Requiredattribute extends Widget implements RendererInterface
     }
 
     /**
-     * getGoodMarketAttributes
+     * Function getGoodMarketAttributes
      *
      * @return array
      */
@@ -113,7 +114,7 @@ class Requiredattribute extends Widget implements RendererInterface
         $cid=$this->_backendSession->getCategoryValue();
         if (!empty($cid)) {
             $attributes=$this->_objectManager->create(\Ced\GoodMarket\Helper\Data::class)->getCategoryAttributes($cid);
-            $allAttribute=json_decode($attributes['groupwise_attributes'],true);
+            $allAttribute=json_decode($attributes['groupwise_attributes'], true);
             if (!isset($allAttribute['attribute_set_id'])) {
                 $this->messageManager->addNotice(__("Please Try To Add New Profile After Sometime.."));
             }
@@ -132,7 +133,7 @@ class Requiredattribute extends Widget implements RendererInterface
                                 [
                                     'goodmarket_attribute_name' => $productattribute['attribute_code'],
                                     'goodmarket_attribute_type' => $productattribute['type'],
-                                    'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'',
+                                    'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',', $sourceData):'',
                                     'required' => 1,
                                     'magento_attribute_code' => $productattribute['attribute_code']
                                 ];
@@ -141,7 +142,7 @@ class Requiredattribute extends Widget implements RendererInterface
                                 [
                                     'goodmarket_attribute_name' => $productattribute['attribute_code'],
                                     'goodmarket_attribute_type' => 'text'/*$attribute['type']*/,
-                                    'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'',
+                                    'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',', $sourceData):'',
                                     'magento_attribute_code' => ''
                                 ];
                         }
@@ -159,7 +160,7 @@ class Requiredattribute extends Widget implements RendererInterface
 //                }
 //                $requiredAttribute[$conAttribute['attribute_code']] = ['goodmarket_attribute_name' => $conAttribute['attribute_code'], 'goodmarket_attribute_type' => 'select', 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'',  'required' => 1, 'magento_attribute_code' => ''];
 //            }
-        } else if (isset($this->_profile) && !empty($this->_profile)) {
+        } elseif (isset($this->_profile) && !empty($this->_profile)) {
             $profileData=$this->_profile->getData();
             if (isset($profileData) && !empty($profileData)) {
                 $categoryLoadData = json_decode($this->_profile->getData('category_data'), true);
@@ -213,7 +214,7 @@ class Requiredattribute extends Widget implements RendererInterface
                                         'magento_attribute_code' => $productattribute['attribute_code']
                                     ];
                             } else {
-                                $optionalAttributes[$productattribute['attribute_code']] = ['goodmarket_attribute_name' => $productattribute['attribute_code'], 'goodmarket_attribute_type' => 'text'/*$attribute['type']*/, 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'','magento_attribute_code' => ''];
+                                $optionalAttributes[$productattribute['attribute_code']] = ['goodmarket_attribute_name' => $productattribute['attribute_code'], 'goodmarket_attribute_type' => 'text'/*$attribute['type']*/, 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',', $sourceData):'','magento_attribute_code' => ''];
                             }
                         }
                     }

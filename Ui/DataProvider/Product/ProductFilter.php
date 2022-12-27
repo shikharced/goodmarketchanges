@@ -25,8 +25,10 @@ use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
  */
 class ProductFilter implements AddFilterToCollectionInterface
 {
+    /**
+     * @var \Magento\Framework\App\RequestInterface
+     */
     public $request;
-    public $profileProduct;
 
     /**
      * ProductFilter Constructor.
@@ -48,11 +50,11 @@ class ProductFilter implements AddFilterToCollectionInterface
         $this->orderRepository = $orderRepository;
     }
     /**
-     * add Filter
+     * Function Add Filter
      *
      * @param Collection $collection
-     * @param $field
-     * @param null $condition
+     * @param string $field
+     * @param string $condition
      */
     public function addFilter(Collection $collection, $field, $condition = null)
     {
@@ -69,12 +71,12 @@ class ProductFilter implements AddFilterToCollectionInterface
                     }
                 }
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
 //            echo "<pre>";
 //            print_r($e->getMessage());
 //            die(__FILE__);
             $logger->addError($e->getMessage());
-        } catch(\Error $e) {
+        } catch (\Error $e) {
 //            echo "<pre>";
 //            print_r($e->getMessage());
 //            die(__FILE__);
