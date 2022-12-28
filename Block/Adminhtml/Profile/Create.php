@@ -86,7 +86,7 @@ class Create extends Template
                     }
                 }
             } else {
-                $catName['162,'.$catl2['id'].',,,,,'] = 'Default -> '.$name;
+                $catName['162,'.$catl2['id'].',,,,,'] = 'Default -> '.$catl2['name'];
             }
 
         }
