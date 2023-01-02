@@ -238,6 +238,12 @@
 <!--                    <frontend_model>Ced\GoodMarket\Block\Adminhtml\Form\Field\Mapping</frontend_model>-->
 <!--                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>-->
 <!--                </field>-->
+
+                <field id="conversion_rate" translate="label" type="text" sortOrder="1" showInStore="1" showInWebsite="1" showInDefault="1">
+                    <label>Enter Conversion Rate</label>
+                    <validate>required-entry validate-number</validate>
+                    <comment><![CDATA[If Currency is USD then enter 1 otherwise enter conversion rate of your curreny to USD. For ex: 1 Euro = 1.06 USD]]></comment>
+                </field>
                 <field id="product_price" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Product Price</label>
                     <source_model>Ced\GoodMarket\Model\Source\Sellprice</source_model>

@@ -213,7 +213,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $attributes = $productType->getConfigurableAttributes($product);
                             foreach ($attributes as $_attribute) {
                                 $attributeCode = $_attribute->getProductAttribute()->getAttributeCode();
-                                $getConfigAttribute[] = strtolower($attributeCode);
+                                // $getConfigAttribute[] = strtolower($attributeCode);
+                                $getConfigAttribute[] = $attributeCode;
                             }
                             /** @codingStandardsIgnoreStart */
                             $childIds = $productType->getChildrenIds($parentId);
@@ -235,8 +236,13 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 }
                                 $superAttributeList=$this->getConfigurableVariable($profile);
                                 $productAttributes['configurable_matrix'] = $variations;
-                                for ($i=0; $i<=$variationcount; $i++) {
-                                    foreach ($getConfigAttribute as $value) {
+                                // for ($i=0; $i<=$variationcount; $i++) {
+                                //     foreach ($getConfigAttribute as $value) {
+                                //         $config_attributes[] = $value;
+                                //     }
+                                // }
+                                foreach ($variations as $prodArr) {
+                                    foreach ($prodArr['config_attributes'] as $value){
                                         $config_attributes[] = $value;
                                     }
                                 }
@@ -483,7 +489,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $requireAttribute=json_decode($profile['profile_req_opt_attribute'], true);
         foreach ($requireAttribute['required_attributes'] as $attribute) {
-            if ($attribute['goodmarket_attribute_name']=='price') {
+            if ($attribute['goodmarket_attribute_name'] == 'price') {
                 $price= $attribute['magento_attribute_code'];
             }
         }
@@ -560,7 +566,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $productArray[$optional_attribute['goodmarket_attribute_name']] = $product->getData($optional_attribute['magento_attribute_code']);
         }
         if (!$description) {
-            $productArray['description'] = $product->getData('description');
+            $productArray['description'] = strip_tags($product->getData('description'), "<p><b>");
         }
         $productArray['meta_title']= $product->getData('name');
         $productArray['meta_keyword']= $product->getData('name');
@@ -817,14 +823,20 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $optionText = $attribute->getSource()->getOptionText($optionId);
                 }
                 if (in_array($prodAttribute, $size)) {
-                    $configurableAttri[$prodAttribute]=$optionText;
-                    $config_attributes[]=$prodAttribute;//$child->getData($attribute);
+                    // $configurableAttri[$prodAttribute]=$optionText;
+                    // $config_attributes[]=$prodAttribute;//$child->getData($attribute);
+                    $configurableAttri['Size'] = $optionText;
+                    $config_attributes[] = 'Size';
                 } elseif (in_array($prodAttribute, $color)) {
-                    $configurableAttri[$prodAttribute]=$optionText;
-                    $config_attributes[]=$prodAttribute;//$child->getData($attribute);
+                    // $configurableAttri[$prodAttribute]=$optionText;
+                    // $config_attributes[]=$prodAttribute;//$child->getData($attribute);
+                    $configurableAttri['color'] = $optionText;
+                    $config_attributes[] = 'color';
                 } elseif (in_array($prodAttribute, $type)) {
-                    $configurableAttri[$prodAttribute]=$optionText;
-                    $config_attributes[]=$prodAttribute;//$child->getData($attribute);
+                    // $configurableAttri[$prodAttribute]=$optionText;
+                    // $config_attributes[]=$prodAttribute;//$child->getData($attribute);
+                    $configurableAttri['type'] = $optionText;
+                    $config_attributes[] = 'type';
                 }
             }
             $productArray['name'] = $child->getName();
@@ -876,6 +888,15 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //        }
             $productArray['configurable_attribute'] = $configurableAttri;
             $productArray['config_attributes'] = $config_attributes;
+            $weightUnit = $this->getWeightUnit();
+            if ($weightUnit == 'lbs') {
+                $productWeight = $_product->getWeight() * 453.6;
+            } elseif ($weightUnit == 'kgs') {
+                $productWeight = $_product->getWeight() * 1000;
+            }
+            $productweight = !empty($_product->getWeight()) ? round($productWeight) : '2';
+            $productArray['weight']=$productweight;
+            $productArray['product_has_weight']='1';
 //            echo '<pre>'; print_r($productArray); exit;
             return $productArray;
         } catch (\Exception $e) {
@@ -1732,6 +1753,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $storeManager = $objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
         $currencyCodeTo = $storeManager->getStore()->getCurrentCurrency()->getCode();
         $rate = $priceCurrencyFactory->create()->load($currencyCodeTo)->getAnyRate($currencyCodeFrom);
+        $rate = $this->scopeConfig->getValue('goodmarket/goodmarket_product/conversion_rate');
         $itemAmount = $itemAmount * $rate;
         return $itemAmount;
     }

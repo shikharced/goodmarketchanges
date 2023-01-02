@@ -354,19 +354,20 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 //                                    $product->setTaxClassId(8);
 //                                }
                                 $itemAccepted++;
-                                $price = $item['base_price'];
-                                $basePrice = $qty * $price;
+                                $currencyConvert = $this->scopeConfig->getvalue('goodmarket/goodmarket_product/conversion_rate');
+                                $price = $item['base_price']/$currencyConvert;
+                                $basePrice = $qty * (int)$price;
                                 $rowTotal = $price * $qty;
 
                                 $product->setIsSuperMode(true);
                                 $product->setHasOptions(false);
                                 $product->setData('salable', true);
-                                $product->setPrice($price)
-                                    ->setSpecialPrice($price)
+                                $product->setPrice((int)$price)
+                                    ->setSpecialPrice((int)$price)
                                     ->setTierPrice([])
                                     ->setBasePrice($basePrice)
-                                    ->setOriginalCustomPrice($price)
-                                    ->setBaseOriginalCustomPrice($price)
+                                    ->setOriginalCustomPrice((int)$price)
+                                    ->setBaseOriginalCustomPrice((int)$price)
                                     ->setRowTotal($rowTotal)
                                     ->setBaseRowTotal($rowTotal);
                                 $product->unsSkipCheckRequiredOption();
