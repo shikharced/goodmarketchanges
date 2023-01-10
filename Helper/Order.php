@@ -369,6 +369,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                     ->setOriginalCustomPrice((int)$price)
                                     ->setBaseOriginalCustomPrice((int)$price)
                                     ->setRowTotal($rowTotal)
+                                    ->setTaxClassId($taxClassId)
                                     ->setBaseRowTotal($rowTotal);
                                 $product->unsSkipCheckRequiredOption();
                                 $product->setSkipSaleableCheck(true);
@@ -402,6 +403,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     'city' => isset($order['address_information']['s_city']) ? $order['address_information']['s_city'] : 'Bareilly',
                     'country_id' => 'US',//isset($order['address_information']['s_country'])?$order['address_information']['s_country']:'', //$this->getValue('country', $order,'US'),
                     'region' => isset($order['address_information']['s_region']) ? $order['address_information']['s_region'] : 'UttarPradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
+                    'region_id' => '2',
                     'postcode' => isset($order['address_information']['s_postcode']) ? $order['address_information']['s_postcode'] : '243001',
                     'telephone' =>isset($order['address_information']['s_telephone']) ? $order['address_information']['s_telephone'] : '00000000',
                     'fax' => '', 'save_in_address_book' => 1];
@@ -415,6 +417,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     'street' => $billingAddressStreet,
                     'city' => isset($order['address_information']['b_city']) ? $order['address_information']['b_city'] : 'Bareilly',
                     'country_id' => 'US',//isset($order['address_information']['b_country'])?$order['address_information']['b_country']:'', //$this->getValue('country', $order,'US'),
+                    'region_id' => '2',
                     'region' => isset($order['address_information']['b_region']) ? $order['address_information']['b_region'] : 'Uttar Pradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
                     'postcode' => isset($order['address_information']['b_postcode']) ? $order['address_information']['b_postcode'] : '243001',
                     'telephone' =>isset($order['address_information']['b_telephone']) ? $order['address_information']['b_telephone'] : '00000000',
@@ -448,13 +451,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 foreach ($quote->getAllItems() as $item) {
 //                    echo '<pre>'; print_r($item->getTaxAmount());exit;
                     $sku = $item->getProduct()->getSku();
-                    $item->setDiscountAmount($discountAmount[$sku]);
-                    $item->setBaseDiscountAmount($discountAmount[$sku]);
+                    $currencyConvert = $this->scopeConfig->getValue('goodmarket/goodmarket_product/conversion_rate');
+                    $item->setDiscountAmount($discountAmount[$sku]/$currencyConvert);
+                    $item->setBaseDiscountAmount($discountAmount[$sku]/$currencyConvert);
 //                    Customisation comment
-//                    $item->setTaxPercent($taxPercent[$sku]);
-//                    $item->setBaseTaxPercent($taxPercent[$sku]);
-//                    $item->setTaxAmount($taxAmount[$sku]);
-//                    $item->setBaseTaxAmount($taxAmount[$sku]);
+                    $item->setTaxPercent($taxPercent[$sku]);
+                    $item->setBaseTaxPercent($taxPercent[$sku]);
+                    $item->setTaxAmount($taxAmount[$sku]/$currencyConvert);
+                    $item->setBaseTaxAmount($taxAmount[$sku]/$currencyConvert);
                     //END
                     $item->setOriginalCustomPrice($item->getPrice())
                         ->setOriginalPrice($item->getPrice())

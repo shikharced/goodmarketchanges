@@ -825,8 +825,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 if (in_array($prodAttribute, $size)) {
                     // $configurableAttri[$prodAttribute]=$optionText;
                     // $config_attributes[]=$prodAttribute;//$child->getData($attribute);
-                    $configurableAttri['Size'] = $optionText;
-                    $config_attributes[] = 'Size';
+                    $configurableAttri['size'] = $optionText;
+                    $config_attributes[] = 'size';
                 } elseif (in_array($prodAttribute, $color)) {
                     // $configurableAttri[$prodAttribute]=$optionText;
                     // $config_attributes[]=$prodAttribute;//$child->getData($attribute);
@@ -838,6 +838,15 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                     $configurableAttri['type'] = $optionText;
                     $config_attributes[] = 'type';
                 }
+            }
+            if (empty($configurableAttri['type'])) {
+                unset($configurableAttri['type']);
+            }
+            if (empty($configurableAttri['size'])) {
+                unset($configurableAttri['size']);
+            }
+            if (empty($configurableAttri['color'])) {
+                unset($configurableAttri['color']);
             }
             $productArray['name'] = $child->getName();
             $productArray['sku'] = $child->getSku();
