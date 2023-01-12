@@ -230,17 +230,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                     ->addMediaGalleryData();
                                 /** @var \Magento\Catalog\Model\Product $child */
                                 $variationcount=0;
+                                $variations = [];
                                 foreach ($childs as $child) {
                                     $variations[] = $this->getVariationProducts($child, $profile, $getConfigAttribute);
                                     $variationcount++;
                                 }
                                 $superAttributeList=$this->getConfigurableVariable($profile);
                                 $productAttributes['configurable_matrix'] = $variations;
-                                // for ($i=0; $i<=$variationcount; $i++) {
-                                //     foreach ($getConfigAttribute as $value) {
-                                //         $config_attributes[] = $value;
-                                //     }
-                                // }
+                                $config_attributes = [];
                                 foreach ($variations as $prodArr) {
                                     foreach ($prodArr['config_attributes'] as $value){
                                         $config_attributes[] = $value;
@@ -262,7 +259,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                             $categoryId = end($filterCategoryId);
                             $productAttributes['set'] = $profile['attribute_set'];//$categoryAttribute['attribute_set_id'];
                             $productAttributes['type'] = 'simple';
-//                            $productAttributes['integ_type']='magento';
                             $image_role = [
                                 'image'=>'image1',
                                 'small_image'=>'image1',
