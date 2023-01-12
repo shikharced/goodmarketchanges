@@ -320,7 +320,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * productDeleteSync
+     * Function ProductDeleteSync
      *
      * @param $ids
      * @param $type
@@ -476,7 +476,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getprofilePrice
+     * Func getprofilePrice
      *
      * @param $profile
      * @return mixed
@@ -493,7 +493,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getparentProductData
+     * Func getparentProductData
      *
      * @param $product
      * @param $profile
@@ -642,7 +642,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getQuantityForMsi
+     * Func getQuantityForMsi
      *
      * @param $product
      * @param $sourceCode
@@ -678,7 +678,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * updateBulkInventory
+     * Func updateBulkInventory
      *
      * @param $ids
      * @return array|void
@@ -771,7 +771,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getVariationProducts
+     * GetVariationProducts
      *
      * @param $child
      * @param $profile
@@ -911,7 +911,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getConfigurableVariable
+     * GetConfigurableVariable
      *
      * @param $profile
      * @return array|void
@@ -944,7 +944,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
     /**
-     * getSimpleProductData
+     * GetSimpleProductData
      *
      * @param $product
      * @param $profile
@@ -1103,7 +1103,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getVirtualProductData
+     * GetVirtualProductData
      *
      * @param $product
      * @param $profile
@@ -1262,7 +1262,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //    }
 
     /**
-     * get_img_data
+     * Func get_img_data
      *
      * @param $image_url_id
      * @return array|string|void
@@ -1302,7 +1302,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getGoodMarketProfilePrice
+     * GetGoodMarketProfilePrice
      *
      * @param $product
      * @param $attribute
@@ -1374,7 +1374,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * forFixPrice
+     * ForFixPrice
      *
      * @param null $price
      * @param null $fixedPrice
@@ -1393,7 +1393,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * forPerPrice
+     * ForPerPrice
      *
      * @param null        $price
      * @param null        $percentPrice
@@ -1458,7 +1458,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //    }
 
     /**
-     * validateProduct
+     * ValidateProduct
      *
      * @param $product
      * @param $request
@@ -1497,7 +1497,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getQuantityForUpload
+     * Func getQuantityForUpload
      *
      * @param $product
      * @param $profileData
@@ -1540,7 +1540,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * getMsiQuantity
+     * GetMsiQuantity
      *
      * @param $product
      * @return false|int|mixed
@@ -1574,7 +1574,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * profileCategory
+     * ProfileCategory
      *
      * @return bool
      */
@@ -1745,7 +1745,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * convertPrice
+     * ConvertPrice
      *
      * @param $itemAmount
      * @param $currencyCodeFrom
