@@ -127,6 +127,31 @@
         />
         <!--developer end-->
 
+        <!-- Help & Support Section -->
+
+        <add id="Ced_GoodMarket::Support"
+             title="Help"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="80"
+             parent="Ced_GoodMarket::GoodMarket"
+             resource="Ced_GoodMarket::Support"
+        />
+
+        <add id="Ced_GoodMarket::help"
+             title="Support"
+             translate="title"
+             module="Ced_GoodMarket"
+             sortOrder="2"
+             parent="Ced_GoodMarket::Support"
+             action="goodmarket/help/index"
+             resource="Ced_GoodMarket::help"
+        />
+
+        <!-- Help & Support Section -->
+
+
+
         <add id="Ced_GoodMarket::settings"
              title="Settings"
              translate="title"
