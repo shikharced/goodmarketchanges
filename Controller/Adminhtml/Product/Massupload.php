@@ -30,9 +30,10 @@ class Massupload extends \Magento\Backend\App\Action
         CollectionFactory $prodCollFactory,
         PageFactory $resultPageFactory,
         \Magento\Ui\Component\MassAction\Filter $filter,
-        \Ced\GoodMarket\Helper\Config                $config,
+        \Ced\GoodMarket\Helper\Config $config,
         \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
     ) {
+        parent::__construct($context);
         $this->product=$product;
         $this->prodCollFactory = $prodCollFactory;
         $this->resultPageFactory = $resultPageFactory;
@@ -40,7 +41,6 @@ class Massupload extends \Magento\Backend\App\Action
         $this->data=$data;
         $this->config = $config;
         $this->resultRedirectFactory = $resultRedirectFactory;
-        parent::__construct($context);
     }
 
     /**

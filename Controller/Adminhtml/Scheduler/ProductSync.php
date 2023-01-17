@@ -2,11 +2,13 @@
 namespace Ced\GoodMarket\Controller\Adminhtml\Scheduler;
 
 use Magento\Framework\View\Result\PageFactory;
+use \Magento\Backend\App\Action;
+use \Ced\GoodMarket\Model\ResourceModel\Scheduler\CollectionFactory;
 
 /**
  * ProductSync for scheduler
  */
-class ProductSync extends \Magento\Backend\App\Action
+class ProductSync extends Action
 {
     protected $directoryList;
 
@@ -17,7 +19,7 @@ class ProductSync extends \Magento\Backend\App\Action
      * @param \Ced\GoodMarket\Helper\Data $data
      * @param PageFactory $resultPageFactory
      * @param \Ced\GoodMarket\Model\SchedulerFactory $schedulerFactory
-     * @param \Ced\GoodMarket\Model\ResourceModel\Scheduler\CollectionFactory $scheduleCollectionFactory
+     * @param CollectionFactory $scheduleCollectionFactory
      * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
      * @param \Magento\Catalog\Model\ProductFactory $_productloader
      */
@@ -26,7 +28,7 @@ class ProductSync extends \Magento\Backend\App\Action
         \Ced\GoodMarket\Helper\Data $data,
         PageFactory $resultPageFactory,
         \Ced\GoodMarket\Model\SchedulerFactory $schedulerFactory,
-        \Ced\GoodMarket\Model\ResourceModel\Scheduler\CollectionFactory $scheduleCollectionFactory,
+        CollectionFactory $scheduleCollectionFactory,
         \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory,
         \Magento\Catalog\Model\ProductFactory $_productloader
     ) {

@@ -90,22 +90,30 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function vendorId()
     {
-        $collectData=json_decode($this->scopeConfig->getValue('goodmarket/settings/token'), true);
-        if (isset($collectData['vendor_id'])) {
-            return $collectData['vendor_id'];
-        } else {
-            return [];
+        $id = $this->scopeConfig->getValue('goodmarket/settings/token');
+        if ($id != '') {
+            $collectData=json_decode($id, true);
+            if (isset($collectData['vendor_id'])) {
+                return $collectData['vendor_id'];
+            } else {
+                return [];
+            }
         }
+        return [];
     }
 
     public function hashToken()
     {
-        $collectData=json_decode($this->scopeConfig->getValue('goodmarket/settings/token'), true);
-        if (isset($collectData['hash_token'])) {
-            return $collectData['hash_token'];
-        } else {
-            return [];
+        $token = $this->scopeConfig->getValue('goodmarket/settings/token');
+        if ($token) {
+            $collectData=json_decode($token, true);
+            if (isset($collectData['hash_token'])) {
+                return $collectData['hash_token'];
+            } else {
+                return [];
+            }
         }
+        return [];
     }
 
     /**

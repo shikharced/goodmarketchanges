@@ -215,7 +215,7 @@ class Configattribute extends Widget implements RendererInterface
      *
      * @return array
      */
-    public function customFun()
+    private function customFun()
     {
         if ($this->_profile->getData()) {
             $configAttribute = [];

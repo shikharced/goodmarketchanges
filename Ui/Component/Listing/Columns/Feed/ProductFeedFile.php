@@ -41,8 +41,6 @@ class ProductFeedFile extends Column
      */
     public $dl;
 
-    public const URL_PATH_RESEND = 'ebaymultiaccount/product/index';
-
     /**
      * FeedFile constructor.
      *

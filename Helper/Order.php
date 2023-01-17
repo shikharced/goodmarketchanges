@@ -63,6 +63,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Tax\Api\Data\TaxClassInterfaceFactory $taxClassDataObjectFactory
      * @param \Magento\Tax\Api\TaxClassRepositoryInterface $taxClassService
      * @param ResourceConnection $resourceConnection
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJson
      * @param \Magento\Directory\Model\CurrencyFactory $currencyFactory
      */
     public function __construct(
@@ -95,6 +96,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Tax\Api\Data\TaxClassInterfaceFactory $taxClassDataObjectFactory,
         \Magento\Tax\Api\TaxClassRepositoryInterface $taxClassService,
         ResourceConnection $resourceConnection,
+        \Magento\Framework\Controller\Result\JsonFactory $resultJson,
         \Magento\Directory\Model\CurrencyFactory $currencyFactory
     ) {
         parent::__construct($context);
@@ -128,6 +130,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->taxClassDataObjectFactory = $taxClassDataObjectFactory;
         $this->taxClassRepository = $taxClassService;
         $this->resourceConnection = $resourceConnection;
+        $this->resultJson = $resultJson;
     }
 
     /**
@@ -821,7 +824,10 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $validateResult = $model->validateData(new \Magento\Framework\DataObject($model->getData()));
         if ($validateResult !== true) {
             foreach ($validateResult as $errorMessage) {
-                echo $errorMessage;
+                // echo $errorMessage;
+                $result = $this->resultJson->create();
+                return $result->setData($errorMessage);
+    
             }
             return;
         }
@@ -831,7 +837,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
             $ruleJob = $objectManager->get('Magento\CatalogRule\Model\Rule\Job');
             $ruleJob->applyAll();
-            echo "rule created";
+            $result = $this->resultJson->create();
+            return $result->setData('Rule created');
         } catch (Exception $e) {
             /*echo $e->getMessage();
             die(__FILE__);*/

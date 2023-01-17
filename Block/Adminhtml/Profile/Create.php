@@ -42,6 +42,11 @@ class Create extends Template
     protected $category;
 
     /**
+     * @var Ced\GoodMarket\Helper\Logger
+     */
+    protected $logger;
+
+    /**
      * Create Constructor.
      *
      * @param Template\Context $context
@@ -49,18 +54,21 @@ class Create extends Template
      * @param \Magento\Framework\Filesystem\Driver\File $fileDriver
      * @param ProfileFactory $profileFactory
      * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $category
+     * @param Ced\GoodMarket\Helper\Logger $logger
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Filesystem\DirectoryList $dir,
         \Magento\Framework\Filesystem\Driver\File $fileDriver,
         ProfileFactory $profileFactory,
-        \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $category
+        \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $category,
+        \Ced\GoodMarket\Helper\Logger $logger
     ) {
         parent::__construct($context);
         $this->fileDriver = $fileDriver;
         $this->_dir = $dir;
         $this->category = $category;
+        $this->logger = $logger;
         $this->profileFactory = $profileFactory;
     }
 
@@ -82,34 +90,39 @@ class Create extends Template
      */
     public function getGoodMarketCategories()
     {
-        $txtFileName = 'categoryLevel.json';
-        $filePath = $this->getMediaPath().'/ced/goodmarket/';
-        $file = $filePath . $txtFileName;
-        $readFile = $this->fileDriver->fileOpen($file, 'r');
-        $categories = $this->fileDriver->fileRead($readFile, filesize($file));
-        $category = json_decode($categories, true);
-        // echo '<pre>'; print_r($category[1]); exit;
-        $catName = [];
-        $i=0;
-        foreach ($category as $catl2) {
-            if (!empty($catl2['children'])) {
-                foreach ($catl2['children'] as $catl3) {
-                    $name = $catl2['name'] . ' -> '. $catl3['name'];
-                    if (!empty($catl3['children'])) {
-                        foreach ($catl3['children'] as $catl4) {
-                            $name = $catl2['name'] . ' -> '. $catl3['name'] . ' -> ' . $catl4['name'];
-                            $catName['162,'.$catl2['id'].','.$catl3['id'].','.$catl4['id'].',,,'] = 'Default -> '.$name;
+        try {
+            $txtFileName = 'categoryLevel.json';
+            $filePath = $this->getMediaPath().'/ced/goodmarket/';
+            $file = $filePath . $txtFileName;
+            $readFile = $this->fileDriver->fileOpen($file, 'r');
+            $categories = $this->fileDriver->fileRead($readFile, filesize($file));
+            $category = json_decode($categories, true);
+            // echo '<pre>'; print_r($category[1]); exit;
+            $catName = [];
+            $i=0;
+            foreach ($category as $catl2) {
+                if (!empty($catl2['children'])) {
+                    foreach ($catl2['children'] as $catl3) {
+                        $name = $catl2['name'] . ' -> '. $catl3['name'];
+                        if (!empty($catl3['children'])) {
+                            foreach ($catl3['children'] as $catl4) {
+                                $name = $catl2['name'] . ' -> '. $catl3['name'] . ' -> ' . $catl4['name'];
+                                $catName['162,'.$catl2['id'].','.$catl3['id'].','.$catl4['id'].',,,'] = 'Default -> '.$name;
+                            }
+                        } else {
+                            $catName['162,'.$catl2['id'].','.$catl3['id'].',,,,'] = 'Default -> '.$name;
                         }
-                    } else {
-                        $catName['162,'.$catl2['id'].','.$catl3['id'].',,,,'] = 'Default -> '.$name;
                     }
+                } else {
+                    $catName['162,' . $catl2['id'].',,,,,'] = 'Default -> ' . $catl2['name'];
                 }
-            } else {
-                $catName['162,' . $catl2['id'].',,,,,'] = 'Default -> ' . $catl2['name'];
+    
             }
-
+            return $catName;
+        } catch (Exception $e) {
+            $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
         }
-        return $catName;
+        
         // echo '<pre>'; print_r($catName);
     }
 

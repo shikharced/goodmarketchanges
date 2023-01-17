@@ -11,8 +11,7 @@
  *
  * @category    Ced
  * @package     Ced_GoodMarket
- * @author      CedCommerce Core Team
-<connect@cedcommerce.com>
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright � 2018 CedCommerce. All rights reserved.
  * @license     EULA http://cedcommerce.com/license-agreement.txt
  */
@@ -869,6 +868,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 if ($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
                     $invSourceData = array_column($invSourceData, 'quantity', 'source_code');
                     $quantity = isset($invSourceData[$localSource]) ? $invSourceData[$localSource] : 0;
+                } else {
+                    $StockState = $this->objectManager->get('\Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku');
+                    $qty = $StockState->execute($child->getSku());
+                    $quantity = empty($qty[0]['qty']) ? 0 : $qty[0]['qty'];
                 }
                 $gdmarketSourceArr = [];
                 $gdmarketSourceArr = explode('+', $gdmarketSource);
@@ -1111,15 +1114,15 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      * @param $type
      * @return false|string
      */
-    public function getVirtualProductData($product, $profile, $catId, $type)
+    private function getVirtualProductData($product, $profile, $catId, $type)
     {
         $currentStore = $this->storeManager->getStore();
         $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
         $imageurl=$mediaUrl . 'catalog/product';
-        $productArray=[];
-        $weight=false;
-        $description=false;
-        $quantity=false;
+        $productArray = [];
+        $weight = false;
+        $description = false;
+        $quantity = false;
 //        $simpleRequireAttribut=['price','sku','name'];
         $profileMapping = json_decode($profile['profile_req_opt_attribute'], true);
         foreach ($profileMapping['required_attributes'] as $required_attribute) {
@@ -1179,8 +1182,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
         if (!$quantity) {
             $allSources = [];
-            $qty=$this->getQuantityForUpload($product,$profile);
-            $location_saved_data=json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'),true);
+            $qty = $this->getQuantityForUpload($product, $profile);
+            $location_saved_data = json_decode($this->flagManager->getFlagData('CED_GOODMARKET_SOURCE'), true);
             /*Quantity Multi Source Assign Work - Shikhar*/
             $sourceMapping = $this->getInventoryMapping();
             foreach ($sourceMapping as $localSource => $gdmarketSource) {
@@ -1191,6 +1194,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 if ($invSourceData && is_array($invSourceData) && count($invSourceData) > 0) {
                     $invSourceData = array_column($invSourceData, 'quantity', 'source_code');
                     $quantity = isset($invSourceData[$localSource]) ? $invSourceData[$localSource] : 0;
+                } else {
+                    $StockState = $this->objectManager->get('\Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku');
+                    $qty = $StockState->execute($product->getSku());
+                    $quantity = empty($qty[0]['qty']) ? 0 : $qty[0]['qty'];
                 }
                 $gdmarketSourceArr = [];
                 $gdmarketSourceArr = explode('+', $gdmarketSource);
@@ -1215,12 +1222,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             if ($baseImageUrl == $base) {
                 $imageencode=$this->get_img_data($baseImageUrl);
                 if (!empty($imageencode)) {
-                    $productImage['image1']=$imageencode;
+                    $productImage['image1'] = $imageencode;
                 }
             } else {
                 $imageencode=$this->get_img_data($baseImageUrl);
                 if (!empty($imageencode)) {
-                    $productImage['image'.$imagecount]=$imageencode;
+                    $productImage['image' . $imagecount] = $imageencode;
                     $imagecount++;
                 }
             }
@@ -1236,30 +1243,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
         $productArray['category_ids']=[$catId];
         $productArray['integ_type']='magento';
-//        echo '<pre>'; print_r($productArray); exit;
+        // echo '<pre>'; print_r($productArray); exit;
         return json_encode($productArray);
     }
-
-//    /**
-//     * @param $image_url_id
-//     * @return array|string
-//     */
-//    public function get_img_data($image_url_id) {
-//        $woo_products_image        = $image_url_id;
-//        $image_type_check = @exif_imagetype($woo_products_image);//Get image type + check if exists
-//        if (strpos($http_response_header[0], "403") || strpos($http_response_header[0], "404") || strpos($http_response_header[0], "302") || strpos($http_response_header[0], "301")) {
-//            return "";
-//        }
-//        $imgdata = file_get_contents($woo_products_image);
-//        $mime_type = getimagesizefromstring($imgdata);
-//        $img_send_data = base64_encode($imgdata);
-//        $image_data_api[0] = 'http://localhost/web/wc_pro/';
-//        $image_data_api_file['file'] = "data:".$mime_type['mime'].";base64,".$img_send_data;
-//        $image_data_api_file['file_name'] = basename($woo_products_image);
-//        $img_file_wrp['file'] = json_encode($image_data_api_file);
-//        return ($img_file_wrp);
-//
-//    }
 
     /**
      * Func get_img_data
@@ -1271,8 +1257,17 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     {
         try {
             $woo_products_image = $image_url_id;
-            $image_type_check = @exif_imagetype($woo_products_image);//Get image type + check if exists
-            if (strpos($http_response_header[0], "403") || strpos($http_response_header[0], "404") || strpos($http_response_header[0], "302") || strpos($http_response_header[0], "301")) {
+            // $image_type_check = @exif_imagetype($woo_products_image);//Old code before MEQP
+            $image_type_check = exif_imagetype($woo_products_image);//Get image type + check if exists 
+            
+            // May not work for less than PHP 8.1
+            // if (strpos($http_response_header[0], "403") || strpos($http_response_header[0], "404") || strpos($http_response_header[0], "302") || strpos($http_response_header[0], "301")) {
+            //     return "";
+            // }
+
+
+            // Will work only for PHP 8
+            if (str_contains($http_response_header[0], "403") || str_contains($http_response_header[0], "404") || str_contains($http_response_header[0], "302") || str_contains($http_response_header[0], "301")) {
                 return "";
             }
             $imgdata = file_get_contents($woo_products_image);

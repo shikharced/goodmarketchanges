@@ -37,28 +37,11 @@ class StartDelete extends Action
      * @var JsonFactory
      */
     public $resultJsonFactory;
-    /**
-     * @var GoodMarket
-     */
-    public $bolHelper;
-    /**
-     * @var Data
-     */
-    public $dataHelper;
+
     /**
      * @var Logger
      */
     public $logger;
-
-    /**
-     * @var \Ced\GoodMarket\Helper\MultiAccount
-     */
-    protected $multiAccountHelper;
-
-    /**
-     * @var \Magento\Framework\Registry
-     */
-    protected $_coreRegistry;
 
     /**
      * Start Delete constructor.

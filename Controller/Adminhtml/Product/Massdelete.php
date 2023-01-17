@@ -3,11 +3,12 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Product;
 
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\View\Result\PageFactory;
+use \Magento\Backend\App\Action;
 
 /**
  * Massdelete constructor
  */
-class Massdelete extends \Magento\Backend\App\Action
+class Massdelete extends Action
 {
     protected $directoryList;
 
@@ -30,7 +31,7 @@ class Massdelete extends \Magento\Backend\App\Action
         CollectionFactory $prodCollFactory,
         PageFactory $resultPageFactory,
         \Magento\Ui\Component\MassAction\Filter $filter,
-        \Ced\GoodMarket\Helper\Config                $config,
+        \Ced\GoodMarket\Helper\Config $config,
         \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
     ) {
         $this->product=$product;

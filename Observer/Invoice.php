@@ -55,6 +55,7 @@ class Invoice implements ObserverInterface
      * @param \Ced\GoodMarket\Helper\Config $config
      * @param \Ced\GoodMarket\Model\OrderFactory $collection
      * @param \Ced\GoodMarket\Helper\Data $data
+     * @param \Ced\GoodMarket\Helper\Logger $logger
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -62,7 +63,8 @@ class Invoice implements ObserverInterface
         \Magento\Framework\App\RequestInterface $request,
         \Ced\GoodMarket\Helper\Config $config,
         \Ced\GoodMarket\Model\OrderFactory $collection,
-        \Ced\GoodMarket\Helper\Data $data
+        \Ced\GoodMarket\Helper\Data $data,
+        \Ced\GoodMarket\Helper\Logger $logger
     ) {
         $this->request = $request;
         $this->registry = $registry;
@@ -70,6 +72,7 @@ class Invoice implements ObserverInterface
         $this->config = $config;
         $this->collection=$collection;
         $this->data=$data;
+        $this->logger = $logger;
     }
 
     /**
@@ -97,12 +100,14 @@ class Invoice implements ObserverInterface
             return $observer;
         } catch (\Exception $e) {
             $this->logger->addError(
-                $e->getMessage() . "Exception in Invoice Creation"
+                $e->getMessage() . "Error in Invoice Creation",
+                ['path' => __METHOD__]
             );
             return $observer;
         } catch (\Error $e) {
             $this->logger->addError(
-                $e->getMessage() . "Error in Invoice Creation"
+                $e->getMessage() . "Error in Invoice Creation",
+                ['path' => __METHOD__]
             );
             return $observer;
         }

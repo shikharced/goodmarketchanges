@@ -31,8 +31,17 @@ class Savebymageid extends Action
     public $_cache;
 
     /**
+     * Save By Magento Id Constructor.
+     *
      * @param Context $context
-     * @param PageFactory $resultPageFactory
+     * @param \Magento\Framework\Registry
+     * @param DataObject
+     * @param ProfileFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     * @param \Ced\GoodMarket\Helper\Data
+     * @param \Magento\Catalog\Model\Product\ActionFactory
+     * @param \Magento\Framework\Controller\Result\JsonFactory
+     * @param \Ced\GoodMarket\Helper\Logger
      */
     public function __construct(
         Context $context,
@@ -41,7 +50,9 @@ class Savebymageid extends Action
         ProfileFactory $profileFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         \Ced\GoodMarket\Helper\Data $helper,
-        \Magento\Catalog\Model\Product\ActionFactory $productActionFactory
+        \Magento\Catalog\Model\Product\ActionFactory $productActionFactory,
+        \Magento\Framework\Controller\Result\JsonFactory $resultJson,
+        \Ced\GoodMarket\Helper\Logger $logger
     ) {
         parent::__construct($context);
         $this->_coreRegistry = $coreRegistry;
@@ -49,6 +60,8 @@ class Savebymageid extends Action
         $this->data = $data;
         $this->_productCollectionFactory = $productCollectionFactory;
         $this->helper=$helper;
+        $this->logger = $logger;
+        $this->resultJson = $resultJson;
         $this->productActionFactory = $productActionFactory;
     }
 
@@ -85,15 +98,14 @@ class Savebymageid extends Action
             // echo '<pre>'; print_r($profile->getData()); exit;
             // $profile->delete(); echo 'deleted';
             try {
+                $result = $this->resultJson->create();
                 if ($profile->delete()) {
-                    echo 'Profile Deleted';
-                    exit;
+                    return $result->setData('Profile Deleted');
                 } else {
-                    echo  'Some error occured';
+                    return $result->setData('Some error occured');
                 }
             } catch (Exception $e) {
-                echo $e->getMessage();
-                exit;
+                $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
             }
         }
         $profileCode = 'gdmarket-' . $magentoCat;
@@ -198,7 +210,8 @@ class Savebymageid extends Action
         if ($profileProduct) {
             $profile->updateProducts($profileProduct);
         }
-        echo 'saved';
+        $result = $this->resultJson->create();
+        return $result->setData('saved');
     }
 
     /**
