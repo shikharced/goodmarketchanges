@@ -23,9 +23,7 @@ use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class Truncate
- *
- * @package Ced\EbayMultiAccount\Controller\Adminhtml\Log
+ * Class Truncate files
  */
 class Truncate extends Action
 {
@@ -46,6 +44,7 @@ class Truncate extends Action
 
     /**
      * Delete constructor.
+     *
      * @param Action\Context $context
      * @param PageFactory $resultPageFactory
      * @param \Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory $logs
@@ -64,7 +63,7 @@ class Truncate extends Action
     {
         $status = false;
         $collection = $this->logs->create();
-        if (isset($collection) and $collection->getSize() > 0) {
+        if (isset($collection) && $collection->getSize() > 0) {
             $status = true;
             $collection->walk('delete');
         }
@@ -74,7 +73,6 @@ class Truncate extends Action
         } else {
             $this->messageManager->addNoticeMessage('No Entry to delete.');
         }
-
         $this->_redirect('range/cron/index');
     }
 

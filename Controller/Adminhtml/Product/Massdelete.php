@@ -3,12 +3,27 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Product;
 
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\View\Result\PageFactory;
+use \Magento\Backend\App\Action;
 
-
-class Massdelete extends \Magento\Backend\App\Action
+/**
+ * Massdelete constructor
+ */
+class Massdelete extends Action
 {
     protected $directoryList;
 
+    /**
+     * Mass Delete constructor
+     *
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Ced\GoodMarket\Helper\Product $product
+     * @param \Ced\GoodMarket\Helper\Data $data
+     * @param CollectionFactory $prodCollFactory
+     * @param PageFactory $resultPageFactory
+     * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param \Ced\GoodMarket\Helper\Config $config
+     * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
+     */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Ced\GoodMarket\Helper\Product $product,
@@ -16,7 +31,7 @@ class Massdelete extends \Magento\Backend\App\Action
         CollectionFactory $prodCollFactory,
         PageFactory $resultPageFactory,
         \Magento\Ui\Component\MassAction\Filter $filter,
-        \Ced\GoodMarket\Helper\Config                $config,
+        \Ced\GoodMarket\Helper\Config $config,
         \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
     ) {
         $this->product=$product;
@@ -35,8 +50,7 @@ class Massdelete extends \Magento\Backend\App\Action
             ->resultRedirectFactory
             ->create();
         $credentials=$this->data->checkAccountSetup();
-        if($credentials!=1)
-        {
+        if ($credentials!=1) {
             $this
                 ->messageManager
                 ->addNoticeMessage($credentials);
@@ -56,8 +70,6 @@ class Massdelete extends \Magento\Backend\App\Action
             $this->messageManager->addErrorMessage(__('No product available for upload.'));
             return $this->_redirect('goodmarket/product/index');
         }
-
         return  $this->_redirect('*/*/index');
     }
-
 }

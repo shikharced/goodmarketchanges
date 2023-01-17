@@ -55,7 +55,7 @@ class Status extends AbstractSource
     ];
 
     /**
-     * public function getAllOptions
+     * Function getAllOptions
      *
      * @return array
      */

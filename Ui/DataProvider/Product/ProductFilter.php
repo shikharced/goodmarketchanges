@@ -16,12 +16,28 @@
  * @license     EULA http://cedcommerce.com/license-agreement.txt
  */
 namespace Ced\GoodMarket\Ui\DataProvider\Product;
+
 use Magento\Framework\Data\Collection;
 use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
+
+/**
+ * Class Product filter collection
+ */
 class ProductFilter implements AddFilterToCollectionInterface
 {
+    /**
+     * @var \Magento\Framework\App\RequestInterface
+     */
     public $request;
-    public $profileProduct;
+
+    /**
+     * ProductFilter Constructor.
+     *
+     * @param \Magento\Framework\App\RequestInterface $request
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory
+     * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+     * @param \Ced\GoodMarket\Helper\Config $config
+     */
     public function __construct(
         \Magento\Framework\App\RequestInterface $request,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory,
@@ -34,11 +50,17 @@ class ProductFilter implements AddFilterToCollectionInterface
         $this->orderRepository = $orderRepository;
     }
     /**
-     * {@inheritdoc}
+     * Function Add Filter
+     *
+     * @param Collection $collection
+     * @param string $field
+     * @param string $condition
      */
     public function addFilter(Collection $collection, $field, $condition = null)
     {
         try {
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $logger = $objectManager->get(\Ced\GoodMarket\Helper\Logger::class);
             $filters = $this->request->getParam('filters', []);
             if (isset($condition['eq']) && $condition['eq']) {
                 if (isset($filters['product_offer_status'])) {
@@ -49,16 +71,16 @@ class ProductFilter implements AddFilterToCollectionInterface
                     }
                 }
             }
-        }catch(\Exception $e)
-        {
-          echo "<pre>";
-          print_r($e->getMessage());
-          die(__FILE__);
-        }catch(\Error $e)
-        {
-            echo "<pre>";
-            print_r($e->getMessage());
-            die(__FILE__);
+        } catch (\Exception $e) {
+//            echo "<pre>";
+//            print_r($e->getMessage());
+//            die(__FILE__);
+            $logger->addError($e->getMessage());
+        } catch (\Error $e) {
+//            echo "<pre>";
+//            print_r($e->getMessage());
+//            die(__FILE__);
+            $logger->addError($e->getMessage());
         }
     }
 }

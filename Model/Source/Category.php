@@ -41,13 +41,16 @@ class Category implements OptionSourceInterface
      */
     public $storeManager;
 
+    /**
+     * @var array
+     */
     public $allowedLevels = [1, 2, 3, 4, 5];
 
     /**
      * Category constructor.
      *
      * @param StoreManagerInterface $storeManager
-     * @param CollectionFactory $CollectionFactory
+     * @param CollectionFactory $collectionFactory
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -58,7 +61,7 @@ class Category implements OptionSourceInterface
     }
 
     /**
-     * public function toOptionArray
+     * Public function toOptionArray
      *
      * @return array
      */
@@ -89,7 +92,7 @@ class Category implements OptionSourceInterface
     }
 
     /**
-     * getAllOptions
+     * To getAllOptions
      *
      * @return array
      */
@@ -99,7 +102,7 @@ class Category implements OptionSourceInterface
     }
 
     /**
-     * getOptionArray
+     * To getOptionArray
      *
      * @return array
      */

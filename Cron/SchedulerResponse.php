@@ -21,6 +21,9 @@ namespace Ced\GoodMarket\Cron;
 use Ced\GoodMarket\Model\Source\Cron\Status;
 use Ced\GoodMarket\Model\Source\Cron\Type;
 
+/**
+ * class SchedulerResponse Cron
+ */
 class SchedulerResponse
 {
     /**
@@ -55,11 +58,12 @@ class SchedulerResponse
 
     /**
      * InventoryPrice constructor.
+     *
      * @param \Ced\GoodMarket\Helper\Logger $logger
      * @param \Ced\GoodMarket\Helper\Config $config
-     * @param \Ced\GoodMarket\Helper\Product $product
-     * @param \Ced\GoodMarket\Model\CronFactory $cronFactory
-     * @param \Ced\GoodMarket\Model\ResourceModel\Cron\CollectionFactory $cronCollectionFactory
+     * @param \Ced\GoodMarket\Helper\Data $data
+     * @param \Ced\GoodMarket\Model\SchedulerFactory $schedulerFactory
+     * @param \Ced\GoodMarket\Model\ResourceModel\Scheduler\CollectionFactory $scheduleCollectionFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
      */
     public function __construct(
@@ -68,8 +72,8 @@ class SchedulerResponse
         \Ced\GoodMarket\Helper\Data $data,
         \Ced\GoodMarket\Model\SchedulerFactory $schedulerFactory,
         \Ced\GoodMarket\Model\ResourceModel\Scheduler\CollectionFactory $scheduleCollectionFactory,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory)
-    {
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+    ) {
         $this->logger = $logger;
         $this->config = $config;
         $this->helper = $data;
@@ -84,28 +88,27 @@ class SchedulerResponse
     public function execute()
     {
         try {
-                $cronModel = $this
-                    ->scheduleCollectionFactory
-                    ->create()
-                    ->addFieldToFilter('scheduler_product_sync', 'pending')
-                    ->addFieldToFilter('scheduler_response', ['null'=>true])
-                    ->getFirstItem();
+            $cronModel = $this
+                ->scheduleCollectionFactory
+                ->create()
+                ->addFieldToFilter('scheduler_product_sync', 'pending')
+                ->addFieldToFilter('scheduler_response', ['null'=>true])
+                ->getFirstItem();
 
-                if ($cronModel && $cronModel->getId()) {
-                    $chunkIds = $cronModel->getSchedulerId();
-                    if (!empty($chunkIds)) {
-                        $response = $this->helper->bulkProductResponse($chunkIds);
-                        if(isset($response['data']['pendingBulkresponse']) && !empty(isset($response['data']['pendingBulkresponse']))) {
-                            $currentScheduler=$this->schedulerFactory->create()->load($cronModel->getId());
-                            $currentScheduler->setData('scheduler_response',json_encode($response));
-                            $currentScheduler->setData('scheduler_status',$response['data']['pendingBulkresponse']['job_status']);
-                            $currentScheduler->setData('scheduler_product_sync','Processing');
-                            $currentScheduler->save();
-                        }
+            if ($cronModel && $cronModel->getId()) {
+                $chunkIds = $cronModel->getSchedulerId();
+                if (!empty($chunkIds)) {
+                    $response = $this->helper->bulkProductResponse($chunkIds);
+                    if (isset($response['data']['pendingBulkresponse']) && !empty(isset($response['data']['pendingBulkresponse']))) {
+                        $currentScheduler = $this->schedulerFactory->create()->load($cronModel->getId());
+                        $currentScheduler->setData('scheduler_response', json_encode($response));
+                        $currentScheduler->setData('scheduler_status', $response['data']['pendingBulkresponse']['job_status']);
+                        $currentScheduler->setData('scheduler_product_sync', 'Processing');
+                        $currentScheduler->save();
                     }
                 }
-
-        } catch(\Exception $e) {
+            }
+        } catch (\Exception $e) {
             $this->logger->addError('Error Occur Inside Inventory Cron '.$e->getMessage(), ['path' => __METHOD__]);
         }
     }

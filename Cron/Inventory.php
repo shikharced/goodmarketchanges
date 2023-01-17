@@ -21,6 +21,9 @@ namespace Ced\GoodMarket\Cron;
 use Ced\GoodMarket\Model\Source\Cron\Status;
 use Ced\GoodMarket\Model\Source\Cron\Type;
 
+/**
+ * class Inventory cron
+ */
 class Inventory
 {
     /**
@@ -55,6 +58,7 @@ class Inventory
 
     /**
      * InventoryPrice constructor.
+     *
      * @param \Ced\GoodMarket\Helper\Logger $logger
      * @param \Ced\GoodMarket\Helper\Config $config
      * @param \Ced\GoodMarket\Helper\Product $product
@@ -68,8 +72,8 @@ class Inventory
         \Ced\GoodMarket\Helper\Product $product,
         \Ced\GoodMarket\Model\CronFactory $cronFactory,
         \Ced\GoodMarket\Model\ResourceModel\Cron\CollectionFactory $cronCollectionFactory,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory)
-    {
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+    ) {
         $this->logger = $logger;
         $this->config = $config;
         $this->product = $product;
@@ -120,7 +124,7 @@ class Inventory
                     }
                 }
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->addError('Error Occur Inside Inventory Cron '.$e->getMessage(), ['path' => __METHOD__]);
         }
     }

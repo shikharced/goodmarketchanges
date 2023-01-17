@@ -36,7 +36,7 @@ class Cron extends AbstractSource
     public const CRON_DAILY = '0 0 * * *';
 
     /**
-     * public function getAllOptions
+     * Public function getAllOptions
      *
      * @return array
      */

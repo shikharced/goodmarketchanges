@@ -21,6 +21,9 @@ use Magento\Backend\Block\Widget\Form\Container;
 use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Registry;
 
+/**
+ * Class Edit block
+ */
 class Edit extends Container
 {
     /**
@@ -30,6 +33,7 @@ class Edit extends Container
 
     /**
      * Edit constructor.
+     *
      * @param Context $context
      * @param Registry $registry
      * @param array $data
@@ -38,14 +42,15 @@ class Edit extends Container
         Context $context,
         Registry $registry,
         array $data = []
-    )
-    {
+    ) {
         $this->_coreRegistry = $registry;
         parent::__construct($context, $data);
     }
 
     /**
-     * return void
+     * Edit Construct.
+     *
+     * @return void
      */
     protected function _construct()
     {
@@ -88,29 +93,30 @@ class Edit extends Container
                 groupVendorPpcode_massaction = document.getElementById('groupVendorPpcode_massaction-form');
                 if(groupVendorPpcode_massaction != null) {
                     groupVendorPpcode_massaction.parentElement.removeChild(groupVendorPpcode_massaction);
-                     new Insertion.Bottom('edit_form',               
+                     new Insertion.Bottom('edit_form',
                      groupVendorPpcode_massactionJsObject.fieldTemplate(
-                     {name: 'in_profile_products', 
+                     {name: 'in_profile_products',
                      value: groupVendorPpcode_massactionJsObject.checkedString}));
                  }
             if(flag) {
                     var editForm = jQuery('#edit_form');
                     editForm.attr('action', urlTemplate);
                     editForm.submit();
-                } 
+                }
             }
         ";
     }
 
     /**
-     * @param string $buttonId
-     * @param array $data
-     * @param int $level
-     * @param int $sortOrder
-     * @param string $region
-     * @return void
+     * Add Buttons.
+     *
+     * @param $buttonId
+     * @param $data
+     * @param $level
+     * @param $sortOrder
+     * @param $region
+     * @return Edit|void
      */
-
     public function addButton($buttonId, $data, $level = 0, $sortOrder = 0, $region = 'toolbar')
     {
         if ($this->getRequest()->getParam('popup')) {
@@ -120,7 +126,9 @@ class Edit extends Container
     }
 
     /**
-     * @param $back
+     * Save And continue Url
+     *
+     * @param string $back
      * @return string
      */
     public function getSaveAndContinueUrl($back)
@@ -136,22 +144,28 @@ class Edit extends Container
                 'website' => $this->getRequest()->getParam('website', false),
             ]
         );
-
     }
 
     /**
+     * Get Header Text
+     *
      * @return \Magento\Framework\Phrase
      */
     public function getHeaderText()
     {
         if ($this->_coreRegistry->registry('profile_data') && $this->_coreRegistry->registry('profile_data')->getId()) {
-            return __('Edit Profile "%s" ', $this->escapeHtml($this->_coreRegistry->registry('profile_data')->getName()));
+            return __(
+                'Edit Profile "%s" ',
+                $this->escapeHtml($this->_coreRegistry->registry('profile_data')->getName())
+            );
         } else {
             return __('Add Profile');
         }
     }
 
     /**
+     * Get Save Url function
+     *
      * @return string
      */
     public function getSaveUrl()
@@ -164,6 +178,8 @@ class Edit extends Container
     }
 
     /**
+     * Get Delete Url
+     *
      * @return string
      */
     public function getDeleteUrl()

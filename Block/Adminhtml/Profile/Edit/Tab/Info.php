@@ -24,8 +24,7 @@ use Magento\Framework\Data\FormFactory;
 use Ced\GoodMarket\Model\Source\Profile\Status;
 
 /**
- * Class Info
- * @package Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab
+ * Class Info grid
  */
 class Info extends Generic
 {
@@ -36,6 +35,7 @@ class Info extends Generic
 
     /**
      * Info constructor.
+     *
      * @param Context $context
      * @param Registry $registry
      * @param FormFactory $formFactory
@@ -53,6 +53,8 @@ class Info extends Generic
     }
 
     /**
+     * Prepare form
+     *
      * @return $this
      */
     protected function _prepareForm()
@@ -89,7 +91,7 @@ class Info extends Generic
                 'value'     => $profile->getData('profile_code'),
             ]
         );
-    
+
         $fieldset->addField(
             'profile_name',
             'text',
@@ -129,12 +131,12 @@ class Info extends Generic
                 'name' => 'in_profile_product_old','id'=>"in_profile_product_old"
             ]
         );
-    
+
         if ($profile->getId()) {
             $form->getElement('profile_code')->setDisabled(1);
             $form->getElement('profile_name')->setDisabled(1);
         }
-        
+
         $this->setForm($form);
         return parent::_prepareForm();
     }

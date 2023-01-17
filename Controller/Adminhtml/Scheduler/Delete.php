@@ -19,42 +19,34 @@
 namespace Ced\GoodMarket\Controller\Adminhtml\Scheduler;
 
 /**
- * Class Delete
- * @package Ced\EbayMultiAccount\Controller\Adminhtml\Profile
+ * Class Delete Scheduler
  */
 class Delete extends \Magento\Customer\Controller\Adminhtml\Group
 {
     /**
-     * @var
-     */
-    protected $_objectManager;
-    /**
-     * @var
-     */
-    protected $_session;
-
-    /**
-     * @return $this|void
+     * Execute method
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
      */
     public function execute()
     {
         $code = $this->getRequest()->getParam('id');
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($code) {
-            $model = $this->_objectManager->create('Ced\GoodMarket\Model\Scheduler')->getCollection()->addFieldToFilter('id', $code)->addFieldToFilter('scheduler_product_sync','Finished');
+            $model = $this->_objectManager->create(\Ced\GoodMarket\Model\Scheduler::class)
+                ->getCollection()->addFieldToFilter('id', $code)
+                ->addFieldToFilter('scheduler_product_sync', 'Finished');
             // entity type check
-         if(empty($model->getData())) {
-             $this->messageManager->addErrorMessage(__('Feed Status Not Finished Yet!!'));
-         }
-                foreach ($model as $value) {
-                    if($code == $value->getData('id')){
-                        $value->delete();
-                        $this->messageManager->addSuccessMessage(__('You deleted the Feed.'));
-                    }
+            if (empty($model->getData())) {
+                $this->messageManager->addErrorMessage(__('Feed Status Not Finished Yet!!'));
+            }
+            foreach ($model as $value) {
+                if ($code == $value->getData('id')) {
+                    $value->delete();
+                    $this->messageManager->addSuccessMessage(__('You deleted the Feed.'));
                 }
-
+            }
         }
         $this->_redirect('goodmarket/scheduler/index');
-        return ;
     }
 }

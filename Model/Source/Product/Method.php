@@ -27,7 +27,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 class Method extends AbstractSource
 {
     /**
-     * public function getAllOptions
+     * Public function getAllOptions
      *
      * @return array
      */

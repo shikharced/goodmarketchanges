@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * CedCommerce
  *
@@ -21,7 +21,10 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
 use Magento\Framework\View\Result\PageFactory;
 use Ced\GoodMarket\Helper\Data;
 use Magento\Backend\App\Action;
- 
+
+/**
+ * Class Get category of profile
+ */
 class GetCategory extends Action
 {
     /**
@@ -29,17 +32,18 @@ class GetCategory extends Action
      */
     protected $resultPageFactory;
 
+    /**
+     * @var \Magento\Framework\Registry
+     */
     protected $_coreRegistry;
 
     /**
-     * @var
-     */
-    public $helepr;
-
-    /**
+     * GetCategory Constructor.
+     *
      * @param \Magento\Backend\App\Action\Context        $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Framework\Registry                $coreRegistry
+     * @param Data $helper
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -76,10 +80,11 @@ class GetCategory extends Action
             if (isset($response['results'])) {
                 $options = $response['results'];
                 foreach ($options as $value) {
-                    $html .= "<option value='".$value['category_id'].".".$value['name']."'>".$value['short_name']."</option>";
+                    $html .= "<option value='" . $value['category_id'] . "." . $value['name'] . "'>" .
+                        $value['short_name'] . "</option>";
                 }
             }
         }
         $this->getResponse()->setBody($html);
-    }  
+    }
 }

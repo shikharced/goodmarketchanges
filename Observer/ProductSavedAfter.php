@@ -21,11 +21,12 @@ namespace Ced\GoodMarket\Observer;
 use Ced\GoodMarket\Observer\InventoryChange;
 use Magento\Framework\Event\ObserverInterface;
 
-class ProductSaveAfter extends InventoryChange implements ObserverInterface
+class ProductSavedAfter extends InventoryChange implements ObserverInterface
 {
     /**
      * Catalog product save after event handler
      *
+     * @param object $observer
      * @return \Magento\Framework\Event\Observer $observer
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -41,9 +42,15 @@ class ProductSaveAfter extends InventoryChange implements ObserverInterface
             $this->processChangedProduct($stockItem, $origData);
             return $observer;
         } catch (\Exception $e) {
-            $this->logger->error('Inv Save Observer', ['path' => __METHOD__, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error(
+                'Inv Save Observer',
+                [
+                    'path' => __METHOD__,
+                    'exception' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            );
             return $observer;
         }
     }
-
 }

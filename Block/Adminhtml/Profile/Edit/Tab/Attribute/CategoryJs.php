@@ -32,7 +32,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
  */
 class CategoryJs extends Widget implements RendererInterface
 {
-	/**
+    /**
      * @var string
      */
     public $_template = 'profile/categoryMapping.phtml';

@@ -19,58 +19,32 @@
 namespace Ced\GoodMarket\Block\Adminhtml\Config\Field;
 
 /**
- * Class CarrierMapping
- * @package Ced\EbayMultiAccount\Block\Adminhtml\Config\Field
+ * Class CarrierMapping Field
  */
 class CarrierMapping extends \Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray
 {
     /**
-     * @var
-     */
-    protected $_shippingRegion;
-
-    /**
-     * @var
-     */
-    protected $_shippingMethod;
-    /**
-     * @var
-     */
-
-    protected $_magentoAttr;
-    /**
-     * @var
-     */
-    protected $_enabledRenderer;
-    /**
-     * @var
-     */
-    protected $_ebaymultiaccountCarrierRenderer;
-    /**
-     * @var
-     */
-    protected $_magentoCarrierRenderer;
-
-    /**
+     * _prepareToRender
+     *
      * @return \Magento\Framework\View\Element\BlockInterface
      */
-
     protected function _prepareToRender()
     {
         $this->addColumn(
-            'magento_carrier', array(
-                'label' => __('Magento Carrier')
-//                'renderer' => /*$this->_getMagentoCarrierRenderer()*/'',
-            )
+            'magento_carrier',
+            [
+                'label' => __('Magento Carrier'),
+                // 'renderer' => /*$this->_getMagentoCarrierRenderer()*/'',
+            ]
         );
         $this->addColumn(
-            'goodmarket_carrier', array(
-                'label' => __('GoodMarket Transporter Code')
-//                'renderer' => /*$this->_getEbayMultiAccountCarrierRenderer()*/'',
-            )
+            'goodmarket_carrier',
+            [
+                'label' => __('GoodMarket Transporter Code'),
+                // 'renderer' => /*$this->_getEbayMultiAccountCarrierRenderer()*/'',
+            ]
         );
         $this->_addAfter = false;
         $this->_addButtonLabel = __('Add Carrier');
     }
-
 }

@@ -1,20 +1,20 @@
 <?php
 /**
-  * CedCommerce
-  *
-  * NOTICE OF LICENSE
-  *
-  * This source file is subject to the End User License Agreement (EULA)
-  * that is bundled with this package in the file LICENSE.txt.
-  * It is also available through the world-wide-web at this URL:
-  * http://cedcommerce.com/license-agreement.txt
-  *
-  * @category    Ced
-  * @package     Ced_GoodMarket
-  * @author      CedCommerce Core Team <connect@cedcommerce.com>
-  * @copyright   Copyright CEDCOMMERCE (http://cedcommerce.com/)
-  * @license     http://cedcommerce.com/license-agreement.txt
-  */
+ * CedCommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the End User License Agreement (EULA)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://cedcommerce.com/license-agreement.txt
+ *
+ * @category    Ced
+ * @package     Ced_GoodMarket
+ * @author      CedCommerce Core Team <connect@cedcommerce.com>
+ * @copyright   Copyright CEDCOMMERCE (http://cedcommerce.com/)
+ * @license     http://cedcommerce.com/license-agreement.txt
+ */
 
 namespace Ced\GoodMarket\Ui\Component\Listing\Columns\Account;
 
@@ -24,15 +24,14 @@ use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 
 /**
- * Class Actions
- * @package Ced\GoodMarket\Ui\Component\Listing\Columns\Profile
+ * Class Actions returns buttons
  */
 class Actions extends Column
 {
-    const URL_PATH_EDIT = 'goodmarket/account/edit';
-    const URL_PATH_FETCHTOKEN = 'goodmarket/account/supplier';
-    const URL_PATH_FETCHOTHERDETAILS = 'goodmarket/account/fetchotherdetails';
-    const URL_PATH_IMPORTITEMIDS = 'goodmarket/account/importItemIds';
+    public const URL_PATH_EDIT = 'goodmarket/account/edit';
+    public const URL_PATH_FETCHTOKEN = 'goodmarket/account/supplier';
+    public const URL_PATH_FETCHOTHERDETAILS = 'goodmarket/account/fetchotherdetails';
+    public const URL_PATH_IMPORTITEMIDS = 'goodmarket/account/importItemIds';
 
     /**
      * @var UrlInterface
@@ -41,6 +40,7 @@ class Actions extends Column
 
     /**
      * Actions constructor.
+     *
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder
@@ -59,6 +59,8 @@ class Actions extends Column
     }
 
     /**
+     * Prepare Data resource
+     *
      * @param array $dataSource
      * @return array
      */

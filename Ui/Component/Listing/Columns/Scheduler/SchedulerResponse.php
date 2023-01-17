@@ -24,8 +24,7 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
- * Class FeedFile
- * @package Ced\EbayMultiAccount\Ui\Component\Listing\Columns\JobScheduler
+ * Class Feed File Schedular Response
  */
 class SchedulerResponse extends Column
 {
@@ -42,13 +41,13 @@ class SchedulerResponse extends Column
      */
     public $dl;
 
-    const URL_PATH_RESEND = 'ebaymultiaccount/product/index';
-
     /**
      * FeedFile constructor.
+     *
      * @param ContextInterface $context
      * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
      * @param \Magento\Framework\Filesystem\Io\File $fileIo
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder
      * @param array $components
@@ -63,8 +62,7 @@ class SchedulerResponse extends Column
         UrlInterface $urlBuilder,
         $components = [],
         $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $uiComponentFactory, $components, $data);
         $this->dl = $directoryList;
         $this->urlBuilder = $urlBuilder;
@@ -73,6 +71,8 @@ class SchedulerResponse extends Column
     }
 
     /**
+     * Prepare Data resource
+     *
      * @param array $dataSource
      * @return array
      */

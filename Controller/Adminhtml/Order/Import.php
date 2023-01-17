@@ -19,8 +19,7 @@
 namespace Ced\GoodMarket\Controller\Adminhtml\Order;
 
 /**
- * Class Import
- * @package Ced\GoodMarket\Controller\Adminhtml\Order
+ * Class Import orders
  */
 class Import extends \Magento\Backend\App\Action
 {
@@ -36,17 +35,18 @@ class Import extends \Magento\Backend\App\Action
 
     /**
      * Fetch constructor.
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
      * @param \Ced\GoodMarket\Helper\Order $orderHelper
+     * @param \Ced\GoodMarket\Helper\Data $data
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory,
         \Ced\GoodMarket\Helper\Order $orderHelper,
         \Ced\GoodMarket\Helper\Data $data
-    )
-    {
+    ) {
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->order = $orderHelper;
         $this->data=$data;
@@ -54,6 +54,8 @@ class Import extends \Magento\Backend\App\Action
     }
 
     /**
+     * Execute method
+     *
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
      */
     public function execute()
@@ -62,8 +64,7 @@ class Import extends \Magento\Backend\App\Action
             ->resultRedirectFactory
             ->create();
         $credentials=$this->data->checkAccountSetup();
-        if($credentials!=1)
-        {
+        if ($credentials!=1) {
             $this
                 ->messageManager
                 ->addNoticeMessage($credentials);
@@ -73,14 +74,11 @@ class Import extends \Magento\Backend\App\Action
         $status = $this
             ->order
             ->import();
-        if ($status)
-        {
+        if ($status) {
             $this
                 ->messageManager
                 ->addSuccessMessage((string)$status . ' New orders imported from GoodMarket.');
-        }
-        else
-        {
+        } else {
             $this
                 ->messageManager
                 ->addNoticeMessage('No new orders are imported.');
@@ -90,4 +88,3 @@ class Import extends \Magento\Backend\App\Action
         return $result;
     }
 }
-

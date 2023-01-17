@@ -40,19 +40,19 @@ class Order extends \Magento\Framework\Model\AbstractModel
     public const COLUMN_CANCELLATION_DATA = 'cancellation_data';
     public const COLUMN_ORDER_ACCOUNT_CODE='account_code';
     /**
-     * public function _construct
-     * 
-     * @throws error 
-     */ 
+     * Function _construct
+     *
+     * @throws error
+     */
     public function _construct()
     {
         $this->_init(\Ced\GoodMarket\Model\ResourceModel\Order::class);
     }
 
     /**
-     * public function getByPurchaseOrderId
-     * 
-     * @param $poId
+     * Function getByPurchaseOrderId
+     *
+     * @param string $poId
      * @return string
      */
     public function getByPurchaseOrderId($poId)
@@ -66,9 +66,9 @@ class Order extends \Magento\Framework\Model\AbstractModel
     }
 
     /**
-     * public function loadByMagentoOrderId
-     * 
-     * @param $magentoOrderId
+     * Function loadByMagentoOrderId
+     *
+     * @param string $magentoOrderId
      * @return array
      */
     public function loadByMagentoOrderId($magentoOrderId)

@@ -26,7 +26,7 @@ use Magento\Framework\Model\AbstractModel;
 class Cron extends AbstractModel
 {
     /**
-     * public function _construct
+     * Function _construct
      *
      * @throws Exception  
      */

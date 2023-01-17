@@ -18,23 +18,28 @@
 
 namespace Ced\GoodMarket\Block\Adminhtml\Product;
 
+/**
+ * MassEdit to update product
+ */
 class MassEdit extends \Magento\Backend\Block\Widget\Container
 {
     /**
      * MassUpload constructor.
+     *
      * @param \Magento\Backend\Block\Widget\Context $context
      * @param array $data
      */
     public function __construct(
         \Magento\Backend\Block\Widget\Context $context,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $data);
         $this->setTemplate('Ced_GoodMarket::product/massedit.phtml');
     }
 
     /**
+     * Function totalcount
+     *
      * @return int
      */
     public function totalcount()

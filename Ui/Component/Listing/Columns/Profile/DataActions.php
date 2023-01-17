@@ -25,11 +25,11 @@ use Magento\Framework\UrlInterface;
 
 class DataActions extends Column
 {
-    const URL_PATH_EDIT = 'goodmarket/profile/edit';
-    const URL_PATH_UPLOAD = 'goodmarket/products/index';
+    public const URL_PATH_EDIT = 'goodmarket/profile/edit';
+    public const URL_PATH_UPLOAD = 'goodmarket/products/index';
 
     /**
-     * URL builder
+     * URL builder Interface
      *
      * @var \Magento\Framework\UrlInterface
      */

@@ -19,13 +19,13 @@
 namespace Ced\GoodMarket\Model\Config;
 
 /**
- * class Carrier Array Serialized 
+ * Class Carrier Array Serialized
  */
 class CarrierArraySerialized extends \Magento\Config\Model\Config\Backend\Serialized
 {
 
     /**
-     * befpreSave func
+     * BeforeSave Func
      *
      * @return array
      */
@@ -41,13 +41,13 @@ class CarrierArraySerialized extends \Magento\Config\Model\Config\Backend\Serial
     }
 
     /**
-     * function unique
+     * Function unique
      *
-     * @param $array
-     * @param $key1
+     * @param array $array
+     * @param string $key1
      * @return array
      */
-    function unique($array, $key1)
+    public function unique($array, $key1)
     {
         $parsedArray = [];
         $i = 0;

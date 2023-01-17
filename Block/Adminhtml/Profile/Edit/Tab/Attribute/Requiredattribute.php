@@ -25,9 +25,9 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+
 /**
- * Class Requiredattribute
- * @package Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute
+ * Class Requiredattributes in profile
  */
 class Requiredattribute extends Widget implements RendererInterface
 {
@@ -36,14 +36,30 @@ class Requiredattribute extends Widget implements RendererInterface
      */
     public $_template = 'Ced_GoodMarket::profile/attribute/required_attribute.phtml';
 
+    /**
+     * @var ObjectManagerInterface
+     */
     public $_objectManager;
 
+    /**
+     * @var Registry
+     */
     public $_coreRegistry;
 
+    /**
+     * @var mixed|null
+     */
     public $_profile;
 
-    public $_goodmarketAttribute;
-
+    /**
+     * ReqAttr constructor.
+     *
+     * @param Context $context
+     * @param ObjectManagerInterface $objectManager
+     * @param Registry $registry
+     * @param \Magento\Framework\Message\ManagerInterface $messageManager
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         ObjectManagerInterface $objectManager,
@@ -59,14 +75,19 @@ class Requiredattribute extends Widget implements RendererInterface
     }
 
     /**
+     * Function _prepareLayout
+     *
      * @return $this
      */
     protected function _prepareLayout()
     {
-        $button = $this->getLayout()->createBlock(
-            'Magento\Backend\Block\Widget\Button'
-        )->setData(
-            ['label' => __('Add Attribute'), 'onclick' => 'return requiredAttributeControl.addItem()', 'class' => 'add']
+        $button = $this->getLayout()->createBlock(\Magento\Backend\Block\Widget\Button::class)
+            ->setData(
+                [
+                    'label' => __('Add Attribute'),
+                    'onclick' => 'return requiredAttributeControl.addItem()',
+                    'class' => 'add'
+                ]
         );
         $button->setName('add_required_item_button');
         $this->setChild('add_button', $button);
@@ -74,6 +95,8 @@ class Requiredattribute extends Widget implements RendererInterface
     }
 
     /**
+     * Function getAddButtonHtml
+     *
      * @return string
      */
     public function getAddButtonHtml()
@@ -82,32 +105,46 @@ class Requiredattribute extends Widget implements RendererInterface
     }
 
     /**
+     * Function getGoodMarketAttributes
+     *
      * @return array
      */
     public function getGoodMarketAttributes()
     {
-
         $cid=$this->_backendSession->getCategoryValue();
-        if(!empty($cid)) {
+        if (!empty($cid)) {
             $attributes=$this->_objectManager->create(\Ced\GoodMarket\Helper\Data::class)->getCategoryAttributes($cid);
-            $allAttribute=json_decode($attributes['groupwise_attributes'],true);
-            if(!isset($allAttribute['attribute_set_id'])) {
+            $allAttribute=json_decode($attributes['groupwise_attributes'], true);
+            if (!isset($allAttribute['attribute_set_id'])) {
                 $this->messageManager->addNotice(__("Please Try To Add New Profile After Sometime.."));
             }
             $this->_backendSession->setAttributeSet($allAttribute['attribute_set_id']);
             foreach ($allAttribute as $attribute) {
-                if(isset($attribute['attributes'])) {
+                if (isset($attribute['attributes'])) {
                     foreach ($attribute['attributes'] as $productattribute) {
                         $sourceData=[];
-                        if(isset($productattribute['source_options']) && !empty($productattribute['source_options'])) {
+                        if (isset($productattribute['source_options']) && !empty($productattribute['source_options'])) {
                             foreach ($productattribute['source_options'] as $source_option) {
                                 $sourceData[]=$source_option['label'];
                             }
                         }
                         if ($productattribute['is_required'] == '1') {
-                            $requiredAttribute[$productattribute['attribute_code']] = ['goodmarket_attribute_name' => $productattribute['attribute_code'], 'goodmarket_attribute_type' => $productattribute['type'], 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'',  'required' => 1, 'magento_attribute_code' => $productattribute['attribute_code']];
+                            $requiredAttribute[$productattribute['attribute_code']] =
+                                [
+                                    'goodmarket_attribute_name' => $productattribute['attribute_code'],
+                                    'goodmarket_attribute_type' => $productattribute['type'],
+                                    'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',', $sourceData):'',
+                                    'required' => 1,
+                                    'magento_attribute_code' => $productattribute['attribute_code']
+                                ];
                         } else {
-                            $optionalAttributes[$productattribute['attribute_code']] = ['goodmarket_attribute_name' => $productattribute['attribute_code'], 'goodmarket_attribute_type' => 'text'/*$attribute['type']*/, 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'','magento_attribute_code' => ''];
+                            $optionalAttributes[$productattribute['attribute_code']] =
+                                [
+                                    'goodmarket_attribute_name' => $productattribute['attribute_code'],
+                                    'goodmarket_attribute_type' => 'text'/*$attribute['type']*/,
+                                    'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',', $sourceData):'',
+                                    'magento_attribute_code' => ''
+                                ];
                         }
                     }
                 }
@@ -123,9 +160,9 @@ class Requiredattribute extends Widget implements RendererInterface
 //                }
 //                $requiredAttribute[$conAttribute['attribute_code']] = ['goodmarket_attribute_name' => $conAttribute['attribute_code'], 'goodmarket_attribute_type' => 'select', 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'',  'required' => 1, 'magento_attribute_code' => ''];
 //            }
-        } else if(isset($this->_profile) && !empty($this->_profile)) {
+        } elseif (isset($this->_profile) && !empty($this->_profile)) {
             $profileData=$this->_profile->getData();
-            if(isset($profileData) && !empty($profileData)) {
+            if (isset($profileData) && !empty($profileData)) {
                 $categoryLoadData = json_decode($this->_profile->getData('category_data'), true);
 //                $categoryIds = array_filter($category);
 //                $categoryId = end($categoryIds);
@@ -153,24 +190,31 @@ class Requiredattribute extends Widget implements RendererInterface
 //                        }
 //                    }
 //                }
-                $allAttribute=json_decode($categoryLoadData['groupwise_attributes'],true);
-                if(!isset($allAttribute['attribute_set_id'])) {
+                $allAttribute=json_decode($categoryLoadData['groupwise_attributes'], true);
+                if (!isset($allAttribute['attribute_set_id'])) {
                     $this->messageManager->addNotice(__("Please Try To Add New Profile After Sometime.."));
                 }
                 $this->_backendSession->setAttributeSet($allAttribute['attribute_set_id']);
                 foreach ($allAttribute as $attribute) {
-                    if(isset($attribute['attributes'])) {
+                    if (isset($attribute['attributes'])) {
                         foreach ($attribute['attributes'] as $productattribute) {
                             $sourceData=[];
-                            if(isset($productattribute['source_options']) && !empty($productattribute['source_options'])) {
+                            if (isset($productattribute['source_options']) && !empty($productattribute['source_options'])) {
                                 foreach ($productattribute['source_options'] as $source_option) {
-                                    $sourceData[]=$source_option['label'];
+                                    $sourceData[] = $source_option['label'];
                                 }
                             }
                             if ($productattribute['is_required'] == '1') {
-                                $requiredAttribute[$productattribute['attribute_code']] = ['goodmarket_attribute_name' => $productattribute['attribute_code'], 'goodmarket_attribute_type' => $productattribute['type'], 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'',  'required' => 1, 'magento_attribute_code' => $productattribute['attribute_code']];
+                                $requiredAttribute[$productattribute['attribute_code']] =
+                                    [
+                                        'goodmarket_attribute_name' => $productattribute['attribute_code'],
+                                        'goodmarket_attribute_type' => $productattribute['type'],
+                                        'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',', $sourceData):'',
+                                        'required' => 1,
+                                        'magento_attribute_code' => $productattribute['attribute_code']
+                                    ];
                             } else {
-                                $optionalAttributes[$productattribute['attribute_code']] = ['goodmarket_attribute_name' => $productattribute['attribute_code'], 'goodmarket_attribute_type' => 'text'/*$attribute['type']*/, 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'','magento_attribute_code' => ''];
+                                $optionalAttributes[$productattribute['attribute_code']] = ['goodmarket_attribute_name' => $productattribute['attribute_code'], 'goodmarket_attribute_type' => 'text'/*$attribute['type']*/, 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',', $sourceData):'','magento_attribute_code' => ''];
                             }
                         }
                     }
@@ -186,11 +230,11 @@ class Requiredattribute extends Widget implements RendererInterface
 //                    }
 //                    $requiredAttribute[$conAttribute['attribute_code']] = ['goodmarket_attribute_name' => $conAttribute['attribute_code'], 'goodmarket_attribute_type' => 'select', 'goodmarket_attribute_enum'=>!empty($sourceData)?implode(',',$sourceData):'',  'required' => 1, 'magento_attribute_code' => ''];
 //                }
-            }else{
+            } else {
                 $requiredAttribute=[];
                 $optionalAttributes=[];
             }
-        }else{
+        } else {
             $requiredAttribute=[];
             $optionalAttributes=[];
         }
@@ -200,31 +244,35 @@ class Requiredattribute extends Widget implements RendererInterface
             'label' => __('Required Attributes'),
             'value' => $requiredAttribute
         ];
-        $this->_goodmarketAttribute[] = array(
+        $this->_goodmarketAttribute[] = [
             'label' => __('Optional Attributes'),
             'value' => $optionalAttributes
-        );
+        ];
         return $this->_goodmarketAttribute;
     }
 
     /**
+     * Get magento Attributes.
+     *
      * @return mixed
      */
     public function getMagentoAttributes()
     {
-        $attributes = $this->_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection')
+        $attributes = $this->_objectManager->create(\Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection::class)
             ->getItems();
 
         $mattributecode = '--please select--';
         $magentoattributeCodeArray[''] = $mattributecode;
         $magentoattributeCodeArray['default'] = "--Set Default Value--";
-        foreach ($attributes as $attribute){
+        foreach ($attributes as $attribute) {
             $magentoattributeCodeArray[$attribute->getAttributecode()] = $attribute->getFrontendLabel();
         }
         return $magentoattributeCodeArray;
     }
 
     /**
+     * Get Mapped attributes
+     *
      * @return array|mixed
      */
     public function getMappedAttribute()
@@ -232,13 +280,16 @@ class Requiredattribute extends Widget implements RendererInterface
         $data = $this->_goodmarketAttribute[0]['value'];
         if ($this->_profile && $this->_profile->getId() > 0) {
             $data = json_decode($this->_profile->getProfileReqOptAttribute(), true);
-            if(isset($data['required_attributes']) && isset($data['optional_attributes']))
+            if (isset($data['required_attributes']) && isset($data['optional_attributes'])) {
                 $data = array_merge($data['required_attributes'], $data['optional_attributes']);
+            }
         }
         return $data;
     }
 
     /**
+     * Render function.
+     *
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string
      */

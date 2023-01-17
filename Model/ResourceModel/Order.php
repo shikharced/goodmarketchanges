@@ -25,7 +25,7 @@ namespace Ced\GoodMarket\Model\ResourceModel;
 class Order extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
-     * Constructor method
+     * Order Constructor.
      *
      * @return void
      */

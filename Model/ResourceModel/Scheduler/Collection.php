@@ -22,7 +22,7 @@ namespace Ced\GoodMarket\Model\ResourceModel\Scheduler;
 use \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
- * Class Collection
+ * Class scheduler Collection
  */
 class Collection extends AbstractCollection
 {

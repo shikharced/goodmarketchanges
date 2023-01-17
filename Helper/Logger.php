@@ -28,6 +28,9 @@
 
 namespace Ced\GoodMarket\Helper;
 
+/**
+ * Logger Helper for logs
+ */
 class Logger extends \Ced\Integrator\Helper\Logger
 {
     public $mutelevel = 100;
@@ -35,10 +38,9 @@ class Logger extends \Ced\Integrator\Helper\Logger
     /**
      * DB logger, dependencies can be updated here, such as model.
      * Logger constructor.
-     * @param \Ced\Mlibre\Helper\Config $config
-     * @param \Magento\Framework\App\Helper\Context $context
+     *
      * @param \Ced\Integrator\Model\LogFactory $log
-     * @param string $name
+     * @param $name
      */
     public function __construct(
         \Ced\Integrator\Model\LogFactory $log,

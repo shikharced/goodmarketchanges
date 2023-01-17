@@ -21,19 +21,18 @@ use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Framework\Data\Form as DataForm;
 
 /**
- * Class Form
- * @package Ced\GoodMarket\Block\Adminhtml\Profile\Edit
+ * Class Form tab
  */
 class Form extends Generic
 {
     /**
+     * Prepare Form.
+     *
      * @return $this
      */
     protected function _prepareForm()
     {
-        /**
- * @var DataForm $form 
-*/
+        /** @var DataForm $form */
         $form = $this->_formFactory->create(
             [
                 'data' => [

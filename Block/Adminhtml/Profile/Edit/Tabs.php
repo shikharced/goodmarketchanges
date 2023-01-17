@@ -18,12 +18,13 @@
 namespace Ced\GoodMarket\Block\Adminhtml\Profile\Edit;
 
 /**
- * Class Tabs
- * @package Ced\GoodMarket\Block\Adminhtml\Profile\Edit
+ * Class Tabs Widgets
  */
 class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
     /**
+     * Tabs Construct.
+     *
      * @return void
      */
     protected function _construct()
@@ -35,6 +36,8 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
     }
 
     /**
+     * Before Html
+     *
      * @return $this
      */
     protected function _beforeToHtml()
@@ -45,7 +48,7 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                 'label' => __('Category info'),
                 'title' => __('Category Info'),
                 'content' => $this->getLayout()->createBlock(
-                    'Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Info'
+                    Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Info::class
                 )->toHtml(),
                 'active' => true
             ]
@@ -57,7 +60,7 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                 'label' => __('Category & Attribute'),
                 'title' => __('Category $ Attribute'),
                 'content' => $this->getLayout()->createBlock(
-                    'Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Mapping',
+                    \Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Mapping::class,
                     'mapping'
                 )->toHtml(),
                 ]
@@ -80,7 +83,7 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
                 'label' => __('Category Products'),
                 'title' => __('Category Products'),
                 'content' => $this->getLayout()->createBlock(
-                    'Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Products',
+                    \Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Products::class,
                     'profile_products'
                 )->toHtml(),
             ]
@@ -88,6 +91,12 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
 
         return parent::_beforeToHtml();
     }
+
+    /**
+     * Get Attribute Block
+     *
+     * @return string
+     */
     public function getAttributeTabBlock()
     {
         return 'Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Info';

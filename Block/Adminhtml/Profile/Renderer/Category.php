@@ -17,10 +17,23 @@
  */
 namespace Ced\GoodMarket\Block\Adminhtml\Profile\Renderer;
 
+/**
+ * Class Category for grid create
+ */
 class Category extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRenderer
 {
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
+     */
     public $categoryFactory;
 
+    /**
+     * construct function.
+     *
+     * @param \Magento\Backend\Block\Context $context
+     * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryFactory
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Context $context,
         \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryFactory,
@@ -31,6 +44,13 @@ class Category extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstra
         $this->categoryFactory = $categoryFactory;
     }
 
+    /**
+     * Render Function
+     *
+     * @param \Magento\Framework\DataObject $row
+     * @return string|null
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function render(\Magento\Framework\DataObject $row)
     {
         $categoryIds = $row->getCategoryIds();

@@ -25,8 +25,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 
 /**
- * Class Mapping
- * @package Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab
+ * Class Mapping Grid
  */
 class Mapping extends Generic
 {
@@ -37,6 +36,7 @@ class Mapping extends Generic
 
     /**
      * Mapping constructor.
+     *
      * @param Context $context
      * @param Registry $registry
      * @param FormFactory $formFactory
@@ -47,14 +47,15 @@ class Mapping extends Generic
         Registry $registry,
         FormFactory $formFactory,
         Rootlevel $rootlevel
-    )
-    {
+    ) {
         $this->_coreRegistry = $registry;
         $this->rootlevel = $rootlevel;
         parent::__construct($context, $registry, $formFactory);
     }
 
     /**
+     * Function _prepareForm
+     *
      * @return $this
      */
     protected function _prepareForm()
@@ -160,7 +161,8 @@ class Mapping extends Generic
 
         $locations = $form->getElement('category_js');
         $locations->setRenderer(
-            $this->getLayout()->createBlock('Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute\CategoryJs')
+            $this->getLayout()
+                ->createBlock(Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute\CategoryJs::class)
         );
 
         $fieldset = $form->addFieldset(
@@ -182,7 +184,8 @@ class Mapping extends Generic
 
         $locations = $form->getElement('required_attribute');
         $locations->setRenderer(
-            $this->getLayout()->createBlock('Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute\Requiredattribute')
+            $this->getLayout()
+                ->createBlock(\Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute\Requiredattribute::class)
         );
 
 //        $fieldset = $form->addFieldset('additional_attributes', array('legend'=>__('GoodMarket / Magento Attribute Mapping (Additional Attribute Mapping)')));

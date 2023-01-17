@@ -24,8 +24,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action;
 
 /**
- * Class SearchImport
- * @package Ced\GoodMarket\Controller\Adminhtml\Order
+ * Class SearchImport import by id
  */
 class SearchImport extends Action
 {
@@ -38,6 +37,7 @@ class SearchImport extends Action
 
     /**
      * SearchImport constructor.
+     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
@@ -52,6 +52,11 @@ class SearchImport extends Action
         $this->resultPageFactory = $resultPageFactory;
     }
 
+    /**
+     * Execute method.
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
+     */
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();

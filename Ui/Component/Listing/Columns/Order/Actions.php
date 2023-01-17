@@ -24,13 +24,16 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 
+/**
+ * Class Action Columns listing
+ */
 class Actions extends Column
 {
     /** Url path */
-    const URL_PATH_EDIT = 'sales/order/view';
-    const URL_PATH_VIEW = 'goodmarket/order/view';
-    const URL_PATH_SYNC = 'goodmarket/order/sync';
-    const URL_PATH_DELETE = 'goodmarket/order/delete';
+    public const URL_PATH_EDIT = 'sales/order/view';
+    public const URL_PATH_VIEW = 'goodmarket/order/view';
+    public const URL_PATH_SYNC = 'goodmarket/order/sync';
+    public const URL_PATH_DELETE = 'goodmarket/order/delete';
 
     /** @var UrlInterface */
     public $urlBuilder;

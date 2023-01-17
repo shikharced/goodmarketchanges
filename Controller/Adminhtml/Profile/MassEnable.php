@@ -20,9 +20,13 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
 
 use Ced\GoodMarket\Model\Data;
 
+/**
+ * MassEnable Constructor
+ */
 class MassEnable extends \Magento\Backend\App\Action
 {
     /**
+     * MassENable Index
      * @return \Magento\Backend\Model\View\Result\Redirect
      */
     public function execute()
@@ -31,13 +35,15 @@ class MassEnable extends \Magento\Backend\App\Action
         $excluded = $this->getRequest()->getParam('excluded', false);
         if (!is_array($profIds) && !$excluded) {
             $this->messageManager->addErrorMessage(__('Please select Profile(s).'));
-        } else if($excluded == "false") {
-            $profIds  = $this->_objectManager->create('Ced\GoodMarket\Model\Profile')->getCollection()->getAllIds();
+        } elseif ($excluded == "false") {
+            $profIds  = $this->_objectManager->create(\Ced\GoodMarket\Model\Profile::class)
+                ->getCollection()->getAllIds();
         }
         if (!empty($profIds)) {
             try {
                 foreach ($profIds as $profileId) {
-                    $profile = $this->_objectManager->create('Ced\GoodMarket\Model\Profile')->load($profileId);
+                    $profile = $this->_objectManager->create(\Ced\GoodMarket\Model\Profile::class)
+                        ->load($profileId);
                     $profile->setProfileStatus(1);
                     $profile->save();
                 }
@@ -46,7 +52,6 @@ class MassEnable extends \Magento\Backend\App\Action
                 $this->messageManager->addErrorMessage($e->getMessage());
             }
         }
-
         $this->_redirect('*/*/index');
     }
 }

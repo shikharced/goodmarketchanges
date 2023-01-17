@@ -19,6 +19,9 @@
 
 namespace Ced\GoodMarket\Ui\DataProvider\Scheduler;
 
+/**
+ * Class scheduler for Data provider
+ */
 class Scheduler extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
     /**
@@ -44,6 +47,7 @@ class Scheduler extends \Magento\Ui\DataProvider\AbstractDataProvider
 
     /**
      * DataProvider constructor.
+     *
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -65,7 +69,6 @@ class Scheduler extends \Magento\Ui\DataProvider\AbstractDataProvider
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->collection = $collectionFactory->create();
-
     }
 
     /**

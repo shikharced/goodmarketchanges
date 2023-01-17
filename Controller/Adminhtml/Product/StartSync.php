@@ -21,17 +21,15 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Product;
 use Ced\GoodMarket\Model\Carrier\GoodMarket;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class Startrevise
- * @package Ced\GoodMarket\Controller\Adminhtml\Product
+ * Class Startrevise Controller
  */
-class StartSync  extends Action
+class StartSync extends Action
 {
-    const FLAG_CODE = 'CED_JSON_FIL';
+    public const FLAG_CODE = 'CED_JSON_FIL';
     /**
      * @var PageFactory
      */
@@ -65,12 +63,14 @@ class StartSync  extends Action
 
     /**
      * Startrevise constructor.
+     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
-     * @param GoodMarket $bolHelper
-     * @param Data $dataHelper
-     * @param Logger $logger
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Ced\GoodMarket\Helper\Product $product
+     * @param \Ced\GoodMarket\Helper\Config $config
+     * @param \Ced\GoodMarket\Helper\Logger $logger
      */
     public function __construct(
         Context $context,
@@ -110,7 +110,7 @@ class StartSync  extends Action
                 $ids = $totalChunk[$key];
                 foreach ($ids as $accountId => $prodIds) {
                     if (!is_array($prodIds)) {
-                        $productData=$this->product->productDeleteSync($prodIds,'SyncInvProduct');
+                        $productData=$this->product->productDeleteSync($prodIds, 'SyncInvProduct');
                         if (isset($productData) && !empty($productData)) {
                             foreach ($productData as $data) {
                                 if (isset($data['success'])) {
@@ -119,19 +119,19 @@ class StartSync  extends Action
                                     } else {
                                         $errorMessage[] = $data['message'];
                                     }
-                                }else {
+                                } else {
                                     $errorMessage[] = "Something Went Wrong,Please Try After Sometime.";
                                 }
                             }
-                        }else {
+                        } else {
                             $errorMessage[] = "Something Went Wrong,Please Try After Sometime.";
                         }
                     }
                 }
-                $message['success'] = implode(',',$uploadMessage);
-                $message['error'] = implode(',',$errorMessage);
-            }else {
-                $message['error'] = "Batch ".$index.":included Product(s) data not found.";
+                $message['success'] = implode(',', $uploadMessage);
+                $message['error'] = implode(',', $errorMessage);
+            } else {
+                $message['error'] = "Batch " . $index . ":included Product(s) data not found.";
             }
         } catch (\Exception $e) {
             $message['error'] = $e->getMessage();

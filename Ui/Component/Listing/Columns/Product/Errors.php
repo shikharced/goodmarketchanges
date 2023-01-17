@@ -19,6 +19,9 @@
 
 namespace Ced\GoodMarket\Ui\Component\Listing\Columns\Product;
 
+/**
+ * Class Errors for listing
+ */
 class Errors extends \Magento\Ui\Component\Listing\Columns\Column
 {
     /**
@@ -33,10 +36,11 @@ class Errors extends \Magento\Ui\Component\Listing\Columns\Column
 
     /**
      * ProductValidation constructor.
+     *
      * @param \Magento\Framework\View\Element\UiComponent\ContextInterface $context
      * @param \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory
      * @param \Magento\Framework\UrlInterface $urlBuilder
-     * @param \Magento\Framework\Serialize\SerializerInterface  $json
+     * @param \Magento\Framework\Serialize\SerializerInterface $serializer
      * @param array $components
      * @param array $data
      */
@@ -53,6 +57,12 @@ class Errors extends \Magento\Ui\Component\Listing\Columns\Column
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
+    /**
+     * Prepare Data Source
+     *
+     * @param array $dataSource
+     * @return array
+     */
     public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource['data']['items'])) {

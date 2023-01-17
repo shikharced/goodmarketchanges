@@ -39,6 +39,11 @@ class Import extends Container implements ButtonProviderInterface
         ];
     }
 
+    /**
+     * Function getBackUrl
+     *
+     * @return string
+     */
     public function getBackUrl()
     {
         return $this->getUrl('goodmarket/order/import');

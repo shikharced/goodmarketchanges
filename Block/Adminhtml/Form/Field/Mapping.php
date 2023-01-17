@@ -8,7 +8,7 @@ use Ced\GoodMarket\Block\Adminhtml\Form\Field\GoodMarketAttibute;
 use Ced\GoodMarket\Block\Adminhtml\Form\Field\MagentoAttribute;
 
 /**
- * Class Ranges
+ * Class Mapping to map
  */
 class Mapping extends AbstractFieldArray
 {
@@ -16,8 +16,10 @@ class Mapping extends AbstractFieldArray
      * @var TaxColumn
      */
     private $goodMarketAttibute;
-    private $magentoAttribute;
 
+    /**
+     * @var string
+     */
     protected $_template = 'Ced_GoodMarket::system/config/form/field/array.phtml';
     /**
      * Prepare rendering the new field by adding all the needed columns
@@ -58,6 +60,8 @@ class Mapping extends AbstractFieldArray
     }
 
     /**
+     * Function getGoodMarketAttribute
+     *
      * @return TaxColumn
      * @throws LocalizedException
      */
@@ -73,6 +77,12 @@ class Mapping extends AbstractFieldArray
         return $this->goodMarketAttibute;
     }
 
+    /**
+     * Function getMagentoAttribute
+     *
+     * @return \Magento\Framework\View\Element\BlockInterface
+     * @throws LocalizedException
+     */
     private function getMagentoAttribute()
     {
         if (!$this->magentoAttribute) {

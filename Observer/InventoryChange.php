@@ -20,16 +20,14 @@ namespace Ced\GoodMarket\Observer;
 
 class InventoryChange
 {
-    const STOCK_ITEM_DATA_KEY = 'CED_GOODMARKET_STOCK_DATA_';
+    public const STOCK_ITEM_DATA_KEY = 'CED_GOODMARKET_STOCK_DATA_';
 
     /**
-     * Object Manager
      * @var \Magento\Framework\ObjectManagerInterface
      */
     public $objectManager;
 
     /**
-     * Data Helper
      * @var \Ced\GoodMarket\Helper\Data
      */
     public $dataHelper;
@@ -52,7 +50,11 @@ class InventoryChange
 
     /**
      * ProductSaveAfter constructor.
+     *
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Ced\GoodMarket\Helper\Logger $logger
+     * @param \Magento\CatalogInventory\Api\Data\StockItemInterfaceFactory $stockItemFactory
+     * @param \Magento\Framework\Registry $registry
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -66,6 +68,13 @@ class InventoryChange
         $this->logger = $logger;
     }
 
+    /**
+     * Function processChangedProduct
+     *
+     * @param array $stockItem
+     * @param array $origData
+     * @return bool
+     */
     public function processChangedProduct($stockItem, $origData)
     {
         try {
@@ -81,9 +90,9 @@ class InventoryChange
             $newIsInStock = $stockItem->getData('is_in_stock');
             if ($orgQty != $newQty || $orgIsInStock != $newIsInStock) {
                 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-                $this->helperProduct=$objectManager->create('Ced\GoodMarket\Helper\Product');
-                $product = $objectManager->get('Magento\Catalog\Model\Product')->load($productId);
-                if(!empty($product->getData('goodmarket_product_id'))) {
+                $this->helperProduct=$objectManager->create(\Ced\GoodMarket\Helper\Product::class);
+                $product = $objectManager->get(\Magento\Catalog\Model\Product::class)->load($productId);
+                if (!empty($product->getData('goodmarket_product_id'))) {
                     $this->helperProduct->updateBulkInventory($product->getId());
                 }
             }

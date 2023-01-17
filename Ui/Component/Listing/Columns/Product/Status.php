@@ -26,8 +26,7 @@ use Magento\Catalog\Model\ProductFactory;
 use Magento\Framework\Json\Helper\Data;
 
 /**
- * Class Validation
- * @package Ced\EbayMultiAccount\Ui\Component\Listing\Columns\Product
+ * Class Validation for listing
  */
 class Status extends Column
 {
@@ -42,7 +41,7 @@ class Status extends Column
     public $json;
 
     /**
-     * @var
+     * @var ProductFactory
      */
     public $product;
 
@@ -72,6 +71,8 @@ class Status extends Column
     }
 
     /**
+     * Prepare Data Source
+     *
      * @param array $dataSource
      * @return array
      */

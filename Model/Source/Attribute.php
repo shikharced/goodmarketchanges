@@ -27,7 +27,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 class Attribute extends AbstractSource
 {
     /**
-     * public function get all options
+     * Function to get all options
      *
      * @return array
      */
@@ -35,7 +35,8 @@ class Attribute extends AbstractSource
     {
         $magentoattributeCodeArray=[];
         $this->_objectManager=\Magento\Framework\App\ObjectManager::getInstance();
-        $attributes = $this->_objectManager->create(\Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection::class)
+        $attributes = $this->_objectManager
+        ->create(\Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection::class)
             ->getItems();
         foreach ($attributes as $attribute) {
             $magentoattributeCodeArray[]=[

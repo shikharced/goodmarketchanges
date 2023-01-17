@@ -30,7 +30,7 @@ class Status extends AbstractSource
     public const SUBMITTED = 'submitted';
 
     /**
-     * getAllOptions
+     * To getAllOptions
      *
      * @return array
      */

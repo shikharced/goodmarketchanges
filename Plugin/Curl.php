@@ -4,6 +4,7 @@
  * See COPYING.txt for license details.
  */
 namespace Ced\GoodMarket\Plugin;
+
 /**
  * Class to work with HTTP protocol using curl library
  *
@@ -74,6 +75,7 @@ class Curls extends \Magento\Framework\HTTP\Client\Curl
             $this->curlOption(CURLOPT_CUSTOMREQUEST, $method);
         }
         if (count($this->_headers)) {
+
             $heads = [];
             foreach ($this->_headers as $k => $v) {
                 $heads[] = $k . ': ' . $v;
@@ -85,6 +87,7 @@ class Curls extends \Magento\Framework\HTTP\Client\Curl
             foreach ($this->_cookies as $k => $v) {
                 $cookies[] = "{$k}={$v}";
             }
+            
             $this->curlOption(CURLOPT_COOKIE, implode(";", $cookies));
         }
         if ($this->_timeout) {

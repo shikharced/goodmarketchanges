@@ -24,14 +24,13 @@ use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 
 /**
- * Class Actions
- * @package Ced\EbayMultiAccount\Ui\Component\Listing\Columns\Profile
+ * Class Actions Component Listing
  */
 class Actions extends Column
 {
-    const URL_FEED_SYNC = 'goodmarket/scheduler/sync';
-    const URL_PRODUCTDETAIL_SYNC = 'goodmarket/scheduler/productsync';
-    const URL_FEED_DELETE='goodmarket/scheduler/delete';
+    public const URL_FEED_SYNC = 'goodmarket/scheduler/sync';
+    public const URL_PRODUCTDETAIL_SYNC = 'goodmarket/scheduler/productsync';
+    public const URL_FEED_DELETE='goodmarket/scheduler/delete';
 
     /**
      * @var UrlInterface
@@ -58,6 +57,8 @@ class Actions extends Column
     }
 
     /**
+     * Prepare Data Source
+     *
      * @param array $dataSource
      * @return array
      */
@@ -66,16 +67,16 @@ class Actions extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as &$item) {
                 $name = $this->getData('name');
-                        $item[$name]['sync'] = [
-                            'href' => $this->urlBuilder->getUrl(self::URL_FEED_SYNC, ['id' => $item['id']]),
-                            'label' => __('Sync Feed'),
-                            'class' => 'cedcommerce actions download'
-                        ];
-                        $item[$name]['import_item_ids'] = [
-                            'href' => $this->urlBuilder->getUrl(self::URL_PRODUCTDETAIL_SYNC, ['id' => $item['id']]),
-                            'label' => __('Sync Product Details'),
-                            'class' => 'cedcommerce actions sync'
-                        ];
+                $item[$name]['sync'] = [
+                    'href' => $this->urlBuilder->getUrl(self::URL_FEED_SYNC, ['id' => $item['id']]),
+                    'label' => __('Sync Feed'),
+                    'class' => 'cedcommerce actions download'
+                ];
+                $item[$name]['import_item_ids'] = [
+                    'href' => $this->urlBuilder->getUrl(self::URL_PRODUCTDETAIL_SYNC, ['id' => $item['id']]),
+                    'label' => __('Sync Product Details'),
+                    'class' => 'cedcommerce actions sync'
+                ];
                 $item[$name]['delete'] = [
                     'href' => $this->urlBuilder->getUrl(self::URL_FEED_DELETE, ['id' => $item['id']]),
                     'label' => __('Delete'),

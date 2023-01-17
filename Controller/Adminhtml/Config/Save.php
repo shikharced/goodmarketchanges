@@ -3,19 +3,35 @@
 namespace Ced\GoodMarket\Controller\Adminhtml\Config;
 
 /**
- * Class Save
- * @package Ced\Mlibre\Controller\Adminhtml\Config
+ * Class Save config
  */
 class Save extends \Magento\Backend\App\Action
 {
-    /** @var \Magento\Config\Model\ResourceModel\Config */
+    /**
+     * @var \Magento\Config\Model\ResourceModel\Config
+     */
     public $configWriter;
 
-    /** @var \Ced\Mlibre\Helper\Config */
+    /**
+     * @var \Ced\Mlibre\Helper\Config
+     */
     public $config;
 
+    /**
+     * @var \Magento\Framework\App\Cache\TypeListInterface
+     */
     public $cacheTypeList;
 
+    /**
+     * Save Constructor.
+     *
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
+     * @param \Magento\Config\Model\ResourceModel\Config $configWriter
+     * @param \Ced\GoodMarket\Helper\Config $config
+     * @param \Ced\GoodMarket\Helper\Data $data
+     * @param \Ced\GoodMarket\Helper\Product $helper
+     */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
@@ -32,6 +48,11 @@ class Save extends \Magento\Backend\App\Action
         $this->helper=$helper;
     }
 
+    /**
+     * Execute function
+     *
+     * @return \Magento\Framework\Controller\Result\Json
+     */
     public function execute()
     {
         $response = [
@@ -48,20 +69,19 @@ class Save extends \Magento\Backend\App\Action
         if (isset($username) && isset($vendor) && !empty($username)  && !empty($vendor)) {
             $this->configWriter->saveConfig(\Ced\GoodMarket\Helper\Config::CONFIG_PATH_CONFIG_USERNAME, $username, 'default', 0);
             $this->configWriter->saveConfig(\Ced\GoodMarket\Helper\Config::CONFIG_PATH_CONFIG_VENDOR_ID, $vendor, 'default', 0);
-           $this->cacheTypeList->cleanType('config');
+            $this->cacheTypeList->cleanType('config');
 
-           $vendor_data=$this->data->getAuthorisation($username,$vendor);
-           if(isset($vendor_data) && !empty($vendor_data) && !empty($vendor_data['hash_token']) && !empty($vendor_data['token'])) {
-               //$this->configWriter->saveConfig('goodmarket/settings/vendor_id', $vendor_data['vendor_id'], 'default', 0);
-               //$this->configWriter->saveConfig('goodmarket/settings/hash_token', $vendor_data['hash_token'], 'default', 0);
-               $this->configWriter->saveConfig('goodmarket/settings/token', json_encode($vendor_data), 'default', 0);
-               $this->cacheTypeList->cleanType('config');
-               $response['success'] = true;
-               $response['message'] =
+            $vendor_data=$this->data->getAuthorisation($username, $vendor);
+            if (isset($vendor_data) && !empty($vendor_data) && !empty($vendor_data['hash_token']) && !empty($vendor_data['token'])) {
+                //$this->configWriter->saveConfig('goodmarket/settings/vendor_id', $vendor_data['vendor_id'], 'default', 0);
+                //$this->configWriter->saveConfig('goodmarket/settings/hash_token', $vendor_data['hash_token'], 'default', 0);
+                $this->configWriter->saveConfig('goodmarket/settings/token', json_encode($vendor_data), 'default', 0);
+                $this->cacheTypeList->cleanType('config');
+                $response['success'] = true;
+                $response['message'] =
                    __('Token Has Been Fetched Successfully!!');
-               $this->helper->profileCategory();
-           }
-
+                $this->helper->profileCategory();
+            }
         }
 //        $this->_redirect('adminhtml/system_config/edit/section/ebay_product_import_config');
 //        $this->_redirect('goodmarket/product/index');

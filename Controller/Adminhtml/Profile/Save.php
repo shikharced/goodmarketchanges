@@ -17,19 +17,26 @@
  */
 namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
 
-use Magento\Backend\App\Action\Context;
-use Magento\Backend\App\Action;
 use Ced\GoodMarket\Model\ProfileFactory;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\DataObject;
 
+/**
+ * Class Save profile
+ */
 class Save extends Action
 {
     public $_coreRegistry;
     public $_cache;
 
     /**
+     * Save Constructor
      * @param Context $context
-     * @param PageFactory $resultPageFactory
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param DataObject $data
+     * @param ProfileFactory $profileFactory
+     * @param \Ced\GoodMarket\Helper\Data $helper
      */
     public function __construct(
         Context $context,
@@ -37,8 +44,7 @@ class Save extends Action
         DataObject $data,
         ProfileFactory $profileFactory,
         \Ced\GoodMarket\Helper\Data $helper
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->_coreRegistry = $coreRegistry;
         $this->profileFactory = $profileFactory;
@@ -47,6 +53,8 @@ class Save extends Action
     }
 
     /**
+     *
+     * _initProfile
      *
      * @param string $idFieldName
      * @return mixed
@@ -65,7 +73,7 @@ class Save extends Action
     }
 
     /**
-     *
+     * Execute Method
      */
     public function execute()
     {
@@ -90,51 +98,51 @@ class Save extends Action
         foreach ($configurableAttributes as $variationattribute) {
             $variationAttributes[]=strtolower($variationattribute['label']);
         }
-        if(empty($profileId)) {
+        if (empty($profileId)) {
             $profile = $this->profileFactory->create()->load($this->data->getProfileId());
             $profile->setData('profile_code', $profileCode);
-        }else{
+        } else {
             $profile = $this->profileFactory->create()->load($profileId);
         }
         $attributeSet=$this->_session->getAttributeSet();
-        $profile->setData('variation_attribute',json_encode($variationAttributes));
-        $profile->setData('attribute_set',$attributeSet);
+        $profile->setData('variation_attribute', json_encode($variationAttributes));
+        $profile->setData('attribute_set', $attributeSet);
         $profile->setData('profile_name', $profileName);
         $profile->setData('profile_status', $profileStatus);
         $profile->setData('profile_category', json_encode($category));
-        $profile->setData('category_data',json_encode($categoryFetchData));
-            $reqAttribute1 = [];
-    $optAttribute1 = [];
-    if (!empty($profileData['required_attributes'])) {
-        $temAttribute1 = $this->unique_multidim_array($profileData['required_attributes'], 'goodmarket_attribute_name');
-        $temp3 = $temp4 = [];
-        foreach ($temAttribute1 as $item) {
-            if ($item['required']) {
-                $temp3['goodmarket_attribute_name'] = $item['goodmarket_attribute_name'];
-                $temp3['goodmarket_attribute_type'] = $item['goodmarket_attribute_type'];
-                $temp3['magento_attribute_code'] = $item['magento_attribute_code'];
-                if (isset($item['default'])) {
-                    $temp3['default'] = $item['default'];
+        $profile->setData('category_data', json_encode($categoryFetchData));
+        $reqAttribute1 = [];
+        $optAttribute1 = [];
+        if (!empty($profileData['required_attributes'])) {
+            $temAttribute1 = $this->unique_multidim_array($profileData['required_attributes'], 'goodmarket_attribute_name');
+            $temp3 = $temp4 = [];
+            foreach ($temAttribute1 as $item) {
+                if ($item['required']) {
+                    $temp3['goodmarket_attribute_name'] = $item['goodmarket_attribute_name'];
+                    $temp3['goodmarket_attribute_type'] = $item['goodmarket_attribute_type'];
+                    $temp3['magento_attribute_code'] = $item['magento_attribute_code'];
+                    if (isset($item['default'])) {
+                        $temp3['default'] = $item['default'];
+                    }
+                    $temp3['required'] = $item['required'];
+                    $reqAttribute1[] = $temp3;
+                } else {
+                    $temp4['goodmarket_attribute_name'] = $item['goodmarket_attribute_name'];
+                    $temp4['goodmarket_attribute_type'] = $item['goodmarket_attribute_type'];
+                    $temp4['magento_attribute_code'] = $item['magento_attribute_code'];
+                    if (isset($item['default'])) {
+                        $temp4['default'] = $item['default'];
+                    }
+                    $temp4['required'] = 0;
+                    $optAttribute1[] = $temp4;
                 }
-                $temp3['required'] = $item['required'];
-                $reqAttribute1[] = $temp3;
-            } else {
-                $temp4['goodmarket_attribute_name'] = $item['goodmarket_attribute_name'];
-                $temp4['goodmarket_attribute_type'] = $item['goodmarket_attribute_type'];
-                $temp4['magento_attribute_code'] = $item['magento_attribute_code'];
-                if (isset($item['default'])) {
-                    $temp4['default'] = $item['default'];
-                }
-                $temp4['required'] = 0;
-                $optAttribute1[] = $temp4;
             }
+            $goodmarketReqOptAttribute['required_attributes'] = $reqAttribute1;
+            $goodmarketReqOptAttribute['optional_attributes'] = $optAttribute1;
+            $profile->setProfileReqOptAttribute(json_encode($goodmarketReqOptAttribute));
+        } else {
+            $profile->setProfileReqOptAttribute('');
         }
-        $goodmarketReqOptAttribute['required_attributes'] = $reqAttribute1;
-        $goodmarketReqOptAttribute['optional_attributes'] = $optAttribute1;
-        $profile->setProfileReqOptAttribute(json_encode($goodmarketReqOptAttribute));
-    } else {
-        $profile->setProfileReqOptAttribute('');
-    }
         $profile->save();
         if ($profileProduct) {
             $profile->updateProducts($profileProduct);
@@ -177,17 +185,18 @@ class Save extends Action
             );
             $this->_redirect('*/*/');
         }
-        return ;
     }
 
     /**
+     * _addProductToProfile
+     *
      * @param $productId
      * @param $profileId
      * @return bool
      */
     public function _addProductToProfile($productId, $profileId)
     {
-        $profileproduct = $this->_objectManager->create("Ced\GoodMarket\Model\Profileproducts")
+        $profileproduct = $this->_objectManager->create(\Ced\GoodMarket\Model\Profileproducts::class)
             ->deleteFromProfile($productId);
 
         if ($profileproduct->profileProductExists($productId, $profileId) === true) {
@@ -201,6 +210,8 @@ class Save extends Action
     }
 
     /**
+     * _deleteProductFromProfile
+     *
      * @param $productId
      * @return bool
      * @throws \Exception
@@ -208,16 +219,18 @@ class Save extends Action
     public function _deleteProductFromProfile($productId)
     {
         try {
-            $this->_objectManager->create("Ced\GoodMarket\Model\Profileproducts")
+            $this->_objectManager->create(\Ced\GoodMarket\Model\Profileproducts::class)
                 ->deleteFromProfile($productId);
         } catch (\Exception $e) {
-            throw $e;
+//            throw $e;
             return false;
         }
         return true;
     }
 
     /**
+     * unique_multidim_array
+     *
      * @param $array
      * @param $key
      * @return array
@@ -229,7 +242,6 @@ class Save extends Action
         $key_array = [];
 
         foreach ($array as $val) {
-
             if (!in_array($val[$key], $key_array)) {
                 $key_array[$i] = $val[$key];
                 $temp_array[$i] = $val;

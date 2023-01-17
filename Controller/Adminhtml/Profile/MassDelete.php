@@ -21,8 +21,18 @@ namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
 
 use Magento\Backend\App\Action;
 
+/**
+ * MassDelete Constructor
+ */
 class MassDelete extends \Magento\Backend\App\Action
 {
+    /**
+     * MassDelete Constructor
+     *
+     * @param Action\Context $context
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollection
+     * @param \Magento\Catalog\Model\Product\ActionFactory $productActionFactory
+     */
     public function __construct(
         Action\Context $context,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollection,
@@ -33,6 +43,8 @@ class MassDelete extends \Magento\Backend\App\Action
         $this->productActionFactory = $productActionFactory;
     }
     /**
+     * Public method Execute
+     *
      * @return \Magento\Backend\Model\View\Result\Redirect
      */
     public function execute()
@@ -41,14 +53,14 @@ class MassDelete extends \Magento\Backend\App\Action
         $excluded = $this->getRequest()->getParam('excluded', false);
         if (!is_array($proIds) && !$excluded) {
             $this->messageManager->addErrorMessage(__('Please select Profile(s).'));
-        } else if ($excluded == "false") {
-            $proIds = $this->_objectManager->create('Ced\GoodMarket\Model\Profile')->getCollection()->getAllIds();
+        } elseif ($excluded == "false") {
+            $proIds = $this->_objectManager->create(\Ced\GoodMarket\Model\Profile::class)->getCollection()->getAllIds();
         }
 
         if (!empty($proIds)) {
             try {
                 foreach ($proIds as $profileId) {
-                    $profile = $this->_objectManager->create('Ced\GoodMarket\Model\Profile')->load($profileId);
+                    $profile = $this->_objectManager->create(\Ced\GoodMarket\Model\Profile::class)->load($profileId);
                     $profile->delete();
                     $this->unLinkProduct($profileId);
                 }
@@ -60,6 +72,12 @@ class MassDelete extends \Magento\Backend\App\Action
         $this->_redirect('*/*/index');
     }
 
+    /**
+     * unLinkProduct
+     *
+     * @param $profileId
+     * @return void
+     */
     private function unLinkProduct($profileId)
     {
         $oldIds = $this->productCollection->create()

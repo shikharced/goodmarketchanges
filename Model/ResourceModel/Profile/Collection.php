@@ -37,8 +37,8 @@ class Collection extends AbstractCollection
     /**
      * Update status function
      *
-     * @param $dataToUpdate
-     * @param $condition
+     * @param string $dataToUpdate
+     * @param string $condition
      */
     public function updateStatus($dataToUpdate, $condition)
     {

@@ -90,14 +90,13 @@
 namespace Ced\GoodMarket\Controller\Adminhtml\Config;
 
 use Magento\Backend\App\Action;
-use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Filesystem;
+use Magento\Framework\ObjectManagerInterface;
 
 /**
- * Class FetchCategory
- * @package Ced\GoodMarket\Controller\Adminhtml\Config
+ * Class FetchCategory of goodmarket
  */
 class FetchCategory extends Action
 {
@@ -123,8 +122,13 @@ class FetchCategory extends Action
     public $file;
 
     /**
-     * @param \Magento\Backend\App\Action\Context $context
+     * Fetchategory constructor.
+     *
+     * @param Action\Context $context
      * @param JsonFactory $resultJsonFactory
+     * @param Filesystem $filesystem
+     * @param Filesystem\Io\File $file
+     * @param \Ced\GoodMarket\Helper\Data $data
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -132,8 +136,7 @@ class FetchCategory extends Action
         Filesystem                          $filesystem,
         Filesystem\Io\File                  $file,
         \Ced\GoodMarket\Helper\Data $data
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->filesystem = $filesystem;
         $this->file = $file;
@@ -142,6 +145,8 @@ class FetchCategory extends Action
     }
 
     /*
+     * FETCH CATEGORY
+     *
      * @return \Magento\Framework\Controller\Result\Json
      */
     public function execute()
@@ -162,39 +167,39 @@ class FetchCategory extends Action
             $arr1[]=['id' => '162', 'name' =>'Default', 'path' => ['1','162'],'parent_id' => '1', 'children' => '7'];
             foreach ($taxonomy['data']['category']['children'] as $key => $value) {
                 if (count($value['children']) > 0) {
-                    $arr2[] = ['id' => $value['id'], 'name' => $value['name'], 'path' => explode('/',$value['path']),'parent_id' => '162', 'children' => count($value['children'])];
+                    $arr2[] = ['id' => $value['id'], 'name' => $value['name'], 'path' => explode('/', $value['path']),'parent_id' => '162', 'children' => count($value['children'])];
                 } else {
-                    $arr2[] = ['id' => $value['id'], 'name' => $value['name'],'path' => explode('/',$value['path']), 'parent_id' =>'162', 'children' => 0];
+                    $arr2[] = ['id' => $value['id'], 'name' => $value['name'],'path' => explode('/', $value['path']), 'parent_id' =>'162', 'children' => 0];
                 }
                 foreach ($value['children'] as $key1 => $value1) {
                     if (count($value1['children']) > 0) {
-                        $arr3[] = ['parent_id' => $value['id'], 'id' => $value1['id'], 'name' => $value1['name'], 'path' => explode('/',$value1['path']), 'children' => count($value1['children'])];
+                        $arr3[] = ['parent_id' => $value['id'], 'id' => $value1['id'], 'name' => $value1['name'], 'path' => explode('/', $value1['path']), 'children' => count($value1['children'])];
                     } else {
-                        $arr3[] = ['parent_id' => $value['id'], 'id' => $value1['id'], 'name' => $value1['name'], 'path' => explode('/',$value1['path']), 'children' => 0];
+                        $arr3[] = ['parent_id' => $value['id'], 'id' => $value1['id'], 'name' => $value1['name'], 'path' => explode('/', $value1['path']), 'children' => 0];
                     }
                     foreach ($value1['children'] as $key2 => $value2) {
                         if (count($value2['children']) > 0) {
-                            $arr4[] = ['parent_id' => $value1['id'], 'id' => $value2['id'], 'name' => $value2['name'], 'path' => explode('/',$value2['path']), 'children' => count($value2['children'])];
+                            $arr4[] = ['parent_id' => $value1['id'], 'id' => $value2['id'], 'name' => $value2['name'], 'path' => explode('/', $value2['path']), 'children' => count($value2['children'])];
                         } else {
-                            $arr4[] = ['parent_id' => $value1['id'], 'id' => $value2['id'], 'name' => $value2['name'], 'path' => explode('/',$value2['path']), 'children' => 0];
+                            $arr4[] = ['parent_id' => $value1['id'], 'id' => $value2['id'], 'name' => $value2['name'], 'path' => explode('/', $value2['path']), 'children' => 0];
                         }
                         foreach ($value2['children'] as $key3 => $value3) {
                             if (count($value3['children']) > 0) {
-                                $arr5[] = ['parent_id' => $value2['id'], 'id' => $value3['id'], 'name' => $value3['name'], 'path' => explode('/',$value3['path']), 'children' => count($value3['children'])];
+                                $arr5[] = ['parent_id' => $value2['id'], 'id' => $value3['id'], 'name' => $value3['name'], 'path' => explode('/', $value3['path']), 'children' => count($value3['children'])];
                             } else {
-                                $arr5[] = ['parent_id' => $value2['id'], 'id' => $value3['id'], 'name' => $value3['name'], 'path' =>explode('/',$value3['path']), 'children' => 0];
+                                $arr5[] = ['parent_id' => $value2['id'], 'id' => $value3['id'], 'name' => $value3['name'], 'path' =>explode('/', $value3['path']), 'children' => 0];
                             }
                             foreach ($value3['children'] as $key4 => $value4) {
                                 if (count($value4['children']) > 0) {
-                                    $arr6[] = ['parent_id' => $value3['id'], 'id' => $value4['id'], 'name' => $value4['name'], 'path' => explode('/',$value4['path']), 'children' => count($value4['children'])];
+                                    $arr6[] = ['parent_id' => $value3['id'], 'id' => $value4['id'], 'name' => $value4['name'], 'path' => explode('/', $value4['path']), 'children' => count($value4['children'])];
                                 } else {
-                                    $arr6[] = ['parent_id' => $value3['id'], 'id' => $value4['id'], 'name' => $value4['name'], 'path' => explode('/',$value4['path']), 'children' => 0];
+                                    $arr6[] = ['parent_id' => $value3['id'], 'id' => $value4['id'], 'name' => $value4['name'], 'path' => explode('/', $value4['path']), 'children' => 0];
                                 }
                                 foreach ($value4['children'] as $key5 => $value5) {
                                     if (count($value5['children']) > 0) {
-                                        $arr7[] = ['parent_id' => $value4['id'], 'id' => $value5['id'], 'name' => $value5['name'], 'path' => explode('/',$value5['path']), 'children' => count($value5['children'])];
+                                        $arr7[] = ['parent_id' => $value4['id'], 'id' => $value5['id'], 'name' => $value5['name'], 'path' => explode('/', $value5['path']), 'children' => count($value5['children'])];
                                     } else {
-                                        $arr7[] = ['parent_id' => $value4['id'], 'id' => $value5['id'], 'name' => $value5['name'], 'path' => explode('/',$value5['path']), 'children' => 0];
+                                        $arr7[] = ['parent_id' => $value4['id'], 'id' => $value5['id'], 'name' => $value5['name'], 'path' => explode('/', $value5['path']), 'children' => 0];
                                     }
                                 }
                             }
@@ -235,7 +240,6 @@ class FetchCategory extends Action
 //            $response['data'] = "<span style='color:green'>Categories Updated Successfully !!</span>";
 //            $response['msg'] = "success";
         } catch (\Exception $e) {
-
             $this->messageManager->addErrorMessage(__('An Exception Has Taken Place'));
 
 //            $response['data'] = "<span style='color:red'>Exception : " . $e->getMessage() . "</span>";

@@ -18,20 +18,44 @@
 
 namespace Ced\GoodMarket\Block\Adminhtml\Profile\Edit\Tab\Attribute;
 
-class Additionalattribute extends \Magento\Backend\Block\Widget implements \Magento\Framework\Data\Form\Element\Renderer\RendererInterface
+use \Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
+
+/**
+ * Class attribute Additional
+ */
+class Additionalattribute extends \Magento\Backend\Block\Widget implements RendererInterface
 {
     protected $_template = 'Ced_GoodMarket::profile/attribute/additional_attribute.phtml';
 
-    protected  $_objectManager;
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
+    protected $_objectManager;
 
-    protected  $_coreRegistry;
+    /**
+     * @var \Magento\Framework\Registry
+     */
+    protected $_coreRegistry;
 
-    protected  $_profile;
+    /**
+     * @var mixed|null
+     */
+    protected $_profile;
 
-    protected  $_goodmarketAttribute;
+    /**
+     * @var \Magento\Framework\Json\Helper\Data
+     */
+    public $json;
 
-    public  $json;
-
+    /**
+     * Additionla attr.
+     *
+     * @param \Magento\Backend\Block\Template\Context $context
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\Json\Helper\Data $json
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -47,16 +71,21 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
     }
 
     /**
+     * Prepare layout
+     *
      * @return $this
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareLayout()
     {
-        $button = $this->getLayout()->createBlock(
-            'Magento\Backend\Block\Widget\Button'
-        )->setData(
-            ['label' => __('Add Attribute'), 'onclick' => 'return additionalAttributeControl.addItem()', 'class' => 'add']
-        );
+        $button = $this->getLayout()->createBlock(\Magento\Backend\Block\Widget\Button::class)
+            ->setData(
+                [
+                    'label' => __('Add Attribute'),
+                    'onclick' => 'return additionalAttributeControl.addItem()',
+                    'class' => 'add'
+                ]
+            );
         $button->setName('add_required_item_button');
         $button->setId('additional_attr');
         $this->setChild('add_button', $button);
@@ -76,7 +105,7 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
     /**
      * Retrieve goodmarket attributes
      *
-     * @param null $subcatattribute
+     * @param array $subcatattribute
      * @return array|string
      */
     public function getGoodMarketAdditionalAttributes($subcatattribute = null)
@@ -85,10 +114,11 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
         if (isset($subcatattribute['results']) && isset($subcatattribute['results'][0])) {
             foreach ($subcatattribute['results'] as $key => $value) {
                 $enum = [];
-                if (isset($value['supports_attributes']) && $value['supports_attributes'] == '1') { // Ignoring the Variation Attributes
+                if (isset($value['supports_attributes']) && $value['supports_attributes'] == '1') {
+                    // Ignoring the Variation Attributes
                     if (isset($value['possible_values']) && !empty($value['possible_values'])) {
                         foreach ($value['possible_values'] as $key2 => $enumvalue) {
-                            $enum[] = (str_replace("'","", $enumvalue['value_id']) . ':' . str_replace("'","", $enumvalue['name']));
+                            $enum[] = str_replace("'", "", $enumvalue['value_id']) . ':' . str_replace("'", "", $enumvalue['name']);
                         }
                         if (isset($value['is_multivalued']) && $value['is_multivalued'] == '1') {
                             $type = 'multiselect';
@@ -100,9 +130,10 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
                         $type = 'text';
                         $enumjson = '';
                     }
-                    $this->_goodmarketAttribute[str_replace("'","", $value['name'])] = str_replace("'","", $value['name']);
+                    $this->_goodmarketAttribute[str_replace("'", "", $value['name'])] =
+                        str_replace("'", "", $value['name']);
                     $temp = [];
-                    $temp['goodmarket_attribute_name'] = str_replace("'","", $value['name']) ;
+                    $temp['goodmarket_attribute_name'] = str_replace("'", "", $value['name']) ;
                     $temp['magento_attribute_code'] = '';
                     $temp['goodmarket_attribute_type'] = $type;
                     $temp['property_id'] = $value['property_id'];
@@ -110,7 +141,7 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
                     $temp['default'] = isset($value['default']) ? $value['default'] : '';
                     $temp['option_values'] = '';
                     $temp['required'] = 0;
-                    $additionalAttribute[str_replace("'","", $value['name'])] = $temp;
+                    $additionalAttribute[str_replace("'", "", $value['name'])] = $temp;
                 }
             }
         }
@@ -122,7 +153,6 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
         return $this->_goodmarketAttribute;
     }
 
-
     /**
      * Retrieve magento attributes
      *
@@ -131,19 +161,19 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
      */
     public function getMagentoAttributes()
     {
-        $attributes = $this->_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection')
+        $attributes = $this->_objectManager->create(\Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection::class)
             ->addFieldToFilter('frontend_input', ['in' => ['select', 'multiselect']]);
 
         $magentoattributeCodeArray = [];
-        foreach ($attributes as $attribute){
+        foreach ($attributes as $attribute) {
 
             $type = "";
             $optionValues = "";
             $attributeOptions = $attribute->getSource()->getAllOptions(false);
-            if (!empty($attributeOptions) and is_array($attributeOptions)) {
+            if (!empty($attributeOptions) && is_array($attributeOptions)) {
                 $type = " [ select ]";
                 foreach ($attributeOptions as &$option) {
-                    if (isset($option['label']) and is_object($option['label'])) {
+                    if (isset($option['label']) && is_object($option['label'])) {
                         $option['label'] = $option['label']->getText();
                     }
                 }
@@ -166,7 +196,7 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
                     'input_type' => 'select',
                     'option_values' => ''
                 ];
-            if($attribute->getFrontendInput() =='select' && $optionValues){
+            if ($attribute->getFrontendInput() =='select' && $optionValues) {
                 $magentoattributeCodeArray[$attribute->getAttributecode()] =
                     [
                         'attribute_code' => $attribute->getAttributecode(),
@@ -174,8 +204,7 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
                         'input_type' => 'select',
                         'option_values' => $optionValues,
                     ];
-            }
-            else{
+            } else {
                 $magentoattributeCodeArray[$attribute->getAttributecode()] =
                     [
                         'attribute_code' => $attribute->getAttributecode(),
@@ -188,15 +217,23 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
         return $magentoattributeCodeArray;
     }
 
-    public function customFun() {
+    /**
+     * Custom form
+     *
+     * @return array
+     */
+    public function customFun()
+    {
         if ($this->_profile->getData()) {
             $profile_category = $this->_profile->getData('profile_category');
-            $profile_category = json_decode( $profile_category, true);
-            $profile_category = array_filter( $profile_category);
+            $profile_category = json_decode($profile_category, true);
+            $profile_category = array_filter($profile_category);
             try {
-                $c_id = isset($profile_category[count($profile_category)-1]) ?$profile_category[count($profile_category)-1] :'';
+                $c_id =
+                    isset($profile_category[count($profile_category)-1]) ? $profile_category[count($profile_category)-1] : '';
                 if (class_exists(\GoodMarket\GoodMarketClient::class)) {
-                    $subcatattribute = $this->_objectManager->create('Ced\GoodMarket\Helper\Data')->ApiObject()->getTaxonomyNodeProperties(['params' => ['taxonomy_id' => (int)$c_id]]);
+                    $subcatattribute = $this->_objectManager->create(\Ced\GoodMarket\Helper\Data::class)
+                        ->ApiObject()->getTaxonomyNodeProperties(['params' => ['taxonomy_id' => (int)$c_id]]);
                 } else {
                     $subcatattribute = [];
                 }
@@ -204,10 +241,11 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
                 if (isset($subcatattribute['results']) && isset($subcatattribute['results'][0])) {
                     foreach ($subcatattribute['results'] as $key => $value) {
                         $enum = [];
-                        if (isset($value['supports_attributes']) && $value['supports_attributes'] == '1') { // Ignoring the Variation Attributes
+                        if (isset($value['supports_attributes']) && $value['supports_attributes'] == '1') {
+                            // Ignoring the Variation Attributes
                             if (isset($value['possible_values']) && !empty($value['possible_values'])) {
                                 foreach ($value['possible_values'] as $key2 => $enumvalue) {
-                                    $enum[] = (str_replace("'","", $enumvalue['value_id']) . ':' . str_replace("'","", $enumvalue['name']));
+                                    $enum[] = (str_replace("'", "", $enumvalue['value_id']) . ':' . str_replace("'","", $enumvalue['name']));
                                 }
                                 if (isset($value['is_multivalued']) && $value['is_multivalued'] == '1') {
                                     $type = 'multiselect';
@@ -219,9 +257,10 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
                                 $type = 'text';
                                 $enumjson = '';
                             }
-                            $this->_goodmarketAttribute[str_replace("'","", $value['name'])] = str_replace("'","", $value['name']);
+                            $this->_goodmarketAttribute[str_replace("'", "", $value['name'])] =
+                            str_replace("'","", $value['name']);
                             $temp = [];
-                            $temp['goodmarket_attribute_name'] =str_replace("'","", $value['name']) ;
+                            $temp['goodmarket_attribute_name'] =str_replace("'", "", $value['name']) ;
                             $temp['magento_attribute_code'] = '';
                             $temp['goodmarket_attribute_type'] = $type;
                             $temp['property_id'] = $value['property_id'];
@@ -229,7 +268,7 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
                             $temp['default'] = isset($value['default']) ? $value['default'] : '';
                             $temp['option_values'] = '';
                             $temp['required'] = 0;
-                            $additionalAttribute[str_replace("'","", $value['name'])] = $temp;
+                            $additionalAttribute[str_replace("'", "", $value['name'])] = $temp;
                         }
                     }
                 }
@@ -243,7 +282,13 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
         return $this->_goodmarketAttribute;
     }
 
-    public function getGoodMarketAttributeValuesMapping($subcatattribute=null)
+    /**
+     * GetGoodMarket Attribute Values Mapping
+     *
+     * @param array $subcatattribute
+     * @return array|array[]
+     */
+    public function getGoodMarketAttributeValuesMapping($subcatattribute = null)
     {
         $additionalAttribute = [];
         $data = [];
@@ -279,7 +324,10 @@ class Additionalattribute extends \Magento\Backend\Block\Widget implements \Mage
         }
         return $data;
     }
+
     /**
+     * Function Render
+     *
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      * @return string
      * @throws \Magento\Framework\Exception\LocalizedException

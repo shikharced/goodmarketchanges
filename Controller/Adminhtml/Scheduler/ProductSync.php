@@ -1,20 +1,34 @@
 <?php
 namespace Ced\GoodMarket\Controller\Adminhtml\Scheduler;
 
-use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\View\Result\PageFactory;
+use \Magento\Backend\App\Action;
+use \Ced\GoodMarket\Model\ResourceModel\Scheduler\CollectionFactory;
 
-
-class ProductSync extends \Magento\Backend\App\Action
+/**
+ * ProductSync for scheduler
+ */
+class ProductSync extends Action
 {
     protected $directoryList;
 
+    /**
+     * ProductSync Constructor.
+     *
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Ced\GoodMarket\Helper\Data $data
+     * @param PageFactory $resultPageFactory
+     * @param \Ced\GoodMarket\Model\SchedulerFactory $schedulerFactory
+     * @param CollectionFactory $scheduleCollectionFactory
+     * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
+     * @param \Magento\Catalog\Model\ProductFactory $_productloader
+     */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Ced\GoodMarket\Helper\Data $data,
         PageFactory $resultPageFactory,
         \Ced\GoodMarket\Model\SchedulerFactory $schedulerFactory,
-        \Ced\GoodMarket\Model\ResourceModel\Scheduler\CollectionFactory $scheduleCollectionFactory,
+        CollectionFactory $scheduleCollectionFactory,
         \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory,
         \Magento\Catalog\Model\ProductFactory $_productloader
     ) {
@@ -27,6 +41,12 @@ class ProductSync extends \Magento\Backend\App\Action
         parent::__construct($context);
     }
 
+    /**
+     * ProductSync Execute
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @throws \Exception
+     */
     public function execute()
     {
         $id=$this->getRequest()->getParams();
@@ -44,31 +64,35 @@ class ProductSync extends \Magento\Backend\App\Action
             $chunkIds = $cronModel->getSchedulerId();
             if (!empty($chunkIds)) {
                 $status=false;
-                $response = json_decode($cronModel->getSchedulerResponse(),true);
-                if(isset($response['data']['pendingBulkresponse']) && !empty(isset($response['data']['pendingBulkresponse']))) {
-                    if(isset($response['data']['pendingBulkresponse']['error_result']) && !empty($response['data']['pendingBulkresponse']['error_result'])) {
+                $response = json_decode($cronModel->getSchedulerResponse(), true);
+                if (isset($response['data']['pendingBulkresponse']) && !empty(isset($response['data']['pendingBulkresponse']))) {
+                    if (isset($response['data']['pendingBulkresponse']['error_result']) &&
+                        !empty($response['data']['pendingBulkresponse']['error_result'])) {
                         $status=true;
                         $error_result = $response['data']['pendingBulkresponse']['error_result'];
                         foreach ($error_result as $errors) {
-                            $productLoad = $this->_productloader->create()->loadByAttribute('sku', $errors['product_sku']);
+                            $productLoad = $this->_productloader->create()
+                                ->loadByAttribute('sku', $errors['product_sku']);
                             $productLoad->setData('goodmarket_product_error', $errors['message']);
                             $productLoad->save();
                         }
                     }
-                    if(isset($response['data']['pendingBulkresponse']['product_ids']) && !empty($response['data']['pendingBulkresponse']['product_ids'])) {
+                    if (isset($response['data']['pendingBulkresponse']['product_ids']) &&
+                        !empty($response['data']['pendingBulkresponse']['product_ids'])) {
                         $status=true;
                         $product_ids = $response['data']['pendingBulkresponse']['product_ids'];
                         foreach ($product_ids as $prod) {
-                            $productLoad = $this->_productloader->create()->loadByAttribute('sku', $prod['product_sku']);
+                            $productLoad = $this->_productloader->create()
+                                ->loadByAttribute('sku', $prod['product_sku']);
                             $productLoad->setData('goodmarket_product_status', 'Uploaded');
                             $productLoad->setData('goodmarket_product_id', $prod['product_id']);
                             $productLoad->setData('goodmarket_product_error', '["valid"]');
                             $productLoad->save();
                         }
                     }
-                    if($status==true) {
+                    if ($status==true) {
                         $currentScheduler=$this->schedulerFactory->create()->load($cronModel->getId());
-                        $currentScheduler->setData('scheduler_product_sync','Finished');
+                        $currentScheduler->setData('scheduler_product_sync', 'Finished');
                         $currentScheduler->save();
                         $this
                             ->messageManager
@@ -76,10 +100,9 @@ class ProductSync extends \Magento\Backend\App\Action
                     }
                 }
             }
-        }else{
+        } else {
             $this->messageManager->addErrorMessage(__('Products Are Already Been Synced!!!'));
         }
         return $this->_redirect('goodmarket/scheduler/index');
     }
-
 }

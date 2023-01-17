@@ -23,8 +23,7 @@ use Magento\Backend\App\Action;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class Product
- * @package Ced\GoodMarket\Controller\Adminhtml\Product
+ * Class Scheduler Index
  */
 class Index extends Action
 {
@@ -33,18 +32,21 @@ class Index extends Action
      */
     public $resultPageFactory;
 
-    /** @var \Ced\GoodMarket\Helper\Product $product */
+    /**
+     * @var \Ced\GoodMarket\Helper\Product
+     */
     public $product;
 
-    /** @var \Ced\GoodMarket\Helper\MultiAccount $multiAccountHelper */
-    public $multiAccountHelper ;
+    /**
+     * @var \Ced\GoodMarket\Helper\MultiAccount
+     */
+    public $multiAccountHelper;
 
     /**
      * Index constructor.
+     *
      * @param Action\Context $context
-     * @param \Ced\GoodMarket\Helper\Product $product
      * @param PageFactory $resultPageFactory
-     * @param \Ced\GoodMarket\Helper\MultiAccount $multiAccountHelper
      */
     public function __construct(
         Action\Context $context,

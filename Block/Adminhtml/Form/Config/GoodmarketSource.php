@@ -29,8 +29,14 @@ use Magento\Framework\View\Element\Template\Context;
  */
 class GoodMarketSource extends Select
 {
-    const FLAG_CODE = 'CED_GOODMARKET_SOURCE';
+    public const FLAG_CODE = 'CED_GOODMARKET_SOURCE';
 
+    /**
+     * GoodMarketSource Constructor
+     *
+     * @param Context $context
+     * @param FlagManager $flagManager
+     */
     public function __construct(
         Context $context,
         FlagManager $flagManager
@@ -82,14 +88,19 @@ class GoodMarketSource extends Select
     private function getSourceOptions(): array
     {
         $goodMarket = $this->flagManager->getFlagData(self::FLAG_CODE);
-        $sourceList = json_decode($goodMarket, true);
         $arrar = [];
-//        echo '<pre>'; print_r($goodMarket); exit;
-        if (!empty($sourceList)) {
-            foreach ($sourceList as $source) {
-                $arrar[] = ["label" => $source['name'], "value" => $source['source_code']."+".$source['name']];
+        if ($goodMarket != '') {
+            $sourceList = json_decode($goodMarket, true);
+            // echo '<pre>'; print_r($goodMarket); exit;
+            if (!empty($sourceList)) {
+                foreach ($sourceList as $source) {
+                    $arrar[] = ["label" => $source['name'], "value" => $source['source_code']."+".$source['name']];
+                }
             }
+            return $arrar;
+        } else {
+            return $arrar;
         }
-        return $arrar;
+        
     }
 }

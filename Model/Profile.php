@@ -29,7 +29,7 @@ class Profile extends AbstractModel
     public $productIds = [];
 
     /**
-     * public function __construct
+     * Profile __constructor
      *
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
@@ -53,7 +53,7 @@ class Profile extends AbstractModel
         $this->productActionFactory = $productActionFactory;
     }
     /**
-     * public function _construct
+     * Profile _construct
      *
      * @return void
      */
@@ -65,8 +65,8 @@ class Profile extends AbstractModel
     /**
      * public function loadByField
      *
-     * @param $field
-     * @param $value
+     * @param array|mixed $field
+     * @param array|mixed $value
      * @param string $additionalAttributes
      * @return $this
      */
@@ -93,7 +93,7 @@ class Profile extends AbstractModel
     }
 
     /**
-     * public function getProductsPosition
+     * Function getProductsPosition
      *
      * @return array
      */
@@ -113,9 +113,9 @@ class Profile extends AbstractModel
     }
 
     /**
-     * public function updateProducts
+     * Function updateProducts
      *
-     * @param $profileProducts
+     * @param string $profileProducts
      */
     public function updateProducts($profileProducts)
     {

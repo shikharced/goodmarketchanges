@@ -18,19 +18,54 @@
 
 namespace Ced\GoodMarket\Helper;
 
-use Magento\Tax\Model\TaxClass\Source\Product as ProductTaxClassSource;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Tax\Model\TaxClass\Source\Product as ProductTaxClassSource;
+
 /**
- * Class Order
- * @package Ced\GoodMarket\Helper
+ * Class Order Helper
  */
 class Order extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const ERROR_OUT_OF_STOCK = "'%s' SKU out of stock";
-    const ERROR_NOT_ENABLED = "'%s' SKU not enabled on store '%s'";
-    const ERROR_DOES_NOT_EXISTS = "'%s' SKU not exists on store '%s'";
-    const ERROR_ITEM_DATA_NOT_AVAILABLE = "'%s' SKU not available in order items '%s'";
+    public const ERROR_OUT_OF_STOCK = "'%s' SKU out of stock";
+    public const ERROR_NOT_ENABLED = "'%s' SKU not enabled on store '%s'";
+    public const ERROR_DOES_NOT_EXISTS = "'%s' SKU not exists on store '%s'";
+    public const ERROR_ITEM_DATA_NOT_AVAILABLE = "'%s' SKU not available in order items '%s'";
 
+    /**
+     * Order Constructor.
+     *
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\DataObjectFactory $dataFactory
+     * @param \Magento\Framework\Notification\NotifierInterface $notifier
+     * @param \Magento\Framework\Serialize\SerializerInterface $serializer
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Sales\Model\Service\OrderService $orderService
+     * @param \Magento\Sales\Model\Service\InvoiceService $invoiceService
+     * @param \Magento\Sales\Controller\Adminhtml\Order\CreditmemoLoaderFactory $creditmemoLoaderFactory
+     * @param \Magento\Quote\Api\CartRepositoryInterface $cartRepositoryInterface
+     * @param \Magento\Quote\Api\CartManagementInterface $cartManagementInterface
+     * @param \Magento\Catalog\Model\ProductRepository $productRepository
+     * @param \Magento\Catalog\Model\ProductFactory $product
+     * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
+     * @param \Ced\Integrator\Model\MailFactory $mailFactory
+     * @param \Ced\GoodMarket\Model\OrderFactory $order
+     * @param Config $config
+     * @param Data $sdk
+     * @param Logger $logger
+     * @param \Magento\AdminNotification\Model\Inbox $inbox
+     * @param \Magento\Directory\Model\RegionFactory $region
+     * @param \Magento\Catalog\Model\Session $session
+     * @param ProductTaxClassSource $productTaxClassSource
+     * @param \Magento\Tax\Api\Data\TaxClassInterfaceFactory $taxClassDataObjectFactory
+     * @param \Magento\Tax\Api\TaxClassRepositoryInterface $taxClassService
+     * @param ResourceConnection $resourceConnection
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJson
+     * @param \Magento\Directory\Model\CurrencyFactory $currencyFactory
+     */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\DataObjectFactory $dataFactory,
@@ -61,8 +96,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Tax\Api\Data\TaxClassInterfaceFactory $taxClassDataObjectFactory,
         \Magento\Tax\Api\TaxClassRepositoryInterface $taxClassService,
         ResourceConnection $resourceConnection,
-        \Magento\Directory\Model\CurrencyFactory $currencyFactory)
-    {
+        \Magento\Framework\Controller\Result\JsonFactory $resultJson,
+        \Magento\Directory\Model\CurrencyFactory $currencyFactory
+    ) {
         parent::__construct($context);
         $this->dataFactory = $dataFactory;
         $this->notifier = $notifier;
@@ -94,9 +130,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->taxClassDataObjectFactory = $taxClassDataObjectFactory;
         $this->taxClassRepository = $taxClassService;
         $this->resourceConnection = $resourceConnection;
+        $this->resultJson = $resultJson;
     }
 
     /**
+     * import orders
+     *
      * @return false|int|mixed|void
      */
     public function import()
@@ -126,10 +165,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $endDate=date('Y-m-d', strtotime(' +1 day'));
         $response = $this->sdk->getOrderIDs($startDate, $endDate);
         $count = 0;
-        if(isset($response['data']['vendorOrdersList']['vendor_orders']) && !empty(isset($response['data']['vendorOrdersList']['vendor_orders'])))
-        {
-            foreach ($response['data']['vendorOrdersList']['vendor_orders'] as $orders)
-            {
+        if (isset($response['data']['vendorOrdersList']['vendor_orders']) && !empty(isset($response['data']['vendorOrdersList']['vendor_orders']))) {
+            foreach ($response['data']['vendorOrdersList']['vendor_orders'] as $orders) {
                 $orderData = $this->sdk->getOrdersById($orders['order_id']);
                 $orderData['vorder_id']=$orders['order_id'];
                 $goodmarketOrderId = $orderData['order_increment_id'];
@@ -148,15 +185,19 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 }
             }
         }
-
-
-        if ($count > 0)
-        {
+        if ($count > 0) {
             $this->notificationSuccess($count);
             return $count;
         }
     }
 
+    /**
+     * notificationSuccess
+     *
+     * @param $count
+     * @return void
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     */
     public function notificationSuccess($count)
     {
         $model = $this->inbox;
@@ -173,6 +214,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * quote
+     *
      * @param $store
      * @param $customer
      * @param $order
@@ -191,7 +234,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 //            Customisation
             $taxClassess = $this->productTaxClassSource->getAllOptions();
             $flag = 1;
-            foreach($taxClassess as $taxClass1) {
+            foreach ($taxClassess as $taxClass1) {
                 if ($taxClass1['label'] == 'Good-Market Tax') {
                     $taxClassId = $taxClass1['value'];
                     $flag = 1;
@@ -207,8 +250,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     $table = $connection->getTableName('tax_class');
                     $query = "INSERT INTO `" . $table . "`(`class_name`, `class_type`) VALUES ('Good-Market Tax','PRODUCT')";
                     $connection->query($query);
-                } catch (Exception $e){}
-                foreach($taxClassess as $taxClass1) {
+                } catch (Exception $e) {
+                }
+                foreach ($taxClassess as $taxClass1) {
                     if ($taxClass1['label'] == 'Good-Market Tax') {
                         $taxClassId = $taxClass1['value'];
                         break;
@@ -221,7 +265,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 //            $taxCalculationRate1 = $objectManager->create('\Magento\Tax\Model\Calculation\Rate')->getCollection();//->loadByCode('CODE');
             $taxCalculationRate1 = $objectManager->create('\Magento\Tax\Model\Calculation\Rate')->loadByCode('goodmarket');
 //            echo '<pre>'; print_r($taxCalculationRate1->getData()); exit;
-            if (empty($taxCalculationRate1->getData())){
+            if (empty($taxCalculationRate1->getData())) {
                 $taxCalculationRate1->setCode("goodmarket");
                 $taxCalculationRate1->setTaxCountryId("IN");
                 $taxCalculationRate1->setTaxRegionId("REGION");
@@ -236,13 +280,11 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 $fixtureTaxRule1->setPriority(0);
                 $fixtureTaxRule1->setCustomerTaxClassIds([3]);
                 $fixtureTaxRule1->setProductTaxClassIds([$taxClassId]);
-                $fixtureTaxRule1->setTaxRateIds(array($taxCalculationRate1->getId()));
+                $fixtureTaxRule1->setTaxRateIds([$taxCalculationRate1->getId()]);
                 $fixtureTaxRule1->save();
             }
 
-
 //            Customisation End
-
 
             /** @var int $cartId */
             $cartId = $this
@@ -268,7 +310,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 ->getById($customer->getId());
             $quote->assignCustomer($customer);
             $itemAccepted = 0;
-            foreach ($items as $index => $item)  {
+            foreach ($items as $index => $item) {
                 $orderItemData=$item;
                 if (isset($item)) {
                     $sku = $item['sku'];
@@ -284,13 +326,12 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                             ->create()
                             ->load($product->getEntityId());
 
-
                         if ($product->getStatus() == '1') {
                             $sku = $product->getSku();
                             /* Get stock item */
                             $stock = $this
                                 ->stockRegistry
-                                ->getStockItem($product->getId() , $product->getStore()
+                                ->getStockItem($product->getId(), $product->getStore()
                                     ->getWebsiteId());
                             $stockStatus = ($stock->getQty() > 0) ? ($stock->getIsInStock() == '1' ? ($stock->getQty() >= $qty ? true : false) : false) : false;
                             if ($stockStatus) {
@@ -298,8 +339,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                 $discountAmount[$sku]=$item['base_discount_amount'];
                                 $taxAmount[$sku]=$item['base_tax_amount'];
                                 $taxPercent[$sku]=$item['tax_percent'];
-
-
 
 //                                Customisation
                                 $taxCalculationRate1->setRate($item['tax_percent']);
@@ -309,39 +348,38 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                                 $product->save();
 //                        echo $product->getTaxClassId(); exit;
 
-
 //                                Customisation End
-
 
 //                                $this->createCatalogPriceRule($sku,$discountPercent);
 //                                if(isset($taxPercent) && !empty($taxPercent))
 //                                {
-////                                    $this->editTaxClass($taxPercent);
+                                ////                                    $this->editTaxClass($taxPercent);
 //                                    $product->setTaxClassId(8);
 //                                }
                                 $itemAccepted++;
-                                $price = $item['base_price'];
-                                $basePrice = $qty * $price;
+                                $currencyConvert = $this->scopeConfig->getvalue('goodmarket/goodmarket_product/conversion_rate');
+                                $price = $item['base_price']/$currencyConvert;
+                                $basePrice = $qty * (int)$price;
                                 $rowTotal = $price * $qty;
 
                                 $product->setIsSuperMode(true);
                                 $product->setHasOptions(false);
                                 $product->setData('salable', true);
-                                $product->setPrice($price)
-                                    ->setSpecialPrice($price)
+                                $product->setPrice((int)$price)
+                                    ->setSpecialPrice((int)$price)
                                     ->setTierPrice([])
                                     ->setBasePrice($basePrice)
-                                    ->setOriginalCustomPrice($price)
-                                    ->setBaseOriginalCustomPrice($price)
+                                    ->setOriginalCustomPrice((int)$price)
+                                    ->setBaseOriginalCustomPrice((int)$price)
                                     ->setRowTotal($rowTotal)
+                                    ->setTaxClassId($taxClassId)
                                     ->setBaseRowTotal($rowTotal);
                                 $product->unsSkipCheckRequiredOption();
                                 $product->setSkipSaleableCheck(true);
                                 $quote->setIsSuperMode(true);
                                 $quote->setIgnoreOldQty(true);
                                 $quote->addProduct($product, (int)$qty);
-                            }
-                            else {
+                            } else {
                                 $reason[] = sprintf(self::ERROR_OUT_OF_STOCK, $sku);
                             }
                         } else {
@@ -359,31 +397,33 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
             if ($itemAccepted == count($items)) {
-                $shipname=explode(' ',$order['address_information']['s_name'],'2');
-                $shippingAddressStreet=isset($order['address_information']['s_street'])?$order['address_information']['s_street']:'street';
+                $shipname=explode(' ', $order['address_information']['s_name'], '2');
+                $shippingAddressStreet=isset($order['address_information']['s_street']) ? $order['address_information']['s_street'] : 'street';
                 $shipAddress = [
-                    'firstname' => isset($shipname['0'])?$shipname['0']:'firstname',
-                    'lastname' => isset($shipname['1'])?$shipname['1']:'lastname',
+                    'firstname' => isset($shipname['0']) ? $shipname['0'] : 'firstname',
+                    'lastname' => isset($shipname['1']) ? $shipname['1'] : 'lastname',
                     'street' => $shippingAddressStreet,
-                    'city' => isset($order['address_information']['s_city'])?$order['address_information']['s_city']:'Bareilly',
+                    'city' => isset($order['address_information']['s_city']) ? $order['address_information']['s_city'] : 'Bareilly',
                     'country_id' => 'US',//isset($order['address_information']['s_country'])?$order['address_information']['s_country']:'', //$this->getValue('country', $order,'US'),
-                    'region' => isset($order['address_information']['s_region'])?$order['address_information']['s_region']:'UttarPradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
-                    'postcode' => isset($order['address_information']['s_postcode'])?$order['address_information']['s_postcode']:'243001',
-                    'telephone' =>isset($order['address_information']['s_telephone'])?$order['address_information']['s_telephone']:'00000000',
+                    'region' => isset($order['address_information']['s_region']) ? $order['address_information']['s_region'] : 'UttarPradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
+                    'region_id' => '2',
+                    'postcode' => isset($order['address_information']['s_postcode']) ? $order['address_information']['s_postcode'] : '243001',
+                    'telephone' =>isset($order['address_information']['s_telephone']) ? $order['address_information']['s_telephone'] : '00000000',
                     'fax' => '', 'save_in_address_book' => 1];
-               // $billname=explode(' ',$order['address_information']['b_name'],'2');
-                $billname=explode(' ',$order['address_information']['b_name'],'2');
+                // $billname=explode(' ',$order['address_information']['b_name'],'2');
+                $billname=explode(' ', $order['address_information']['b_name'], '2');
                 //$billingAddressStreet=isset($order['address_information']['b_street'])?$order['address_information']['b_street']:'street';
-                $billingAddressStreet=isset($order['address_information']['b_street'])?$order['address_information']['b_street']:'street';
+                $billingAddressStreet=isset($order['address_information']['b_street']) ? $order['address_information']['b_street'] : 'street';
                 $billAddress = [
-                    'firstname' => isset($billname['0'])?$billname['0']:'firstname',
-                    'lastname' => isset($billname['1'])?$billname['1']:'lastname',
+                    'firstname' => isset($billname['0']) ? $billname['0'] : 'firstname',
+                    'lastname' => isset($billname['1']) ? $billname['1'] : 'lastname',
                     'street' => $billingAddressStreet,
-                    'city' => isset($order['address_information']['b_city'])?$order['address_information']['b_city']:'Bareilly',
+                    'city' => isset($order['address_information']['b_city']) ? $order['address_information']['b_city'] : 'Bareilly',
                     'country_id' => 'US',//isset($order['address_information']['b_country'])?$order['address_information']['b_country']:'', //$this->getValue('country', $order,'US'),
-                    'region' => isset($order['address_information']['b_region'])?$order['address_information']['b_region']:'Uttar Pradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
-                    'postcode' => isset($order['address_information']['b_postcode'])?$order['address_information']['b_postcode']:'243001',
-                    'telephone' =>isset($order['address_information']['b_telephone'])?$order['address_information']['b_telephone']:'00000000',
+                    'region_id' => '2',
+                    'region' => isset($order['address_information']['b_region']) ? $order['address_information']['b_region'] : 'Uttar Pradesh', //$this->getValue('name', $this->getValue('state', $address, []), ''),*/
+                    'postcode' => isset($order['address_information']['b_postcode']) ? $order['address_information']['b_postcode'] : '243001',
+                    'telephone' =>isset($order['address_information']['b_telephone']) ? $order['address_information']['b_telephone'] : '00000000',
                     'fax' => '', 'save_in_address_book' => 1];
 //                $shipAddress = [
 //                    'firstname' => isset($billname['0'])?$billname['0']:'firstname',
@@ -414,14 +454,15 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 foreach ($quote->getAllItems() as $item) {
 //                    echo '<pre>'; print_r($item->getTaxAmount());exit;
                     $sku = $item->getProduct()->getSku();
-                    $item->setDiscountAmount($discountAmount[$sku]);
-                    $item->setBaseDiscountAmount($discountAmount[$sku]);
+                    $currencyConvert = $this->scopeConfig->getValue('goodmarket/goodmarket_product/conversion_rate');
+                    $item->setDiscountAmount($discountAmount[$sku]/$currencyConvert);
+                    $item->setBaseDiscountAmount($discountAmount[$sku]/$currencyConvert);
 //                    Customisation comment
-//                    $item->setTaxPercent($taxPercent[$sku]);
-//                    $item->setBaseTaxPercent($taxPercent[$sku]);
-//                    $item->setTaxAmount($taxAmount[$sku]);
-//                    $item->setBaseTaxAmount($taxAmount[$sku]);
-//END
+                    $item->setTaxPercent($taxPercent[$sku]);
+                    $item->setBaseTaxPercent($taxPercent[$sku]);
+                    $item->setTaxAmount($taxAmount[$sku]/$currencyConvert);
+                    $item->setBaseTaxAmount($taxAmount[$sku]/$currencyConvert);
+                    //END
                     $item->setOriginalCustomPrice($item->getPrice())
                         ->setOriginalPrice($item->getPrice())
                         ->save();
@@ -441,7 +482,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     ->cartManagementInterface
                     ->submit($quote);
                 $orderSubTotal=$order['order_total']['grand_total_earned'];
-                $orderSubTotal=(int)substr($orderSubTotal,21);
+                $orderSubTotal=(int)substr($orderSubTotal, 21);
 
                 /*$magentoOrder->setSubTotal($orderSubTotal);
                 $magentoOrder->setBaseSubTotal($orderSubTotal);
@@ -455,8 +496,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                         ->setBaseOriginalPrice($item->getPrice())
                         ->save();
                 }
-                if (isset($magentoOrder))
-                {
+                if (isset($magentoOrder)) {
                     $count = isset($magentoOrder) ? $count + 1 : $count;
 
                     // after save order
@@ -485,18 +525,18 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     throw new \Magento\Framework\Exception\LocalizedException(__('Failed to create order in Magento.'));
                 }
             }
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             $reason[] = $exception->getMessage() . $exception->getline();
-            echo "<pre>";
+            /*echo "<pre>";
             print_r($order);
             echo "<pre>";
             print_r($exception->getMessage());
-            die(__FILE__);
+            die(__FILE__);*/
             $this->reject($order, $reason);
 
             $this
                 ->logger
-                ->addError("Order #{$goodmarketOrderId} import failed." . $exception->getMessage() , ['path' => __METHOD__]);
+                ->addError("Order #{$goodmarketOrderId} import failed." . $exception->getMessage(), ['path' => __METHOD__]);
             return false;
         }
 
@@ -523,8 +563,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getstatus($status)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case 'U':
                 $status = 'Unfulfilled';
                 break;
@@ -581,10 +620,9 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                     $customer->setWebsiteId($websiteId);
                     $customer->setEmail($email);
                     if (isset($order['order_account_information']['account_information'])) {
-
-                        $customerName=explode(' ',$order['order_account_information']['account_information']['customer_name']);
-                        $firstName = isset($customerName['0'])?$customerName['0']:'FirstName';
-                        $lastName= isset($customerName['1'])?$customerName['1']:'SecondName';
+                        $customerName=explode(' ', $order['order_account_information']['account_information']['customer_name']);
+                        $firstName = isset($customerName['0']) ? $customerName['0'] : 'FirstName';
+                        $lastName= isset($customerName['1']) ? $customerName['1'] : 'SecondName';
 
                         $customer->setFirstname($firstName);
                         $customer->setLastname($lastName);
@@ -639,34 +677,36 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             if (!$invoice) {
                 throw new \Magento\Framework\Exception\LocalizedException(__('We can\'t save the invoice right now.'));
             }
-
             if (!$invoice->getTotalQty()) {
                 throw new \Magento\Framework\Exception\LocalizedException(__('You can\'t create an invoice without products.'));
             }
-
             $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_OFFLINE);
             $invoice->register();
             $invoice->getOrder()
                 ->setCustomerNoteNotify(false);
             $invoice->getOrder()
                 ->setIsInProcess(true);
-            $order->addStatusHistoryComment(__('Automatically invoiced via cedcommerce goodmarket.') , false);
+            $order->addStatusHistoryComment(__('Automatically invoiced via cedcommerce goodmarket.'), false);
             /** @var \Magento\Framework\DB\Transaction $transaction */
             $transaction = $this
                 ->transactionFactory
                 ->create()
                 ->addObject($invoice)->addObject($invoice->getOrder());
             $transaction->save();
-        } catch(\Exception $e) {
-            $this
-                ->logger
-                ->addError($e->getMessage() , ['order_id' => $order->getId() ]);
+        } catch (\Exception $e) {
+            $this->logger->addError($e->getMessage(), ['order_id' => $order->getId()]);
         }
     }
 
+    /**
+     * reject
+     *
+     * @param $order
+     * @param $reason
+     * @return bool
+     */
     public function reject($order, $reason = [])
     {
-
         $response = false;
         $orderId = $this->getValue('order_increment_id', $order);
         /** @var \Ced\Mlibre\Model\Order $mporder */
@@ -684,23 +724,30 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             ->serializer
             ->serialize($order));
         if ($response !== false) {
-            $mporder->setData(\Ced\GoodMarket\Model\Order::COLUMN_STATUS, \Ced\GoodMarket\Model\Source\Order\Status::CANCELLED);
+            $mporder->setData(
+                \Ced\GoodMarket\Model\Order::COLUMN_STATUS,
+                \Ced\GoodMarket\Model\Source\Order\Status::CANCELLED
+            );
         }
-
         $mporder->save();
-
-        $this
-            ->logger
-            ->addNotice('Order import failed. Order Id: #' . $orderId, ['cancelled' => $response, 'reason' => $reason, ]);
+        $this->logger
+            ->addNotice(
+                'Order import failed. Order Id: #' . $orderId,
+                ['cancelled' => $response, 'reason' => $reason]
+            );
         return true;
     }
 
+    /**
+     * createTaxRuleAndClass
+     *
+     * @return void
+     */
     public function createTaxRuleAndClass()
     {
         $bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $_SERVER);
         $objectManager = $bootstrap->getObjectManager();
-
-        $taxCalculationRate1 = $objectManager->create('Magento\Tax\Model\Calculation\Rate');//->load(1);
+        $taxCalculationRate1 = $objectManager->create(\Magento\Tax\Model\Calculation\Rate::class);//->load(1);
         $taxCalculationRate1->setCode("GOODMARKET");
         $taxCalculationRate1->setTaxCountryId("US");
         $taxCalculationRate1->setTaxRegionId("REGION");
@@ -708,85 +755,94 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $taxCalculationRate1->setTaxPostcode("*");
         $taxCalculationRate1->setRate("10.75");
         $taxCalculationRate1->save();
-
-
-        $fixtureTaxRule1 = $objectManager->create('Magento\Tax\Model\Calculation\Rule');//->load(1);
+        $fixtureTaxRule1 = $objectManager->create(\Magento\Tax\Model\Calculation\Rule::class);//->load(1);
         $fixtureTaxRule1->setCode("GOODMARKET");
         $fixtureTaxRule1->setPriority(0);
-        $fixtureTaxRule1->setCustomerTaxClassIds(array(3));
-        $fixtureTaxRule1->setProductTaxClassIds(array(8));
-        $fixtureTaxRule1->setTaxRateIds(array($taxCalculationRate1->getId()));
+        $fixtureTaxRule1->setCustomerTaxClassIds([3]);
+        $fixtureTaxRule1->setProductTaxClassIds([8]);
+        $fixtureTaxRule1->setTaxRateIds([$taxCalculationRate1->getId()]);
         $fixtureTaxRule1->save();
-
     }
 
+    /**
+     * editTaxClass
+     *
+     * @param $tax
+     * @return bool
+     */
     public function editTaxClass($tax)
     {
         $bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $_SERVER);
         $objectManager = $bootstrap->getObjectManager();
-
-        $taxCalculationRate1 = $objectManager->create('Magento\Tax\Model\Calculation\Rate')->loadByCode('GOODMARKET');
+        $taxCalculationRate1 = $objectManager->create(\Magento\Tax\Model\Calculation\Rate::class)
+            ->loadByCode('GOODMARKET');
         $taxCalculationRate1->setRate($tax);
         $taxCalculationRate1->save();
         return true;
     }
 
-    public function createCatalogPriceRule($sku,$discountPercentage)
+    /**
+     * createCatalogPriceRule
+     *
+     * @param $sku
+     * @param $discountPercentage
+     * @return void
+     */
+    public function createCatalogPriceRule($sku, $discountPercentage)
     {
         $bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $_SERVER);
         $objectManager = $bootstrap->getObjectManager();
         $customerId = $this->config->getDefaultCustomer();
-        $model = $objectManager->create('Magento\CatalogRule\Model\Rule');
-        $model->setName('GOODMARKET'.$sku)
+        $model = $objectManager->create(\Magento\CatalogRule\Model\Rule::class);
+        $model->setName('GOODMARKET' . $sku)
             ->setDescription('description')
             ->setIsActive(1)
-            ->setCustomerGroupIds(array($customerId))
-            ->setWebsiteIds(array(1))
+            ->setCustomerGroupIds([$customerId])
+            ->setWebsiteIds([1])
             ->setFromDate('')
             ->setToDate('')
             ->setSimpleAction('by_percent')
             ->setDiscountAmount($discountPercentage)
             ->setStopRulesProcessing(0);
 
-        $conditions = array();
-        $conditions["1"] = array
-        (
+        $conditions = [];
+        $conditions["1"] = [
             "type" => "Magento\CatalogRule\Model\Rule\Condition\Combine",
             "aggregator" => "all",
             "value" => 1,
             "new_child" => ""
-        );
-        $conditions["1--1"] = array
-        (
+        ];
+        $conditions["1--1"] = [
             "type" => "Magento\CatalogRule\Model\Rule\Condition\Product",
             "attribute" => "sku",
             "operator" => "==",
             "value" => $sku
-        );
+        ];
 
-        $model->setData('conditions',$conditions);
-
-// Validating rule data before Saving
+        $model->setData('conditions', $conditions);
+        // Validating rule data before Saving
         $validateResult = $model->validateData(new \Magento\Framework\DataObject($model->getData()));
         if ($validateResult !== true) {
             foreach ($validateResult as $errorMessage) {
-                echo $errorMessage;
+                // echo $errorMessage;
+                $result = $this->resultJson->create();
+                return $result->setData($errorMessage);
+    
             }
             return;
         }
-
         try {
             $model->loadPost($model->getData());
             $model->save();
 
             $ruleJob = $objectManager->get('Magento\CatalogRule\Model\Rule\Job');
             $ruleJob->applyAll();
-            echo "rule created";
+            $result = $this->resultJson->create();
+            return $result->setData('Rule created');
         } catch (Exception $e) {
-            echo $e->getMessage();
-            die(__FILE__);
+            /*echo $e->getMessage();
+            die(__FILE__);*/
+            $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
         }
     }
-
-
 }

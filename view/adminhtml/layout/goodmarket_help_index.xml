@@ -17,12 +17,10 @@
  * @license   http://cedcommerce.com/license-agreement.txt
  */
 -->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <update handle="styles"/>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Ced\GoodMarket\Block\Adminhtml\Request\Help" name="goodmarket_help" template="request/help.phtml"/>
+            <block class="Ced\GoodMarket\Block\Adminhtml\Request\Help" name="goodmarket_help_support" template="help/help.phtml"/>
         </referenceContainer>
     </body>
 </page>

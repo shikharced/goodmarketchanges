@@ -19,8 +19,7 @@
 namespace Ced\GoodMarket\Controller\Adminhtml\Order;
 
 /**
- * Class Product
- * @package Ced\GoodMarket\Controller\Adminhtml\Order
+ * Class Product Grid
  */
 class Index extends \Magento\Backend\App\Action
 {
@@ -31,6 +30,7 @@ class Index extends \Magento\Backend\App\Action
 
     /**
      * Product constructor.
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      */
@@ -42,6 +42,11 @@ class Index extends \Magento\Backend\App\Action
         $this->resultPageFactory = $resultPageFactory;
     }
 
+    /**
+     * Execut method
+     *
+     * @return \Magento\Framework\View\Result\Page
+     */
     public function execute()
     {
         /** @var \Magento\Framework\View\Result\Page $resultPage */

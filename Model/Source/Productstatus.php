@@ -26,7 +26,7 @@ class Productstatus extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractS
     public const UPLOADED = 'Uploaded';
 
     /**
-     * toOptionArray
+     * ToOptionArray
      *
      * @return array
      */

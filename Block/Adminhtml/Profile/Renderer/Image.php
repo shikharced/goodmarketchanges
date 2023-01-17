@@ -21,9 +21,19 @@ namespace Ced\GoodMarket\Block\Adminhtml\Profile\Renderer;
 
 class Image extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRenderer
 {
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
     public $_storeManager;
-    public $_filesystem;
 
+    /**
+     * Image COnstructor.
+     *
+     * @param \Magento\Backend\Block\Context $context
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Framework\Filesystem $filesystem
+     * @param array $data
+     */
     public function __construct(
         \Magento\Backend\Block\Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -35,6 +45,13 @@ class Image extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractR
         $this->_storeManager = $storeManager;
     }
 
+    /**
+     * Public function Render.
+     *
+     * @param \Magento\Framework\DataObject $row
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function render(\Magento\Framework\DataObject $row)
     {
         $mediaDirectory = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);

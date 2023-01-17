@@ -1,14 +1,26 @@
 <?php
 namespace Ced\GoodMarket\Controller\Adminhtml\Scheduler;
 
-use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\View\Result\PageFactory;
 
-
+/**
+ * Sync Scheduler
+ */
 class Sync extends \Magento\Backend\App\Action
 {
     protected $directoryList;
 
+    /**
+     * Sync Constructor.
+     *
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Ced\GoodMarket\Helper\Data $data
+     * @param PageFactory $resultPageFactory
+     * @param \Ced\GoodMarket\Model\SchedulerFactory $schedulerFactory
+     * @param \Ced\GoodMarket\Model\ResourceModel\Scheduler\CollectionFactory $scheduleCollectionFactory
+     * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
+     * @param \Magento\Catalog\Model\ProductFactory $_productloader
+     */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Ced\GoodMarket\Helper\Data $data,
@@ -27,6 +39,12 @@ class Sync extends \Magento\Backend\App\Action
         parent::__construct($context);
     }
 
+    /**
+     * Sync Execute Method
+     *
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @throws \Exception
+     */
     public function execute()
     {
         $id=$this->getRequest()->getParams();
@@ -48,19 +66,18 @@ class Sync extends \Magento\Backend\App\Action
 //                echo "<pre>";
 //                print_r($response);
 //                die(__FILE__);
-                if(isset($response['data']['pendingBulkresponse']) && !empty(isset($response['data']['pendingBulkresponse']))) {
+                if (isset($response['data']['pendingBulkresponse']) && !empty(isset($response['data']['pendingBulkresponse']))) {
                     $currentScheduler=$this->schedulerFactory->create()->load($cronModel->getId());
-                    $currentScheduler->setData('scheduler_response',json_encode($response));
-                    $currentScheduler->setData('scheduler_status',$response['data']['pendingBulkresponse']['job_status']);
-                    $currentScheduler->setData('scheduler_product_sync','Processing');
+                    $currentScheduler->setData('scheduler_response', json_encode($response));
+                    $currentScheduler->setData('scheduler_status', $response['data']['pendingBulkresponse']['job_status']);
+                    $currentScheduler->setData('scheduler_product_sync', 'Processing');
                     $currentScheduler->save();
                     $this->messageManager->addSuccessMessage(__('Selected Feed Got Synced Successfully!!'));
                 }
             }
-        }else{
+        } else {
             $this->messageManager->addErrorMessage(__('Feed Already Been Synced!!'));
         }
         return $this->_redirect('goodmarket/scheduler/index');
     }
-
 }

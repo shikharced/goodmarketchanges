@@ -39,8 +39,9 @@ class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
-     * public function getAllOptions
+     * Function getAllOptions
      *
+     * @param string $accountId
      * @return array
      */
     public function getAllOptions($accountId = 0)
@@ -65,7 +66,7 @@ class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     /**
      * Retrieve option array
      *
-     * @param $accountId
+     * @param string $accountId
      * @return array
      */
     public function getOptionArray($accountId = 0)
@@ -78,7 +79,7 @@ class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
-     * toOptionArray
+     * Function toOptionArray
      *
      * {@inheritdoc}
      */

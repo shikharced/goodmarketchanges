@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * CedCommerce
  *
@@ -16,8 +16,7 @@
  * @license   http://cedcommerce.com/license-agreement.txt
  */
 namespace Ced\GoodMarket\Controller\Adminhtml\Profile;
-use Magento\Framework\View\Result\PageFactory;
- 
+
 class EditProfileProductGrid extends \Magento\Backend\App\Action
 {
     /**
@@ -46,5 +45,4 @@ class EditProfileProductGrid extends \Magento\Backend\App\Action
     {
         return $this->resultPageFactory->create();
     }
-       
 }
