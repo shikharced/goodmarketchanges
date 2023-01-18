@@ -11,7 +11,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category    Ced
- * @package     Ced_ZalandoRetail
+ * @package     Ced_GoodMarket
  * @author        CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
  * @license      http://cedcommerce.com/license-agreement.txt
@@ -882,20 +882,6 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $currency = $this->scopeConfigManager->getValue('goodmarket/order/customer_email');
         return $currency;
-    }
-
-    /**
-     * Functoin getZeroInventory
-     *
-     * @return mixed
-     */
-    public function getZeroInventory()
-    {
-        $condition = $this->scopeConfigManager->getValue(self::CONFIG_PATH_INVENTORY_ZERO_CONDITION);
-        if (empty($condition)) {
-            $condition = \Ced\ZalandoRetail\Model\Source\Config\Inventory\ZeroCondition::SKIP;
-        }
-        return $condition;
     }
 
     /**

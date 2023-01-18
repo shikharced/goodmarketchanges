@@ -86,22 +86,6 @@ class MultiAccount extends \Magento\Framework\App\Helper\AbstractHelper
         $this->adminSession = $session;
     }
 
-//    public function unsAccountRegistry() {
-//        if($this->_coreRegistry->registry('mlibre_account'))
-//            $this->_coreRegistry->unregister('mlibre_account');
-//    }
-
-//    public function getAccountRegistry($accId = null) {
-//        /** @var \Ced\GoodMarket\Model\Accounts $account */
-//        $account = $this->accountModel->create();
-//        if (isset($accId) && !empty($accId)) {
-//            $account = $account->load($accId);
-//        }
-//        if(!$this->_coreRegistry->registry('mlibre_account'))
-//            $this->_coreRegistry->register('mlibre_account', $account);
-//        return $this->_coreRegistry->registry('mlibre_account');
-//    }
-
     /**
      * Function getProfileAttrForAcc
      *

@@ -11,7 +11,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category    Ced
- * @package     Ced_Mlibre
+ * @package     Ced_GoodMarket
  * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright © 2018 CedCommerce. All rights reserved.
  * @license     EULA http://cedcommerce.com/license-agreement.txt
@@ -27,7 +27,7 @@ class WebHook extends \Magento\Framework\App\Config\Value
     /**
      * public function __construct
      *
-     * @param \Ced\GoodMarket\Helper\Config $zalando
+     * @param \Ced\GoodMarket\Helper\Config $configHelper
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
@@ -37,7 +37,7 @@ class WebHook extends \Magento\Framework\App\Config\Value
      * @param array $data
      */
     public function __construct(
-        \Ced\GoodMarket\Helper\Config $zalando,
+        \Ced\GoodMarket\Helper\Config $configHelper,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\App\Config\ScopeConfigInterface $config,
@@ -47,7 +47,7 @@ class WebHook extends \Magento\Framework\App\Config\Value
         array $data = []
     ) {
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
-        $this->redirectUri = $zalando->getRedirectUri();
+        $this->redirectUri = $configHelper->getRedirectUri();
     }
 
     /**

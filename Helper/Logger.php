@@ -20,7 +20,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category    Ced
- * @package     Ced_Mlibre
+ * @package     Ced_GoodMarket
  * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright CedCommerce (http://cedcommerce.com/)
  * @license     http://cedcommerce.com/license-agreement.txt

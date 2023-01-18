@@ -11,7 +11,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category    Ced
- * @package     Ced_Mlibre
+ * @package     Ced_GoodMarket
  * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright © 2019 CedCommerce. All rights reserved.
  * @license     EULA http://cedcommerce.com/license-agreement.txt

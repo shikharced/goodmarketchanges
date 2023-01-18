@@ -10,7 +10,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
- * @package   Ced_Range
+ * @package   Ced_GoodMarket
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
@@ -85,6 +85,6 @@ class Truncate extends Action
      */
     public function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Ced_Range::Range');
+        return $this->_authorization->isAllowed('Ced_GoodMarket::GoodMarket');
     }
 }

@@ -25,7 +25,7 @@ namespace Ced\GoodMarket\Model\Source;
 class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
 {
     /**
-     * Get walmart product status labels array for option element
+     * Get GoodMarket product status labels array for option element
      *
      * @return array
      */
@@ -90,7 +90,7 @@ class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
-     * Get walmart product status labels array with empty value
+     * Get GoodMarket product status labels array with empty value
      *
      * @return array
      */
@@ -102,7 +102,7 @@ class Profile extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
-     * Get walmart product status
+     * Get GoodMarket product status
      *
      * @param string $optionId
      * @return null|string

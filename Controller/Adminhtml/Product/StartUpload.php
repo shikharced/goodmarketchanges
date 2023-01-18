@@ -39,10 +39,6 @@ class StartUpload extends Action
      */
     public $resultJsonFactory;
     /**
-     * @var GoodMarket
-     */
-    public $bolHelper;
-    /**
      * @var Data
      */
     public $dataHelper;

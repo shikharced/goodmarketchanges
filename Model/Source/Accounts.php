@@ -11,7 +11,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category    Ced
- * @package     Ced_MlibreMultiAccount
+ * @package     Ced_GoodMarket
  * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright CEDCOMMERCE (http://cedcommerce.com/)
  * @license     http://cedcommerce.com/license-agreement.txt
@@ -25,7 +25,7 @@ namespace Ced\GoodMarket\Model\Source;
 class Accounts extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
 {
     /**
-     * Get walmart product status labels array for option element
+     * Get GoodMarket product status labels array for option element
      *
      * @return array
      */
@@ -83,7 +83,7 @@ class Accounts extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
-     * Get walmart product status labels array with empty value
+     * Get GoodMarket product status labels array with empty value
      *
      * @return array
      */
@@ -95,7 +95,7 @@ class Accounts extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     }
 
     /**
-     * Get walmart product status
+     * Get GoodMarket product status
      *
      * @param string $optionId
      * @return null|string

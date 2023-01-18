@@ -10,7 +10,7 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category  Ced
- * @package   Ced_Range
+ * @package   Ced_GoodMarket
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
@@ -23,7 +23,6 @@ use Magento\Framework\Api\FilterBuilder;
 
 /**
  * Class Grid
- * @package Ced\Range\Ui\DataProvider\Product
  */
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
@@ -78,16 +77,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                 ->setValue('true')
                 ->create()
         );
-//        echo '<pre>'; print_r($this->collection->getData());exit;
-
-
-//        $this->addFilter(
-//            $this->filterBuilder->setField('zalandoRetail_status')
-//                ->setConditionType('in')
-//                ->setValue('1')
-//                ->create()
-//        );
-
         $this->addFilter(
             $this->filterBuilder->setField('type_id')->setConditionType('in')
                 ->setValue(['simple', 'configurable', 'virtual'])

@@ -709,7 +709,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $response = false;
         $orderId = $this->getValue('order_increment_id', $order);
-        /** @var \Ced\Mlibre\Model\Order $mporder */
+        /** @var \Ced\GoodMarket\Model\Order $mporder */
         $mporder = $this
             ->orderFactory
             ->create()

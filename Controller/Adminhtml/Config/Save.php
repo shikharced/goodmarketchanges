@@ -13,7 +13,7 @@ class Save extends \Magento\Backend\App\Action
     public $configWriter;
 
     /**
-     * @var \Ced\Mlibre\Helper\Config
+     * @var \Ced\GoodMarket\Helper\Config
      */
     public $config;
 

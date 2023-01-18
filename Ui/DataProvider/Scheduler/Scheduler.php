@@ -11,7 +11,8 @@
  * http://cedcommerce.com/license-agreement.txt
  *
  * @category    Ced
- * @package     Ced_Range
+ * @package     Ced_ * @package Ced\GoodMarket\Ui\DataProvider\Product
+
  * @author      CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright   Copyright © 2018 CedCommerce. All rights reserved.
  * @license     EULA http://cedcommerce.com/license-agreement.txt
@@ -31,7 +32,7 @@ class Scheduler extends \Magento\Ui\DataProvider\AbstractDataProvider
      */
     public $objectManager;
     /**
-     * @var \Ced\Range\Model\ResourceModel\Order\Collection
+     * @var \Ced\GoodMarket\Model\ResourceModel\Order\Collection
      */
     public $collection;
 
@@ -51,7 +52,7 @@ class Scheduler extends \Magento\Ui\DataProvider\AbstractDataProvider
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
-     * @param \Ced\Range\Model\ResourceModel\Order\CollectionFactory $collectionFactory
+     * @param \Ced\GoodMarket\Model\ResourceModel\Order\CollectionFactory $collectionFactory
      * @param array $addFieldStrategies
      * @param array $addFilterStrategies
      * @param array $meta

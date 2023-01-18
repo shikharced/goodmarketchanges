@@ -32,7 +32,7 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="id"/>
     </constraint>
-    <constraint xsi:type="unique" referenceId="CED_BOL_ORDER_BOL_ORDER_ID">
+    <constraint xsi:type="unique" referenceId="CED_GOODMARKET_ORDER_GOODMARKET_ORDER_ID">
       <column name="goodmarket_order_id"/>
     </constraint>
   </table>
