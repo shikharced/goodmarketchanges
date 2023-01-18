@@ -83,6 +83,7 @@ class Curls extends \Magento\Framework\HTTP\Client\Curl
             $this->curlOption(CURLOPT_HTTPHEADER, $heads);
         }
         if (count($this->_cookies)) {
+            
             $cookies = [];
             foreach ($this->_cookies as $k => $v) {
                 $cookies[] = "{$k}={$v}";
@@ -93,11 +94,14 @@ class Curls extends \Magento\Framework\HTTP\Client\Curl
         if ($this->_timeout) {
             $this->curlOption(CURLOPT_TIMEOUT, $this->_timeout);
         }
+
         if ($this->_port != 80) {
             $this->curlOption(CURLOPT_PORT, $this->_port);
         }
+
         $this->curlOption(CURLOPT_RETURNTRANSFER, 1);
         $this->curlOption(CURLOPT_HEADERFUNCTION, [$this, 'parseHeaders']);
+
         if ($this->sslVersion !== null) {
             $this->curlOption(CURLOPT_SSLVERSION, $this->sslVersion);
         }
@@ -106,13 +110,16 @@ class Curls extends \Magento\Framework\HTTP\Client\Curl
                 $this->curlOption($k, $v);
             }
         }
+
         $this->_headerCount = 0;
         $this->_responseHeaders = [];
         $this->_responseBody = curl_exec($this->_ch);
         $err = curl_errno($this->_ch);
+
         if ($err) {
             $this->doError(curl_error($this->_ch));
         }
+
         curl_close($this->_ch);
     }
 }
