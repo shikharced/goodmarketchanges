@@ -1305,6 +1305,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public function getGoodMarketProfilePrice($product, $attribute)
     {
         $price = (float)$product->getData($attribute);
+        if ($product->getData('special_price')) {
+            $price = (float)$product->getData('special_price');
+        }
         $configPrice = trim(
             $this->scopeConfig->getvalue(
                 'goodmarket/goodmarket_product/product_price'
