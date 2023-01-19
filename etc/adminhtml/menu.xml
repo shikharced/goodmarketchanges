@@ -53,7 +53,7 @@
              sortOrder="2"
              parent="Ced_GoodMarket::product"
              action="goodmarket/product/index"
-             resource="Ced_GoodMarket::product"
+             resource="Ced_GoodMarket::listing"
         />
         <add id="Ced_GoodMarket::scheduler"
              title="Bulk Scheduler"
@@ -97,7 +97,7 @@
         />
 
         <!--developer start-->
-         <add id="Ced_GoodMarket::cron"
+         <!-- <add id="Ced_GoodMarket::cron"
              title="Cron"
              translate="title"
              module="Ced_GoodMarket"
@@ -105,7 +105,7 @@
              parent="Ced_GoodMarket::developer"
              action="integrator/cron/index"
              resource="Ced_Integrator::cron_log"
-        />
+        /> -->
 
         <add id="Ced_GoodMarket::Feed"
              title="Feed"
@@ -114,9 +114,9 @@
              sortOrder="50"
              parent="Ced_GoodMarket::developer"
              action="goodmarket/feed/index"
-             resource="Ced_Feed::Feed"
+             resource="Ced_GoodMarket::Feed"
         />
-        <add id="Ced_GoodMarket::logs"
+        <!-- <add id="Ced_GoodMarket::logs"
              title="Logs"
              translate="title"
              module="Ced_GoodMarket"
@@ -124,7 +124,7 @@
              parent="Ced_GoodMarket::developer"
              action="integrator/log/index"
              resource="Ced_Integrator::activity_log"
-        />
+        /> -->
         <!--developer end-->
 
         <!-- Help & Support Section -->

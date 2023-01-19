@@ -94,31 +94,36 @@ class Create extends Template
             $txtFileName = 'categoryLevel.json';
             $filePath = $this->getMediaPath().'/ced/goodmarket/';
             $file = $filePath . $txtFileName;
-            $readFile = $this->fileDriver->fileOpen($file, 'r');
-            $categories = $this->fileDriver->fileRead($readFile, filesize($file));
-            $category = json_decode($categories, true);
-            // echo '<pre>'; print_r($category[1]); exit;
-            $catName = [];
-            $i=0;
-            foreach ($category as $catl2) {
-                if (!empty($catl2['children'])) {
-                    foreach ($catl2['children'] as $catl3) {
-                        $name = $catl2['name'] . ' -> '. $catl3['name'];
-                        if (!empty($catl3['children'])) {
-                            foreach ($catl3['children'] as $catl4) {
-                                $name = $catl2['name'] . ' -> '. $catl3['name'] . ' -> ' . $catl4['name'];
-                                $catName['162,'.$catl2['id'].','.$catl3['id'].','.$catl4['id'].',,,'] = 'Default -> '.$name;
+            if (file_exists($file)){
+                $readFile = $this->fileDriver->fileOpen($file, 'r');
+                $categories = $this->fileDriver->fileRead($readFile, filesize($file));
+                $category = json_decode($categories, true);
+                // echo '<pre>'; print_r($category[1]); exit;
+                $catName = [];
+                $i=0;
+                foreach ($category as $catl2) {
+                    if (!empty($catl2['children'])) {
+                        foreach ($catl2['children'] as $catl3) {
+                            $name = $catl2['name'] . ' -> '. $catl3['name'];
+                            if (!empty($catl3['children'])) {
+                                foreach ($catl3['children'] as $catl4) {
+                                    $name = $catl2['name'] . ' -> '. $catl3['name'] . ' -> ' . $catl4['name'];
+                                    $catName['162,'.$catl2['id'].','.$catl3['id'].','.$catl4['id'].',,,'] = 'Default -> '.$name;
+                                }
+                            } else {
+                                $catName['162,'.$catl2['id'].','.$catl3['id'].',,,,'] = 'Default -> '.$name;
                             }
-                        } else {
-                            $catName['162,'.$catl2['id'].','.$catl3['id'].',,,,'] = 'Default -> '.$name;
                         }
+                    } else {
+                        $catName['162,' . $catl2['id'].',,,,,'] = 'Default -> ' . $catl2['name'];
                     }
-                } else {
-                    $catName['162,' . $catl2['id'].',,,,,'] = 'Default -> ' . $catl2['name'];
+        
                 }
-    
+                return $catName;
+            } else {
+                return [];
             }
-            return $catName;
+            
         } catch (Exception $e) {
             $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
         }

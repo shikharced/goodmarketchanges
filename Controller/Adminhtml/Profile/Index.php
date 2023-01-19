@@ -35,13 +35,16 @@ class Index extends \Magento\Backend\App\Action
      * Index constructor.
      *
      * @param Context     $context
+     * @param \Magento\Framework\AuthorizationInterface $_authorization
      * @param PageFactory $resultPageFactory
      */
     public function __construct(
         Context $context,
+        \Magento\Framework\AuthorizationInterface $_authorization,
         PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
+        $this->_authorization = $_authorization;
         $this->resultPageFactory = $resultPageFactory;
     }
 
@@ -56,8 +59,13 @@ class Index extends \Magento\Backend\App\Action
          * @var \Magento\Backend\Model\View\Result\Page $resultPage
          */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Ced_GoodMarket::GoodMarket_profile');
+        $resultPage->setActiveMenu('Ced_GoodMarket::profile');
         $resultPage->getConfig()->getTitle()->prepend(__('Category Mapping'));
         return $resultPage;
+    }
+
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Ced_GoodMarket::profile');
     }
 }

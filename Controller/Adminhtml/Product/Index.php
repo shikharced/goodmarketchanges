@@ -43,14 +43,17 @@ class Index extends Action
      *
      * @param Action\Context $context
      * @param \Ced\GoodMarket\Helper\Product $product
+     * @param \Magento\Framework\AuthorizationInterface $_authorization
      * @param \Ced\GoodMarket\Helper\MultiAccount $multiAccountHelper
      */
     public function __construct(
         Action\Context $context,
         PageFactory $resultPageFactory,
+        \Magento\Framework\AuthorizationInterface $_authorization,
         \Ced\GoodMarket\Helper\MultiAccount $multiAccountHelper
     ) {
         parent::__construct($context);
+        $this->_authorization = $_authorization;
         $this->resultPageFactory = $resultPageFactory;
         $this->multiAccountHelper = $multiAccountHelper;
     }
@@ -64,8 +67,13 @@ class Index extends Action
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        // $resultPage->setActiveMenu('Ced_GoodMarket::product');
+        $resultPage->setActiveMenu('Ced_GoodMarket::listing');
         $resultPage->getConfig()->getTitle()->prepend(__('GoodMarket Product Listing'));
         return $resultPage;
+    }
+
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Ced_GoodMarket::listing');
     }
 }

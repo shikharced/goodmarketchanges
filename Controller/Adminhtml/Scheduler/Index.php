@@ -46,13 +46,16 @@ class Index extends Action
      * Index constructor.
      *
      * @param Action\Context $context
+     * @param \Magento\Framework\AuthorizationInterface $_authorization
      * @param PageFactory $resultPageFactory
      */
     public function __construct(
         Action\Context $context,
+        \Magento\Framework\AuthorizationInterface $_authorization,
         PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
+        $this->_authorization = $_authorization;
         $this->resultPageFactory = $resultPageFactory;
     }
 
@@ -65,8 +68,13 @@ class Index extends Action
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        // $resultPage->setActiveMenu('Ced_GoodMarket::product');
+        $resultPage->setActiveMenu('Ced_GoodMarket::scheduler');
         $resultPage->getConfig()->getTitle()->prepend(__('Bulk Scheduler Grid'));
         return $resultPage;
+    }
+
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Ced_GoodMarket::scheduler');
     }
 }

@@ -90,7 +90,11 @@ class Invoice implements ObserverInterface
             $orderCollection = $this->collection->create();
             $orderCollection =$this->collection->create()->load($incrementId, 'magento_increment_id');
             if (isset($orderCollection) && !empty($orderCollection)) {
-                $invoice = $this->data->createOrderInvoice(json_decode($orderCollection->getData('order_data'), true));
+                $orderData = $orderCollection->getData('order_data');
+                $invoice = 0;
+                if ($orderData != ''){
+                    $invoice = $this->data->createOrderInvoice(json_decode($orderData, true));
+                }
 
                 if (isset($invoice) && ($invoice == 1)) {
                     $orderCollection->setStatus('Invoiced');

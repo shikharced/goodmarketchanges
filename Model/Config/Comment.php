@@ -35,7 +35,7 @@ class Comment implements \Magento\Config\Model\Config\CommentInterface
     public function getCommentText($elementValue)
     {
         return 'If you are not Good Market approved, click <a 
-        href="https://demo8-marketplace.cedcommerce.com/gm/pub/csmarketplace/account/register/?ced_integration"
+        href="https://www.goodmarket.global/apply"
         target="_blank">here</a> to apply.';
     }
 }

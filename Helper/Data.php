@@ -383,26 +383,21 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 			        }
 			    }
 			}';
-                $location_post_data['variables']['vendor_id'] = $access_token['data']['generateVendorToken']['vendor_id'];
-                $location_post_data['variables']['hash_token'] = $access_token['data']['generateVendorToken']['hash_token'];
-                $locationResponse = $this->postRequest(self::API_ROOT_URL, json_encode($location_post_data), '');
-//                echo "<pre>";
-//                print_r($locationResponse);
-//                die(__FILE__);
-                $this->flagManager->saveFlag(self::FLAG_CODE, json_encode($locationResponse['data']['getSources']['sources']));
-                return $access_token['data']['generateVendorToken'];
+                if (isset($access_token['data'])) {
+                    $location_post_data['variables']['vendor_id'] = $access_token['data']['generateVendorToken']['vendor_id'];
+                    $location_post_data['variables']['hash_token'] = $access_token['data']['generateVendorToken']['hash_token'];
+                    $locationResponse = $this->postRequest(self::API_ROOT_URL, json_encode($location_post_data), '');
+                    $this->flagManager->saveFlag(self::FLAG_CODE, json_encode($locationResponse['data']['getSources']['sources']));
+                    return $access_token['data']['generateVendorToken'];
+                } else {
+                    return [];
+                }
             } else {
                 return [];
             }
         } catch (\Exception $e) {
-//            echo "<pre>";
-//            print_r($e->getMessage());
-//            die(__FILE__);
             $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
         } catch (\Error $e) {
-//            echo "<pre>";
-//            print_r($e->getMessage());
-//            die(__FILE__);
             $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
         }
     }

@@ -1,5 +1,5 @@
 {
-    "name": "ced/goodmarket",
+    "name": "ced/goodmarket-m2-integration",
     "description": "GoodMarket Magento2 integration",
     "require": {
       "php": ">=5.6",

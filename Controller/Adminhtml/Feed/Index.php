@@ -36,9 +36,11 @@ class Index extends \Magento\Backend\App\Action
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\AuthorizationInterface $_authorization,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
+        $this->_authorization = $_authorization;
         $this->resultPageFactory = $resultPageFactory;
     }
 
@@ -49,5 +51,9 @@ class Index extends \Magento\Backend\App\Action
         $resultPage->setActiveMenu('Ced_GoodMarket::Feed');
         $resultPage->getConfig()->getTitle()->prepend(__('Feed Response'));
         return $resultPage;
+    }
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Ced_GoodMarket::Feed');
     }
 }

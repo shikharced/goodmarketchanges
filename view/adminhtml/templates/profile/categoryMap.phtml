@@ -23,6 +23,14 @@
         <a id="updatecategory" href="<?php echo $block->getUrl('goodmarket/config/fetchCategory');?>"><button">Update Category</button></a>
     </div>
 </div>
+<?php $gdcat = $block->getGoodMarketCategories(); ?>
+<?php $category = $block->getCategories();  ?>
+<?php $baseUrl = $block->getUrl('goodmarket/profile/savebymageid'); ?>
+<?php /*echo '<pre>';print_r($category); exit; */?>
+<?php if (empty($gdcat)) { ?>
+    <span>Good Market Categories are not Fetched (File is missing). Please fetch token and then update categories.</span>
+<?php } else { ?>
+
 <div class='row'>
     <div class='col-1'>
         <h3>Magento Category</h3>
@@ -31,37 +39,33 @@
         <h3>Goodmarket Category</h3>
     </div>
 </div>
-<?php $gdcat = $block->getGoodMarketCategories(); ?>
-<?php $category = $block->getCategories();  ?>
-<?php $baseUrl = $block->getUrl('goodmarket/profile/savebymageid'); ?>
-<?php /*echo '<pre>';print_r($category); exit; */?>
-
-<?php foreach ($category as $catId => $catName) { ?>
-    <?php
-    $value = $block->checkCatId($catId);
-    $value = substr($value, 2, -2);
-    $ex = explode('","', $value);
-    $value = implode(',', $ex);
-    ?>
-    <div class='row'>
-        <form id='form-<?= $catId ?>'>
-            <div class="col-1">
-                <select class='mgcat'>
-                    <option value='<?= $catId ?>'><?= $catName ?></option>
-                </select>
-            </div>
-            <div class='col-2'>
-                <select class='gdcat' onchange='save(this, <?= $catId ?>)'>
-                <option value='0' selected>--Please Select--</option>
-                    <?php foreach ($gdcat as $goodCat => $val) {?>
-                        <?php $select = ''; ?>
-                        <?php if ($value == $goodCat) {$select = 'selected';} ?>
-                        <option value='<?= $goodCat ?>' <?= $select ?> > <?= $val ?></option>
-                    <?php  } ?>
-                </select>
-            </div>
-        </form>
-    </div>
+    <?php foreach ($category as $catId => $catName) { ?>
+        <?php
+        $value = $block->checkCatId($catId);
+        $value = substr($value, 2, -2);
+        $ex = explode('","', $value);
+        $value = implode(',', $ex);
+        ?>
+        <div class='row'>
+            <form id='form-<?= $catId ?>'>
+                <div class="col-1">
+                    <select class='mgcat'>
+                        <option value='<?= $catId ?>'><?= $catName ?></option>
+                    </select>
+                </div>
+                <div class='col-2'>
+                    <select class='gdcat' onchange='save(this, <?= $catId ?>)'>
+                    <option value='0' selected>--Please Select--</option>
+                        <?php foreach ($gdcat as $goodCat => $val) {?>
+                            <?php $select = ''; ?>
+                            <?php if ($value == $goodCat) {$select = 'selected';} ?>
+                            <option value='<?= $goodCat ?>' <?= $select ?> > <?= $val ?></option>
+                        <?php  } ?>
+                    </select>
+                </div>
+            </form>
+        </div>
+    <?php } ?>
 <?php } ?>
 <script>
     function save(selectObject, categoryId) {

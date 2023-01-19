@@ -3,12 +3,21 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Ced_GoodMarket::GoodMarket" title="GoodMarket" sortOrder="45">
-                    <resource id="Ced_GoodMarket::profile" title="Manage Categories"/>
-                    <resource id="Ced_GoodMarket::listing" title="Manage Products"/>
-                    <resource id="Ced_GoodMarket::scheduler" title="Scheduler"/>
-                    <resource id="Ced_GoodMarket::order_listing" title="Manage Orders"/>
-                    <resource id="Ced_GoodMarket::configuration" title="Configuration"/>
+                <resource id="Ced_GoodMarket::GoodMarket" title="GoodMarket" sortOrder="51">
+                    <resource id="Ced_GoodMarket::product" title="Product" sortOrder="1">
+                        <resource id="Ced_GoodMarket::profile" title="Manage Categories" sortOrder="1"/>
+                        <resource id="Ced_GoodMarket::listing" title="Manage Products" sortOrder="2"/>
+                        <resource id="Ced_GoodMarket::scheduler" title="Scheduler" sortOrder="3"/>
+                    </resource>
+                    <resource id="Ced_GoodMarket::order" title="Order" sortOrder="1">
+                        <resource id="Ced_GoodMarket::order_listing" title="Manage Orders" sortOrder="4"/>
+                    </resource>
+                    <resource id="Ced_GoodMarket::settings" title="Settings" sortOrder="1">
+                        <resource id="Ced_GoodMarket::configuration" title="Configuration" sortOrder="5"/>
+                    </resource>
+                    <resource id="Ced_GoodMarket::developer" title="Developer" sortOrder="1">
+                        <resource id="Ced_GoodMarket::Feed" title="Feeds" sortOrder="6"/>
+                    </resource>
                 </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
