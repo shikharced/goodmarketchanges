@@ -79,8 +79,14 @@ class View extends \Magento\Backend\App\Action
         if (!empty($id)) {
             $goodmarketOrder = $this->orders->load($id);
             if ($goodmarketOrder && $goodmarketOrder->getId()) {
-                $order['order'] = json_decode($goodmarketOrder->getOrderData());
-                $order['order_items'] = json_decode($goodmarketOrder->getOrderItems());
+                $orderData = $goodmarketOrder->getOrderData();
+                if ($orderData != '') {
+                    $order['order'] = json_decode($orderData);
+                }
+                $orderItems = $goodmarketOrder->getOrderItems();
+                if ($orderItems != '') {
+                    $order['order_items'] = json_decode($orderItems);
+                }
             }
         }
         return $this->resultJsonFactory

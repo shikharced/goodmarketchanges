@@ -234,6 +234,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 //            Customisation
             $taxClassess = $this->productTaxClassSource->getAllOptions();
             $flag = 1;
+            $taxClassId = 0;
             foreach ($taxClassess as $taxClass1) {
                 if ($taxClass1['label'] == 'Good-Market Tax') {
                     $taxClassId = $taxClass1['value'];

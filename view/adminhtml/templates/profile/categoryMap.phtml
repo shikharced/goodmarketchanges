@@ -27,10 +27,9 @@
 <?php $category = $block->getCategories();  ?>
 <?php $baseUrl = $block->getUrl('goodmarket/profile/savebymageid'); ?>
 <?php /*echo '<pre>';print_r($category); exit; */?>
-<?php if (empty($gdcat)) { ?>
+<?php if (count($gdcat) < 1) { ?>
     <span>Good Market Categories are not Fetched (File is missing). Please fetch token and then update categories.</span>
 <?php } else { ?>
-
 <div class='row'>
     <div class='col-1'>
         <h3>Magento Category</h3>
@@ -66,7 +65,6 @@
             </form>
         </div>
     <?php } ?>
-<?php } ?>
 <script>
     function save(selectObject, categoryId) {
         var value = selectObject.value;
@@ -94,6 +92,8 @@
         );
     }
 </script>
+<?php } ?>
+
 <style>
      .row {
         width: 100%;

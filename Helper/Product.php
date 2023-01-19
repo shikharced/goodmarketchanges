@@ -127,8 +127,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $getJson = $this->scopeConfig->getValue(self::INVENTORYSOUCEMAPPING);
         $arr = json_decode($getJson, true);
         $source = [];
-        foreach ($arr as $item) {
-            $source[$item['local_inventory_code']] = $item['good_market_source'];
+        if (count($arr) > 0) {
+            foreach ($arr as $item) {
+                $source[$item['local_inventory_code']] = $item['good_market_source'];
+            }
         }
         return $source;
     }
@@ -908,7 +910,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //            echo '<pre>'; print_r($productArray); exit;
             return $productArray;
         } catch (\Exception $e) {
-            $this->logger->addError($e->getMessage(), __METHOD__);
+            $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
         }
 
     }
@@ -943,7 +945,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             /*echo "<pre>";
             print_r($e->getMessage());
             die(__FILE__);*/
-            $this->logger->addError($e->getMessage(), __METHOD__);
+            $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
         }
     }
     /**
@@ -1287,12 +1289,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             /*echo "<pre>";
             print_r($e->getMessage());
             die(__FILE__);*/
-            $this->logger->addError($e->getMessage(), __METHOD__);
+            $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
         } catch (\Error $e) {
             /*echo "<pre>";
             print_r($e->getMessage());
             die(__FILE__);*/
-            $this->logger->addError($e->getMessage(), __METHOD__);
+            $this->logger->addError($e->getMessage(), ['path' => __METHOD__]);
         }
     }
 

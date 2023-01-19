@@ -94,7 +94,7 @@ class Create extends Template
             $txtFileName = 'categoryLevel.json';
             $filePath = $this->getMediaPath().'/ced/goodmarket/';
             $file = $filePath . $txtFileName;
-            if (file_exists($file)){
+            if (file_exists($file)) {
                 $readFile = $this->fileDriver->fileOpen($file, 'r');
                 $categories = $this->fileDriver->fileRead($readFile, filesize($file));
                 $category = json_decode($categories, true);
