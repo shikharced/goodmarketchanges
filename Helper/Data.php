@@ -10,7 +10,7 @@
  * http://cedcommerce.com/license-agreement.txte
  *
  * @category  Ced
- * @package   Ced_EbayMultiAccount
+ * @package   Ced_GoodMarket
  * @author    CedCommerce Core Team <connect@cedcommerce.com>
  * @copyright Copyright CEDCOMMERCE(http://cedcommerce.com/)
  * @license   http://cedcommerce.com/license-agreement.txt
