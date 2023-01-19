@@ -96,6 +96,9 @@
                     <item name="sortOrder" xsi:type="number">20</item>
                 </item>
             </argument>
+            <settings>
+                <sortable>false</sortable>
+            </settings>
         </column>
         <column name="status_code">
             <argument name="data" xsi:type="array">
@@ -106,6 +109,9 @@
                     <item name="sortOrder" xsi:type="number">30</item>
                 </item>
             </argument>
+            <settings>
+                <sortable>false</sortable>
+            </settings>
         </column>
         <column name="execution_time">
             <argument name="data" xsi:type="array">

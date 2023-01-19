@@ -240,8 +240,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                                 $productAttributes['configurable_matrix'] = $variations;
                                 $config_attributes = [];
                                 foreach ($variations as $prodArr) {
-                                    foreach ($prodArr['config_attributes'] as $value){
-                                        $config_attributes[] = $value;
+                                    if (isset($prodArr['config_attributes'])) {
+                                        foreach ($prodArr['config_attributes'] as $value){
+                                            $config_attributes[] = $value;
+                                        }
                                     }
                                 }
                                 $productAttributes['config_attributes'] = $config_attributes;
@@ -862,6 +864,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
             /*Shikhar - Changes for source Quantity*/
             $sourceMapping = $this->getInventoryMapping();
+            $allSources = [];
             foreach ($sourceMapping as $localSource => $gdmarketSource) {
                 /*$msiSourceCode = $this->config->getMsiSourceCode();*/
                 $msiSourceDataModel = $this->objectManager
@@ -886,7 +889,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
                 ];
             }
             /*Shikhar - Changes for source Quantity END*/
-            $productArray['sources']=json_encode($allSources);
+            $productArray['sources'] = json_encode($allSources);
 //            $productArray['quantity'] = $qty;
             $price = $this->getGoodMarketProfilePrice($child, 'price');
             $productArray['price'] = $price;
