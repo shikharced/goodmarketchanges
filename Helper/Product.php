@@ -811,6 +811,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 //                    $configurable_attribute[$attribute['goodmarket_attribute_name']] = $child->getData($attribute['magento_attribute_code']);
 //                }
 //            }
+            $configurableAttri = [];
+            $config_attributes = [];
             foreach ($getConfigAttribute as $key=>$prodAttribute) {
                 $this->_objectManager= \Magento\Framework\App\ObjectManager::getInstance();
                 $_product = $this->_objectManager->create(\Magento\Catalog\Model\Product::class)
