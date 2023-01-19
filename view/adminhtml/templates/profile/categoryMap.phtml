@@ -18,11 +18,6 @@
  */
 /* @var $block \Magento\Catalog\Block\Adminhtml\Profile\Create */
 ?>
-<div class="row">
-    <div class="col-1" style="float: right">
-        <a id="updatecategory" href="<?php echo $block->getUrl('goodmarket/config/fetchCategory');?>"><button">Update Category</button></a>
-    </div>
-</div>
 <?php $gdcat = $block->getGoodMarketCategories(); ?>
 <?php $category = $block->getCategories();  ?>
 <?php $baseUrl = $block->getUrl('goodmarket/profile/savebymageid'); ?>
@@ -31,12 +26,17 @@
     <span>Good Market Categories are not Fetched (File is missing). Please fetch token and then update categories.</span>
 <?php } else { ?>
 <div class='row'>
-    <div class='col-1'>
-        <h3>Magento Category</h3>
+<div class="row">
+    <div class="col-1" style="float: right">
+        <a id="updatecategory" href="<?php echo $block->getUrl('goodmarket/config/fetchCategory');?>"><button">Update Category</button></a>
     </div>
-    <div class='col-2'>
-        <h3>Goodmarket Category</h3>
-    </div>
+</div>
+<div class='col-1'>
+    <h3>Magento Category</h3>
+</div>
+<div class='col-2'>
+    <h3>Goodmarket Category</h3>
+</div>
 </div>
     <?php foreach ($category as $catId => $catName) { ?>
         <?php
