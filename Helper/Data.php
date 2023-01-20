@@ -32,8 +32,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public const GET_PRODUCT_VALIDATION_REPORT='/validation-report/';
     public const POST_PRODUCT_UPLOAD_CONTENT = 'content';
     public const POST_EXPORT_PRODUCT_OFFER = '/export';
-    public const API_ROOT_URL = 'https://staging.goodmarket.info/graphql';   // Staging
-//  public  const API_ROOT_URL = 'https://www.goodmarket.global/graphql';  // Production
+    // public const API_ROOT_URL = 'https://staging.goodmarket.info/graphql';   // Staging
+    public  const API_ROOT_URL = 'https://www.goodmarket.global/graphql';  // Production
     public const API_LOGIN_URL = "https://login.goodmarket.com/";
     public const FETCH_TOKEN = "token?grant_type=client_credentials";
     public const FLAG_CODE = 'CED_GOODMARKET_SOURCE';
@@ -353,9 +353,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $this->_curl->setOption(CURLOPT_TIMEOUT, "30");
             $this->_curl->setOption(CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
             $this->_curl->addHeader("Content-Type", 'application/json');
-            $postfield='{"query":"mutation login($email: String!, $password: String!,$vendorId: Int!) {\\n    generateVendorToken(email: $email, password: $password,vendorId: $vendorId){\\n        token\\n        name\\n        shop_url\\n        vendor_id\\n        customer_id\\n        approval_required\\n        status\\n        success\\n        message\\n        vendor_panel_logo\\n       profile_picture\\n        hash_token\\n    }\\n}\\n","variables":{"email":"' . $username . '","password":"FB6B7D12F4F6EB415D71818C484F3","vendorId":"' . $vendor . '"}}';    // Staging
+            // $postfield='{"query":"mutation login($email: String!, $password: String!,$vendorId: Int!) {\\n    generateVendorToken(email: $email, password: $password,vendorId: $vendorId){\\n        token\\n        name\\n        shop_url\\n        vendor_id\\n        customer_id\\n        approval_required\\n        status\\n        success\\n        message\\n        vendor_panel_logo\\n       profile_picture\\n        hash_token\\n    }\\n}\\n","variables":{"email":"' . $username . '","password":"FB6B7D12F4F6EB415D71818C484F3","vendorId":"' . $vendor . '"}}';    // Staging
 
-            // $postfield='{"query":"mutation login($email: String!, $password: String!,$vendorId: Int!) {\\n    generateVendorToken(email: $email, password: $password,vendorId: $vendorId){\\n        token\\n        name\\n        shop_url\\n        vendor_id\\n        customer_id\\n        approval_required\\n        status\\n        success\\n        message\\n        vendor_panel_logo\\n       profile_picture\\n        hash_token\\n    }\\n}\\n","variables":{"email":"'.$username.'","password":"78B12AC3F27959C42CBE26DAD7DAD","vendorId":"'.$vendor.'"}}'; // Production
+            $postfield='{"query":"mutation login($email: String!, $password: String!,$vendorId: Int!) {\\n    generateVendorToken(email: $email, password: $password,vendorId: $vendorId){\\n        token\\n        name\\n        shop_url\\n        vendor_id\\n        customer_id\\n        approval_required\\n        status\\n        success\\n        message\\n        vendor_panel_logo\\n       profile_picture\\n        hash_token\\n    }\\n}\\n","variables":{"email":"'.$username.'","password":"78B12AC3F27959C42CBE26DAD7DAD","vendorId":"'.$vendor.'"}}'; // Production
 
             $this->_curl->post($url, $postfield);
             $response = $this->_curl->getBody();

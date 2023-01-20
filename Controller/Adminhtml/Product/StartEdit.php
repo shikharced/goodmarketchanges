@@ -122,7 +122,7 @@ class StartEdit extends Action
 //                        $productId = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($prodIds);
                 if (isset($productData['data']['saveBulkProduct'])) {
                     if ($productData['data']['saveBulkProduct']['success'] == '1') {
-                        $uploadMessage[] = "Product Update Request Has Been Send Successfully!!,Check Feed Section and Bulk Scheduler Section.";
+                        $uploadMessage[] = "Product Update Request Has Been Send Successfully! Check Feed Section and Bulk Scheduler Section.";
                     } else {
                         $errorMessage[] = $productData['data']['saveBulkProduct']['message'];
                     }
