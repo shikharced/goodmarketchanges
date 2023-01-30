@@ -983,7 +983,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
             if ($required_attribute['magento_attribute_code']=='description') {
-                $productArray[$required_attribute['goodmarket_attribute_name']] = strip_tags($product->getData('description'), "<p><b>");
+                $desc = $product->getData('description');
+                if ($desc != '') {
+                    $productArray[$required_attribute['goodmarket_attribute_name']] = strip_tags($desc, "<p><b>");
+                } else {
+                    $productArray[$required_attribute['goodmarket_attribute_name']] = '';
+                }                
                 continue;
             }
 
@@ -1264,19 +1269,18 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     {
         try {
             $woo_products_image = $image_url_id;
-            // $image_type_check = @exif_imagetype($woo_products_image);//Old code before MEQP
-            $image_type_check = exif_imagetype($woo_products_image);//Get image type + check if exists 
-            
-            // May not work for less than PHP 8.1
-            // if (strpos($http_response_header[0], "403") || strpos($http_response_header[0], "404") || strpos($http_response_header[0], "302") || strpos($http_response_header[0], "301")) {
-            //     return "";
-            // }
-
-
-            // Will work only for PHP 8
-            if (str_contains($http_response_header[0], "403") || str_contains($http_response_header[0], "404") || str_contains($http_response_header[0], "302") || str_contains($http_response_header[0], "301")) {
-                return "";
-            }
+            $image_type_check = @exif_imagetype($woo_products_image);//Old code before MEQP
+            // $image_type_check = exif_imagetype($woo_products_image);//Get image type + check if exists 
+            $phpver = phpversion();
+            if (version_compare($phpver, '8.0.0') <= 0) {
+                if (strpos($http_response_header[0], "403") || strpos($http_response_header[0], "404") || strpos($http_response_header[0], "302") || strpos($http_response_header[0], "301")) {
+                    return "";
+                }
+            } else {
+                if (str_contains($http_response_header[0], "403") || str_contains($http_response_header[0], "404") || str_contains($http_response_header[0], "302") || str_contains($http_response_header[0], "301")) {
+                    return "";
+                }
+            }           
             $imgdata = file_get_contents($woo_products_image);
             $mime_type = getimagesizefromstring($imgdata);
             $image_data_api[0] = 'http://localhost/web/wc_pro/';
